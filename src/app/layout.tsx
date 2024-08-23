@@ -3,12 +3,15 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import "@mantine/core/styles.css";
 
+import { Toaster } from "react-hot-toast";
+
 import {
   MantineProvider,
   createTheme,
   MantineColorsTuple,
   ColorSchemeScript,
 } from "@mantine/core";
+import AuthProvider from "@/src/providers/AuthProvider";
 
 const myColor: MantineColorsTuple = [
   "#e5ffea",
@@ -52,7 +55,7 @@ export const metadata: Metadata = {
 const theme = createTheme({
   colors: {
     myColor,
-    white
+    white,
   },
 });
 
@@ -67,7 +70,10 @@ export default function RootLayout({
         <ColorSchemeScript defaultColorScheme="light" />
       </head>
       <body className={corben.className}>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <Toaster />
+        <MantineProvider theme={theme}>
+          <AuthProvider>{children}</AuthProvider>
+        </MantineProvider>
       </body>
     </html>
   );

@@ -2,17 +2,24 @@ import { BASE_URL } from "./base";
 
 import axios from "axios";
 
-interface iLoginResponse {
+export interface iLoginResponse {
   token: string;
   firstName: string;
   lastName: string;
   email: string;
   id: string;
+  status: string;
+  businessName?: string;
+  categoryId?: string;
 }
 
-export async function login(email: string, password: string) {
+export async function login(
+  email: string,
+  password: string,
+  route: "admin" | "manager"
+) {
   let response = await axios.post(
-    `${BASE_URL}/admin/authenticate`,
+    `${BASE_URL}/${route}/authenticate`,
     {
       email,
       password,
@@ -31,6 +38,9 @@ export async function login(email: string, password: string) {
     lastName: response.data.data.lastName,
     email: response.data.data.email,
     id: response.data.data.id,
+    status: response.data.data.status,
+    businessName: response.data.data.businessName,
+    categoryId: response.data.data.categoryId,
   };
 
   //@ts-ignore

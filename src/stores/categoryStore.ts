@@ -1,12 +1,21 @@
-import { create } from "zustand";
-import { tServerCategory } from "../components/dashboard/categories/types";
+import { IconType } from "react-icons";
 
-export type tCategoryData = {
-  categories: tServerCategory[];
-  viewIndex: number;
+export type tCategory = {
+  id: string;
+  name: string;
+  contents: {
+    title: string;
+    body: string;
+  }[];
+  color: string;
+  icon: IconType;
 };
 
-export const useCategoryData = create<tCategoryData>((set) => ({
-  categories: [],
-  viewIndex: -1,
-}));
+export type tServerCategory = {
+  id: string;
+  name: string;
+  totalItems: number;
+  tagColor: string;
+  svgIcon: string;
+  createdAt: string;
+};

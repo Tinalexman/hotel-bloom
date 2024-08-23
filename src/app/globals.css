@@ -33,7 +33,7 @@ th {
 }
 
 tr > th {
-  @apply font-[700]; 
+  @apply font-[700];
 }
 
 td {
@@ -57,8 +57,6 @@ td {
   overflow-y: auto;
 }
 
-
-
 .scrollbar-custom {
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
@@ -76,22 +74,26 @@ td {
   background-color: transparent;
 }
 
+.small-1 {
+  @apply text-sm text-monokai dark:text-white;
+}
+
 .large-1 {
-  @apply text-lg text-monokai dark:text-white
+  @apply text-lg text-monokai dark:text-white;
 }
 
 .big-1 {
-  @apply text-xl text-monokai dark:text-white
+  @apply text-xl text-monokai dark:text-white;
 }
 
 .big-2 {
-  @apply text-2xl text-monokai dark:text-white
+  @apply text-2xl text-monokai dark:text-white;
 }
 
 .big-3 {
-  @apply text-3xl text-monokai dark:text-white
+  @apply text-3xl text-monokai dark:text-white;
 }
 
 .big-4 {
-  @apply text-4xl text-monokai dark:text-white
+  @apply text-4xl text-monokai dark:text-white;
 }

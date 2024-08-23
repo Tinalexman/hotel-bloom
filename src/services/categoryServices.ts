@@ -27,8 +27,10 @@ export interface iUpdateContentPayload {
 
 export interface iAddContentPayload {
   categoryId: string;
-  title: string;
-  content: string;
+  content: {
+    title: string;
+    body: string;
+  }[];
 }
 
 export interface iGetContentsResponse {
@@ -36,6 +38,14 @@ export interface iGetContentsResponse {
   categoryId: string;
   title: string;
   content: string;
+}
+
+export interface iCreateManagerContent {
+  managerId: string;
+  content: {
+    title: string;
+    body: string;
+  }[];
 }
 
 export async function createCategory(
@@ -95,10 +105,11 @@ export async function updateCategory(
 
 export async function updateContent(
   token: string,
-  payload: iUpdateContentPayload
+  payload: iUpdateContentPayload,
+  isManager: boolean
 ) {
   const response = await axios.put(
-    `${BASE_URL}/categoryContent/updateContent`,
+    `${BASE_URL}/${isManager ? "manager" : "categoryContent"}/updateContent`,
     payload,
     {
       headers: {
@@ -111,17 +122,14 @@ export async function updateContent(
 
 export async function addContent(
   token: string,
-  payload: iAddContentPayload
+  payload: iAddContentPayload | iCreateManagerContent,
+  isManager: boolean
 ) {
   const response = await axios.post(
-    `${BASE_URL}/categoryContent/addNewContent`,
-    {
-      categoryId: payload.categoryId,
-      content: [{
-        title: payload.title,
-        body: payload.content,
-      }],
-    },
+    `${BASE_URL}/${
+      isManager ? "manager/addNewContent" : "categoryContent/addNewContent"
+    }`,
+    payload,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -139,11 +147,15 @@ export async function deleteCategory(token: string, id: string) {
   });
 }
 
-export async function deleteContents(token: string, ids: string[]) {
+export async function deleteContents(
+  token: string,
+  contentId: string[],
+  isManager: boolean
+) {
   await axios.post(
-    `${BASE_URL}/categoryContent/deleteContent`,
+    `${BASE_URL}/${isManager ? "manager" : "categoryContent"}/deleteContent`,
     {
-      contentId: ids,
+      contentId,
     },
     {
       headers: {
@@ -156,15 +168,24 @@ export async function deleteContents(token: string, ids: string[]) {
 export async function deleteCategoryWithAllContents(
   token: string,
   categoryID: string,
-  ids: string[]
+  ids: string[],
+  isManager: boolean
 ) {
-  await deleteContents(token, ids);
+  await deleteContents(token, ids, isManager);
   await deleteCategory(token, categoryID);
 }
 
-export async function getContents(token: string, id: string) {
+export async function getContents(
+  token: string,
+  id: string,
+  isManager: boolean
+) {
   const response = await axios.get(
-    `${BASE_URL}/categoryContent/retrieveContentsByCategory?categoryId=${id}`,
+    `${BASE_URL}/${
+      isManager
+        ? `manager/retrieveContents?email=${id}`
+        : `categoryContent/retrieveContentsByCategory?categoryId=${id}`
+    }`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
