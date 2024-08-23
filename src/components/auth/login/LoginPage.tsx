@@ -9,7 +9,7 @@ import LoginForm from "./LoginForm";
 
 const LoginPage = () => {
   const [page, setPage] = useState<number>(0);
-  const [type, setType] = useState<"admin" | "manager" | "">("");
+  const [type, setType] = useState<"admin" | "kitchen" | "bar" | "">("");
 
   //<a target="_blank" href="https://icons8.com/icon/AVe9YeyAXTql/hotel">Hotel</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
   //Photo by <a href="/photographer/wladek-46398">wladek</a> on <a href="/">Freeimages.com</a>
@@ -19,17 +19,25 @@ const LoginPage = () => {
   const accountTypes: {
     header: string;
     description: string;
-    route: "admin" | "manager";
+    route: "admin" | "kitchen" | "bar";
   }[] = [
     {
-      header: "Administrator",
-      description: "Has full control of the content management system.",
+      header: "Admin",
+      description:
+        "Oversees the entire hotel management system, including kitchen, bar, and financial operations.",
       route: "admin",
     },
     {
-      header: "Manager",
-      description: "Has limited control of the content management system.",
-      route: "manager",
+      header: "Kitchen Staff",
+      description:
+        "Responsible for managing kitchen operations, ingredient inventory, and meal preparation.",
+      route: "kitchen",
+    },
+    {
+      header: "Bar Staff",
+      description:
+        "Manages bar operations, drink inventory, and customer service at the bar.",
+      route: "bar",
     },
   ];
 
@@ -45,8 +53,8 @@ const LoginPage = () => {
           </div>
           <p className="dark:text-neutral-light text-neutral-dark text-md pb-8 text-center">
             {page === 0
-              ? "How would you be signing in to Sure Agro?"
-              : "Log in to your Sure Agro account"}
+              ? "How would you be signing in to HotelBloom?"
+              : "Log in to your HotelBloom account"}
           </p>
 
           {page === 0 && (
