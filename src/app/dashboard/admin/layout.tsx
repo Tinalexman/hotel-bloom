@@ -19,11 +19,15 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
       >
         <div
           className={`h-[100px]  
-          w-full z-50 py-5 px-8 shadow-custom-black dark:shadow-custom-white flex items-center justify-between`}
+          w-full z-50 py-5 px-8 shadow-custom-white flex items-center justify-between`}
         >
-          <div className="flex flex-col gap-1">
-            <h1 className="big-3 font-bold">{getTimeOfDay(currentDate)} 🥳</h1>
-            <p className="text-md font-medium">{convertDate(currentDate)}</p>
+          <div className="flex flex-col gap-1 ">
+            <h1 className="big-3 font-bold text-white">
+              {getTimeOfDay(currentDate)} 🥳
+            </h1>
+            <p className="text-md font-medium text-neutral-light">
+              {convertDate(currentDate)}
+            </p>
           </div>
 
           <div className="w-fit flex items-center gap-5">

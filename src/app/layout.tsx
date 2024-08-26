@@ -47,7 +47,7 @@ const corben = Nunito({
 export const metadata: Metadata = {
   title: {
     default: "Serviex",
-    template: "%s - Serviex",
+    template: "%s - Servexi",
   },
   description: "Hospitality made easier",
 };

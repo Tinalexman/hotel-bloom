@@ -131,10 +131,10 @@ const LoginForm = () => {
               disabled={isSubmitting}
               className={` ${
                 isInitialValid
-                  ? "bg-primary"
+                  ? "bg-secondary"
                   : isValid
-                  ? "bg-primary"
-                  : "bg-neutral-light dark:bg-neutral-dark"
+                  ? "bg-secondary"
+                  : "bg-neutral-dark"
               } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
             >
               {isSubmitting ? <Loader color="white" /> : "Login"}

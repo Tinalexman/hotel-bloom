@@ -72,19 +72,19 @@ const Performance = () => {
   }, []);
 
   return (
-    <div className="w-[30%] p-5 h-full rounded-[20px] gap-8 bg-white dark:bg-monokai shadow-custom-black dark:shadow-custom-white flex flex-col items-center">
+    <div className="w-[30%] p-5 h-full rounded-[20px] gap-8 bg-monokai shadow-custom-white flex flex-col items-center">
       <div className="flex flex-col gap-5 w-full items-start">
-        <h1 className="text-monokai dark:text-white text-3xl">Perfomance</h1>
+        <h1 className="text-white text-3xl">Perfomance</h1>
         <div className="flex justify-between items-center w-full">
           <div className="w-fit gap-3 flex items-center">
             <div className="size-4 rounded-md bg-primary" />
-            <h2 className="text-monokai dark:text-white text-md">Progress</h2>
+            <h2 className="text-white text-md">Progress</h2>
           </div>
 
           <div
             ref={performanceRef}
             onClick={() => setPerfomanceDropdown((prev) => !prev)}
-            className="w-fit gap-3 flex items-center text-monokai dark:text-slate-300 cursor-pointer relative"
+            className="w-fit gap-3 flex items-center text-slate-300 cursor-pointer relative"
           >
             <BsFillCalendar2WeekFill size={"16px"} />
             <h2 className="text-md">{filterOptions[performanceIndex]}</h2>
@@ -122,9 +122,7 @@ const Performance = () => {
         />
       </div>
 
-      <h2 className="text-md text-monokai dark:text-slate-300">
-        15% more than last week
-      </h2>
+      <h2 className="text-md text-slate-300">15% more than last week</h2>
     </div>
   );
 };

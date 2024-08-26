@@ -133,12 +133,12 @@ const DashboardNavigation = () => {
           {expanded ? (
             <TbLayoutSidebarLeftCollapseFilled
               size={"26px"}
-              className="text-monokai dark:text-white"
+              className="text-white"
             />
           ) : (
             <TbLayoutSidebarRightCollapseFilled
               size={"26px"}
-              className="text-monokai dark:text-white"
+              className="text-white"
             />
           )}
         </div>
@@ -160,8 +160,8 @@ const DashboardNavigation = () => {
                 onMouseLeave={() => setHoveredItem(-1)}
                 className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer hover:bg-primary ${
                   page === i
-                    ? "bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white dark:shadow-custom-white shadow-custom-black"
-                    : "text-monokai-faded dark:text-slate-300"
+                    ? "bg-neutral-dark text-white shadow-custom-white"
+                    : "text-slate-300"
                 }   hover:scale-105 scale-100 transition-all ease-out duration-200 relative`}
               >
                 <div style={{ fontSize: "26px" }}>
@@ -216,8 +216,8 @@ const DashboardNavigation = () => {
                 }}
                 className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer hover:bg-primary ${
                   page === i + navs.length
-                    ? "bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white dark:shadow-custom-white shadow-custom-black"
-                    : "text-monokai-faded dark:text-slate-300"
+                    ? "bg-neutral-dark text-white shadow-custom-white "
+                    : "text-slate-300"
                 }  hover:scale-105 scale-100 transition-all ease-out duration-200`}
               >
                 <div style={{ fontSize: "26px" }}>
