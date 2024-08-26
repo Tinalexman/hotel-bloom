@@ -16,7 +16,7 @@ const LoginPage = () => {
   return (
     <div className="w-[100vw] h-[100vh] overflow-hidden flex justify-between bg-monokai">
       <Slider />
-      <div className="w-[50vw] h-full flex flex-col items-center justify-center">
+      <div className="w-[50vw] h-full grid place-content-center">
         <LoginForm />
       </div>
     </div>

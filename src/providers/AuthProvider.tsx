@@ -84,7 +84,7 @@ const AuthProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
-    init();
+    // init();
   }, []);
 
   return <>{children}</>;

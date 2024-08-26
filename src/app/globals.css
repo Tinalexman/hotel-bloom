@@ -13,23 +13,23 @@ body {
 }
 
 input {
-  @apply bg-white dark:bg-monokai rounded-[10px] focus:outline-none py-2 text-[14px]  font-medium placeholder:text-neutral-light placeholder:dark:text-neutral-dark text-monokai dark:text-white shadow-custom-black dark:shadow-custom-white;
+  @apply bg-monokai rounded-[10px] focus:outline-none py-2 text-[14px]  font-medium placeholder:text-neutral-light text-white shadow-custom-white;
 }
 
 textarea {
-  @apply bg-white dark:bg-monokai rounded-[10px] focus:outline-none py-2 text-[14px] resize-none font-medium placeholder:text-neutral-light placeholder:dark:text-neutral-dark text-monokai dark:text-white shadow-custom-black dark:shadow-custom-white;
+  @apply bg-monokai rounded-[10px] focus:outline-none py-2 text-[14px] resize-none font-medium placeholder:text-neutral-light text-white shadow-custom-white;
 }
 
 thead > tr {
-  @apply bg-slate-50 dark:bg-monokai-faded border-none shadow-none;
+  @apply bg-monokai-faded border-none shadow-none;
 }
 
 tr {
-  @apply py-2 border-b-2 border-neutral-dark dark:border-neutral-light border-opacity-5 dark:border-opacity-5;
+  @apply py-2 border-b-2 border-neutral-light border-opacity-5;
 }
 
 th {
-  @apply text-monokai dark:text-white font-semibold text-[16px] text-start py-3;
+  @apply text-white font-semibold text-[16px] text-start py-3;
 }
 
 tr > th {
@@ -41,11 +41,11 @@ td {
 }
 
 ::selection {
-  @apply bg-neutral-dark dark:bg-neutral-light text-white dark:text-monokai;
+  @apply bg-neutral-light text-monokai;
 }
 
 ::-moz-selection {
-  @apply bg-neutral-dark dark:bg-neutral-light text-white dark:text-monokai;
+  @apply bg-neutral-light text-monokai;
 }
 
 .table-row-fixed-height {
@@ -75,25 +75,25 @@ td {
 }
 
 .small-1 {
-  @apply text-sm text-monokai dark:text-white;
+  @apply text-sm text-white;
 }
 
 .large-1 {
-  @apply text-lg text-monokai dark:text-white;
+  @apply text-lg text-white;
 }
 
 .big-1 {
-  @apply text-xl text-monokai dark:text-white;
+  @apply text-xl text-white;
 }
 
 .big-2 {
-  @apply text-2xl text-monokai dark:text-white;
+  @apply text-2xl text-white;
 }
 
 .big-3 {
-  @apply text-3xl text-monokai dark:text-white;
+  @apply text-3xl text-white;
 }
 
 .big-4 {
-  @apply text-4xl text-monokai dark:text-white;
+  @apply text-4xl text-white;
 }

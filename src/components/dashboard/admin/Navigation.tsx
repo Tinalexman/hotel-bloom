@@ -16,16 +16,9 @@ import {
   TbLogout2,
 } from "react-icons/tb";
 
-import { BsPeople, BsPeopleFill } from "react-icons/bs";
-
 import { HiUserGroup, HiOutlineUserGroup } from "react-icons/hi2";
 import { HiGift, HiOutlineGift } from "react-icons/hi";
-import {
-  MdLocalOffer,
-  MdOutlineLocalOffer,
-  MdOutlinePeopleOutline,
-  MdPeople,
-} from "react-icons/md";
+import { MdLocalOffer, MdOutlineLocalOffer } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import Tooltip from "@/src/components/reusable/Tooltip";
 import { SUREAGRO_KEY } from "@/src/services/base";
@@ -46,31 +39,19 @@ const DashboardNavigation = () => {
       link: "/dashboard/admin/overview",
     },
     {
-      name: "Categories",
-      active: <HiGift size={"26px"} />,
-      inactive: <HiOutlineGift size={"26px"} />,
-      link: "/dashboard/admin/categories",
-    },
-    {
-      name: "Products",
+      name: "Sections",
       active: <MdLocalOffer size={"26px"} />,
       inactive: <MdOutlineLocalOffer size={"26px"} />,
-      link: "/dashboard/admin/products",
+      link: "/dashboard/admin/sections",
     },
     {
-      name: "Admins",
-      active: <BsPeopleFill size={"26px"} />,
-      inactive: <BsPeople size={"26px"} />,
-      link: "/dashboard/admin/admins",
+      name: "Inventory",
+      active: <HiGift size={"26px"} />,
+      inactive: <HiOutlineGift size={"26px"} />,
+      link: "/dashboard/admin/inventory",
     },
     {
-      name: "Managers",
-      active: <MdPeople size={"26px"} />,
-      inactive: <MdOutlinePeopleOutline size={"26px"} />,
-      link: "/dashboard/admin/managers",
-    },
-    {
-      name: "Partners",
+      name: "Staff",
       active: <HiUserGroup size={"26px"} />,
       inactive: <HiOutlineUserGroup size={"26px"} />,
       link: "/dashboard/admin/partners",
@@ -141,11 +122,8 @@ const DashboardNavigation = () => {
           <Image
             src={Logo}
             alt="logo"
-            className="w-[96px] h-auto object-cover"
+            className="w-[300px] h-auto object-cover"
           />
-          <h2 className="text-monokai dark:text-white text-2xl font-bold">
-            Servexi
-          </h2>
         </div>
 
         <div

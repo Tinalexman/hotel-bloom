@@ -42,53 +42,21 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             </p>
           </div>
 
-          <div className="w-fit flex items-center gap-5">
-            <div className="w-[250px] relative">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full pl-10 pr-4"
-                value={search}
-                onChange={(e) => {
-                  useDashboardData.setState({
-                    searchFilter: e.target.value,
-                  });
-                }}
-              />
-              <FiSearch
-                className="text-contrast-base absolute top-[10px] left-2"
-                size={"20px"}
-              />
-            </div>
-            <div className="size-10 rounded-[10px] shadow-custom-black dark:shadow-custom-white cursor-pointer flex justify-center items-center bg-white dark:bg-monokai">
-              <RiNotification2Line
-                size={"26px"}
-                className="text-monokai dark:text-white"
-              />
-            </div>
-
-            <div className="block dark:hidden">
-              <FaMoon
-                onClick={() => setColorScheme("dark")}
-                size={"22px"}
-                className="text-monokai cursor-pointer"
-              />
-            </div>
-
-            <div className="hidden dark:block">
-              <FaSun
-                onClick={() => setColorScheme("light")}
-                size={"22px"}
-                className="text-white cursor-pointer"
-              />
-            </div>
-
-            <Image
-              src={`https://gravatar.com/avatar/${id}?s=400&d=robohash&r=x`}
-              alt="profile-picture"
-              width={50}
-              height={50}
-              className="object-cover size-10 rounded-[10px] dark:shadow-custom-white shadow-custom-black"
+          <div className="w-[250px] relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full pl-10 pr-4"
+              value={search}
+              onChange={(e) => {
+                useDashboardData.setState({
+                  searchFilter: e.target.value,
+                });
+              }}
+            />
+            <FiSearch
+              className="text-contrast-base absolute top-[10px] left-2"
+              size={"20px"}
             />
           </div>
         </div>

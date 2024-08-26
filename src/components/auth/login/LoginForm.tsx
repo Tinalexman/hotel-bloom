@@ -57,8 +57,21 @@ const LoginForm = () => {
         isInitialValid,
         isValid,
       }) => (
-        <Form onSubmit={handleSubmit} className="w-full" method="POST">
-          <div className="mb-4 flex flex-col gap-2 w-full relative">
+        <Form
+          onSubmit={handleSubmit}
+          className="w-[400px] flex flex-col"
+          method="POST"
+        >
+          <div className="flex flex-col w-full">
+            <h1 className="font-bold text-white text-[32px] leading-[42px]">
+              Welcome Back!
+            </h1>
+            <p className="text-neutral-light text-lg">
+              Log in to your Serviex account
+            </p>
+          </div>
+
+          <div className=" mt-6 mb-4 flex flex-col gap-2 w-full relative">
             <p className="text-md text-neutral-dark dark:text-neutral-light">
               Email Address
             </p>
