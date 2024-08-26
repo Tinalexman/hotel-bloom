@@ -46,10 +46,10 @@ const corben = Nunito({
 
 export const metadata: Metadata = {
   title: {
-    default: "Sure Agro",
-    template: "%s - Sure Agro",
+    default: "Serviex",
+    template: "%s - Serviex",
   },
-  description: "Your one-stop shop for agriculture",
+  description: "Hospitality made easier",
 };
 
 const theme = createTheme({
@@ -67,7 +67,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <ColorSchemeScript defaultColorScheme="light" />
+        <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body className={corben.className}>
         <Toaster />

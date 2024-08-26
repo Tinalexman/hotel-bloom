@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ['class', '[data-mantine-color-scheme="dark"]'],
+  darkMode: ["class", '[data-mantine-color-scheme="dark"]'],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -15,17 +15,12 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        primary: "#39E058",
-        "primary-80": "rgba(65, 240, 100, 1)",
-        "primary-20": "rgba(65, 240, 100, 0.2)",
-        "primary-shade-1": "#A8DF4C",
-        "primary-shade-2": "#E5DC5F",
-        "primary-shade-3": "#FFDA83",
-        secondary: "#1D4875",
-        "secondary-80": "rgba(40, 80, 130, 1)",
-        tertiary: "#DEF2FF",
+        primary: "#A419A4",
+        secondary: "#5A0870",
+        tertiary: "#360056",
         neutral: "#647899",
         monokai: "#131313",
+        offWhite: "#FCFCFC",
         "monokai-faded": "#161616",
         "neutral-light": "#E5E5E5",
         "neutral-dark": "#202020",

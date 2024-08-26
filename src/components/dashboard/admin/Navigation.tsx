@@ -144,7 +144,7 @@ const DashboardNavigation = () => {
             className="w-[96px] h-auto object-cover"
           />
           <h2 className="text-monokai dark:text-white text-2xl font-bold">
-            SureAgro
+            Servexi
           </h2>
         </div>
 

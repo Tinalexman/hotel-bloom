@@ -13,7 +13,7 @@ interface iManualLoginPayload {
   password: string;
 }
 
-const LoginForm: FC<{ type: "admin" | "manager" }> = ({ type }) => {
+const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { fn } = useLogin();
 
@@ -43,24 +43,6 @@ const LoginForm: FC<{ type: "admin" | "manager" }> = ({ type }) => {
       }}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
-        fn(
-          {
-            email: values.email,
-            password: values.password,
-            route: type,
-          },
-          () => {
-            setSubmitting(false);
-            window.location.replace(
-              `/dashboard/${
-                type === "admin" ? "admin/overview" : "manager/contents"
-              }`
-            );
-          },
-          () => {
-            setSubmitting(false);
-          }
-        );
       }}
       validateOnMount={true}
     >

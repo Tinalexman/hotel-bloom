@@ -8,6 +8,10 @@ import Financials1 from "@/public/Financials.jpg";
 
 import Image from "next/image";
 
+//Photo by <a href="/photographer/wladek-46398">wladek</a> on <a href="/">Freeimages.com</a>
+//Photo by <a href="/photographer/a_kartha-39978">a_kartha</a> on <a href="/">Freeimages.com</a>
+//Photo by <a href="/photographer/a_kartha-39978">a_kartha</a> on <a href="/">Freeimages.com</a>
+
 const HotelSlider = () => {
   const slides: {
     image: string | StaticImageData;
