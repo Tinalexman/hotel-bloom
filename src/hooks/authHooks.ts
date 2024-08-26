@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { login } from "../services/authServices";
-import { SUREAGRO_KEY } from "../services/base";
+import { SERVEXI_KEY } from "../services/base";
 import toast from "react-hot-toast";
 
 export const useLogin = () => {
@@ -19,7 +19,7 @@ export const useLogin = () => {
     try {
       const data = await login(payload.email, payload.password, payload.route);
       console.log(data);
-      window.localStorage.setItem(SUREAGRO_KEY, JSON.stringify(data));
+      window.localStorage.setItem(SERVEXI_KEY, JSON.stringify(data));
       toast.success("Welcome to Sure Agro");
       setSuccess(true);
       setLoading(false);

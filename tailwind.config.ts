@@ -30,7 +30,6 @@ const config: Config = {
         "error-20": "rgba(255, 0, 0, 0.2)",
       },
       boxShadow: {
-        "custom-black": "0 0 5px rgba(0, 0, 0, 0.1)",
         "custom-white": "0 0 5px rgba(255, 255, 255, 0.1)",
       },
     },

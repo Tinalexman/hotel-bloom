@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { SUREAGRO_KEY } from "../services/base";
+import { SERVEXI_KEY } from "../services/base";
 import { jwtDecode } from "jwt-decode";
 
 export default function Home() {
   const router = useRouter();
   useEffect(() => {
-    let data = window.localStorage.getItem(SUREAGRO_KEY);
+    let data = window.localStorage.getItem(SERVEXI_KEY);
     if (data === null) {
       router.push("/auth/login");
       return;

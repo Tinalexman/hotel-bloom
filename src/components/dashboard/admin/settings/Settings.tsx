@@ -8,9 +8,7 @@ const Settings = () => {
     <div className="w-full h-full flex flex-col mt-10 gap-10">
       <div className="flex flex-col gap-1">
         <h1 className="big-4">Settings</h1>
-        <p className="text-md text-monokai dark:text-white">
-          Edit your profile
-        </p>
+        <p className="text-md">Edit your profile</p>
       </div>
 
       <Details />

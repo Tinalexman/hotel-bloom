@@ -14,16 +14,16 @@ import {
 import AuthProvider from "@/src/providers/AuthProvider";
 
 const myColor: MantineColorsTuple = [
-  "#e5ffea",
-  "#d2fad9",
-  "#a7f3b4",
-  "#78ea8d",
-  "#51e46c",
-  "#37e057",
-  "#26de4b",
-  "#16c43b",
-  "#03af32",
-  "#009726",
+  "#ffecff",
+  "#f9d6f9",
+  "#f1aaf0",
+  "#e97be9",
+  "#e254e1",
+  "#de3cdd",
+  "#dc2fdc",
+  "#c422c4",
+  "#af1baf",
+  "#980e99",
 ];
 
 const white: MantineColorsTuple = [

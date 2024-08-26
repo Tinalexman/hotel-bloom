@@ -3,14 +3,6 @@ import { useState } from "react";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import { useCurrentAdminStore } from "@/src/stores/adminStore";
 import toast from "react-hot-toast";
-import {
-  updateAdminData,
-  updateAdminPassword,
-} from "../services/adminServices";
-import {
-  updateManagerData,
-  updateManagerPassword,
-} from "../services/managerServices";
 
 export const useUpdateAdminData = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,7 +20,7 @@ export const useUpdateAdminData = () => {
     setLoading(true);
 
     try {
-      await updateAdminData(token, email, firstName, lastName);
+      // await updateAdminData(token, email, firstName, lastName);
       setSuccess(true);
       setLoading(false);
       toast.success("Details updated successfully");
@@ -66,7 +58,7 @@ export const useUpdateAdminPassword = () => {
     setLoading(true);
 
     try {
-      await updateAdminPassword(token, email, currentPassword, newPassword);
+      // await updateAdminPassword(token, email, currentPassword, newPassword);
       setSuccess(true);
       setLoading(false);
       toast.success("Password updated successfully");
@@ -105,7 +97,7 @@ export const useUpdateManagerData = () => {
     setLoading(true);
 
     try {
-      await updateManagerData(token, email, firstName, lastName, businessName);
+      // await updateManagerData(token, email, firstName, lastName, businessName);
       setSuccess(true);
       setLoading(false);
       toast.success("Details updated successfully");
@@ -143,7 +135,7 @@ export const useUpdateManagerPassword = () => {
     setLoading(true);
 
     try {
-      await updateManagerPassword(token, email, currentPassword, newPassword);
+      // await updateManagerPassword(token, email, currentPassword, newPassword);
       setSuccess(true);
       setLoading(false);
       toast.success("Password updated successfully");

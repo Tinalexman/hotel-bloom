@@ -1,6 +1,5 @@
 "use client";
-import { useUpdateAdminPassword } from "@/src/hooks/settingsHooks";
-import { useCurrentAdminStore } from "@/src/stores/adminStore";
+
 import { Loader } from "@mantine/core";
 import React, { useState } from "react";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
@@ -12,8 +11,6 @@ const Passwords = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
-
-  const { loading, update } = useUpdateAdminPassword();
 
   return (
     <div className="flex flex-col">
@@ -83,12 +80,13 @@ const Passwords = () => {
 
       <button
         onClick={() => {
-          const email = useCurrentAdminStore.getState().email;
-          update(email, currentPassword, newPassword);
+          // const email = useCurrentAdminStore.getState().email;
+          // update(email, currentPassword, newPassword);
         }}
         className="rounded-[10px] w-[120px] mt-5 font-medium flex items-center gap-2 justify-center text-lg bg-primary text-white px-5 py-2 transition-colors duration-300 ease-out"
       >
-        {loading ? <Loader color="white" /> : "Save"}
+        {/* {loading ? <Loader color="white" /> : "Save"} */}
+        Save
       </button>
     </div>
   );

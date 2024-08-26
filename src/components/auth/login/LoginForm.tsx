@@ -43,6 +43,7 @@ const LoginForm = () => {
       }}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
+        window.location.assign("/dashboard/admin/overview");
       }}
       validateOnMount={true}
     >

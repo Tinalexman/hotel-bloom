@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -21,7 +21,7 @@ import { HiGift, HiOutlineGift } from "react-icons/hi";
 import { MdLocalOffer, MdOutlineLocalOffer } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import Tooltip from "@/src/components/reusable/Tooltip";
-import { SUREAGRO_KEY } from "@/src/services/base";
+import { SERVEXI_KEY } from "@/src/services/base";
 
 export interface iNavigationItem {
   name: string;
@@ -54,7 +54,7 @@ const DashboardNavigation = () => {
       name: "Staff",
       active: <HiUserGroup size={"26px"} />,
       inactive: <HiOutlineUserGroup size={"26px"} />,
-      link: "/dashboard/admin/partners",
+      link: "/dashboard/admin/staff",
     },
     {
       name: "Settings",
@@ -82,18 +82,14 @@ const DashboardNavigation = () => {
     switch (current) {
       case "overview":
         return 0;
-      case "categories":
+      case "sections":
         return 1;
-      case "products":
+      case "inventory":
         return 2;
-      case "admins":
+      case "staff":
         return 3;
-      case "managers":
-        return 4;
-      case "partners":
-        return 5;
       case "settings":
-        return 6;
+        return 4;
     }
 
     return -1;
@@ -103,7 +99,7 @@ const DashboardNavigation = () => {
   const expanded = useDashboardData((state) => state.expanded);
 
   const logout = () => {
-    window.localStorage.removeItem(SUREAGRO_KEY);
+    window.localStorage.removeItem(SERVEXI_KEY);
     window.location.replace("/auth/login");
   };
 
@@ -111,7 +107,7 @@ const DashboardNavigation = () => {
     <div
       className={`${
         expanded ? "w-[300px] pl-5" : "w-[70px] px-3"
-      } h-[100vh] z-10 pt-5 duration-300 transition-all ease-in flex flex-col gap-8 items-center dark:shadow-custom-white shadow-custom-black bg-white dark:bg-monokai`}
+      } h-[100vh] z-10 pt-5 duration-300 transition-all ease-in flex flex-col gap-8 items-center shadow-custom-white bg-monokai`}
     >
       <div className="relative w-full flex justify-center pt-10">
         <div

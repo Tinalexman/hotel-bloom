@@ -1,11 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import { SUREAGRO_KEY } from "../services/base";
+import { SERVEXI_KEY } from "../services/base";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import { useCurrentAdminStore } from "../stores/adminStore";
-import { useCurrentManagerStore } from "../stores/managerStore";
+// import { useCurrentManagerStore } from "../stores/userStore";
 
 interface iAdmin {
   token: string;
@@ -32,7 +32,7 @@ const AuthProvider = ({ children }: any) => {
 
   let init = async () => {
     let route: string = window.location.pathname;
-    let data = window.localStorage.getItem(SUREAGRO_KEY);
+    let data = window.localStorage.getItem(SERVEXI_KEY);
 
     const isProtectedRoute: boolean =
       route.startsWith("/dashboard/admin") ||
@@ -61,16 +61,16 @@ const AuthProvider = ({ children }: any) => {
 
     if (route.startsWith("/dashboard/manager")) {
       const mng = user as iManager;
-      useCurrentManagerStore.setState({
-        email: mng.email,
-        active: mng.status === "active",
-        firstName: mng.firstName,
-        lastName: mng.lastName,
-        id: mng.id,
-        businessName: mng.businessName,
-        categoryId: mng.categoryId,
-        token: mng.token,
-      });
+      // useCurrentManagerStore.setState({
+      //   email: mng.email,
+      //   active: mng.status === "active",
+      //   firstName: mng.firstName,
+      //   lastName: mng.lastName,
+      //   id: mng.id,
+      //   businessName: mng.businessName,
+      //   categoryId: mng.categoryId,
+      //   token: mng.token,
+      // });
     } else if (route.startsWith("/dashboard/admin")) {
       useCurrentAdminStore.setState({
         email: user.email,

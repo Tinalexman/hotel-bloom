@@ -24,7 +24,7 @@ export const useCurrentAdminStore = create<tAdmin>()(
       token: "",
     }),
     {
-      name: "sau",
+      name: "svx",
     }
   )
 );

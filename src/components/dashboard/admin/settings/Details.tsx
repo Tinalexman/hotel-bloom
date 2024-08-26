@@ -5,7 +5,6 @@ import { useCurrentAdminStore } from "@/src/stores/adminStore";
 
 import { CgProfile } from "react-icons/cg";
 import { Loader } from "@mantine/core";
-import { useUpdateAdminData } from "@/src/hooks/settingsHooks";
 
 const Details = () => {
   const [firstName, setFirstName] = useState<string>(
@@ -15,7 +14,7 @@ const Details = () => {
     useCurrentAdminStore((state) => state.lastName)
   );
 
-  const { loading, update } = useUpdateAdminData();
+  // const { loading, update } = useUpdateAdminData();
 
   return (
     <div className="flex flex-col">
@@ -55,17 +54,18 @@ const Details = () => {
       </div>
       <button
         onClick={() => {
-          const email = useCurrentAdminStore.getState().email;
-          update(email, firstName, lastName, () => {
-            useCurrentAdminStore.setState({
-              firstName: firstName,
-              lastName: lastName,
-            });
-          });
+          // const email = useCurrentAdminStore.getState().email;
+          // update(email, firstName, lastName, () => {
+          //   useCurrentAdminStore.setState({
+          //     firstName: firstName,
+          //     lastName: lastName,
+          //   });
+          // });
         }}
         className="rounded-[10px] w-[120px] mt-5 font-medium flex items-center gap-2 justify-center text-lg bg-primary text-white px-5 py-2 transition-colors duration-300 ease-out"
       >
-        {loading ? <Loader color="white" /> : "Save"}
+        {/* {loading ? <Loader color="white" /> : "Save"} */}
+        Save
       </button>
     </div>
   );

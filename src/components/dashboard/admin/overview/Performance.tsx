@@ -105,7 +105,7 @@ const Performance = () => {
         </div>
       </div>
 
-      <div style={{ width: 180, height: 180 }} className="dark:block hidden">
+      <div style={{ width: 180, height: 180 }}>
         <CircularProgressbar
           value={percentage}
           text={`${percentage}%`}
@@ -115,28 +115,13 @@ const Performance = () => {
             strokeLinecap: "round",
             textSize: "16px",
             pathTransitionDuration: 0.5,
-            pathColor: `#39E058`,
+            pathColor: `#A419A4`,
             textColor: "#FFFFFF",
             trailColor: "#202020",
           })}
         />
       </div>
-      <div style={{ width: 180, height: 180 }} className="dark:hidden block">
-        <CircularProgressbar
-          value={percentage}
-          text={`${percentage}%`}
-          strokeWidth={10}
-          styles={buildStyles({
-            rotation: 0.5,
-            strokeLinecap: "round",
-            textSize: "16px",
-            pathTransitionDuration: 0.5,
-            pathColor: `#39E058`,
-            textColor: "#131313",
-            trailColor: "#E5E5E5",
-          })}
-        />
-      </div>
+
       <h2 className="text-md text-monokai dark:text-slate-300">
         15% more than last week
       </h2>
