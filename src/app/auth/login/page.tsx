@@ -1,10 +1,8 @@
-import LoginPage from "@/src/components/auth/login/LoginPage";
+import Login from "@/src/components/auth/login/Login";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Login",
 };
 
-export default function Login() {
-  return <LoginPage />;
-}
+export default Login;

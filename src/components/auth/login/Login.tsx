@@ -68,14 +68,12 @@ const LoginForm = () => {
               Welcome Back!
             </h1>
             <p className="text-neutral-light text-lg">
-              Log in to your Serviex account
+              Log in to your Servexi account
             </p>
           </div>
 
           <div className=" mt-6 mb-4 flex flex-col gap-2 w-full relative">
-            <p className="text-md text-neutral-dark dark:text-neutral-light">
-              Email Address
-            </p>
+            <p className="text-md text-neutral-light">Email Address</p>
             <input
               type="email"
               value={values.email}
@@ -94,9 +92,7 @@ const LoginForm = () => {
             </p>
           </div>
           <div className="mb-4 flex flex-col gap-2 w-full relative">
-            <p className="text-md text-neutral-dark dark:text-neutral-light">
-              Password
-            </p>
+            <p className="text-md text-neutral-light">Password</p>
             <input
               type={showPassword ? "text" : "password"}
               value={values.password}

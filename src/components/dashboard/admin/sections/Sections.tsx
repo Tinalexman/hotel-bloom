@@ -65,7 +65,7 @@ const Sections = () => {
           <div className="w-full h-[calc(100vh-100px)] flex flex-col justify-center gap-5 items-center">
             <Image
               src={Void}
-              alt="no categories"
+              alt="no sections"
               className="size-[200px] object-cover"
             />
             <p className="large-1 text-neutral-dark dark:text-neutral-light">
