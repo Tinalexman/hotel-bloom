@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FC, useState } from "react";
 
 import { useLogin } from "@/src/hooks/authHooks";
@@ -7,10 +9,13 @@ import { Form, Formik } from "formik";
 import { IoMail } from "react-icons/io5";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import Link from "next/link";
 
-interface iManualLoginPayload {
+interface iManualRegisterPayload {
+  name: string;
   email: string;
   password: string;
+  username: string;
 }
 
 const Register = () => {
@@ -22,9 +27,11 @@ const Register = () => {
       initialValues={{
         email: "",
         password: "",
+        name: "",
+        username: "",
       }}
       validate={(values) => {
-        const errors: Partial<iManualLoginPayload> = {};
+        const errors: Partial<iManualRegisterPayload> = {};
         if (!values.email) {
           errors.email = "Required";
         } else if (
@@ -60,7 +67,7 @@ const Register = () => {
       }) => (
         <Form
           onSubmit={handleSubmit}
-          className="w-[400px] flex flex-col"
+          className="w-[420px] px-2.5 flex flex-col overflow-y-scroll scrollbar-custom"
           method="POST"
         >
           <div className="flex flex-col w-full">
@@ -73,6 +80,26 @@ const Register = () => {
           </div>
 
           <div className=" mt-6 mb-4 flex flex-col gap-2 w-full relative">
+            <p className="text-md text-neutral-light">Company Name</p>
+            <input
+              type="text"
+              value={values.name}
+              name="name"
+              placeholder="Enter your company name"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="px-10 w-full"
+            />
+            <IoMail
+              className="text-contrast-base absolute top-[42px] left-2"
+              size={"22px"}
+            />
+            <p className="text-error">
+              {errors.name && touched.name && errors.name}
+            </p>
+          </div>
+
+          <div className="mb-4 flex flex-col gap-2 w-full relative">
             <p className="text-md text-neutral-light">Email Address</p>
             <input
               type="email"
@@ -89,6 +116,25 @@ const Register = () => {
             />
             <p className="text-error">
               {errors.email && touched.email && errors.email}
+            </p>
+          </div>
+          <div className=" mt-6 mb-4 flex flex-col gap-2 w-full relative">
+            <p className="text-md text-neutral-light">Username</p>
+            <input
+              type="text"
+              value={values.username}
+              name="email"
+              placeholder="Enter your username"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="px-10 w-full"
+            />
+            <IoMail
+              className="text-contrast-base absolute top-[42px] left-2"
+              size={"22px"}
+            />
+            <p className="text-error">
+              {errors.username && touched.username && errors.username}
             </p>
           </div>
           <div className="mb-4 flex flex-col gap-2 w-full relative">
@@ -136,6 +182,16 @@ const Register = () => {
               {isSubmitting ? <Loader color="white" /> : "Register"}
             </button>
           </div>
+
+          <p className="text-neutral-light text-center mt-2">
+            Already have an account?{" "}
+            <Link
+              href="/auth/login"
+              className="text-secondary font-bold underline"
+            >
+              Login
+            </Link>
+          </p>
         </Form>
       )}
     </Formik>

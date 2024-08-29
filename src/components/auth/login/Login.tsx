@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FC, useState } from "react";
 
 import { useLogin } from "@/src/hooks/authHooks";
@@ -7,9 +9,10 @@ import { Form, Formik } from "formik";
 import { IoMail } from "react-icons/io5";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import Link from "next/link";
 
 interface iManualLoginPayload {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -20,17 +23,13 @@ const LoginForm = () => {
   return (
     <Formik
       initialValues={{
-        email: "",
+        username: "",
         password: "",
       }}
       validate={(values) => {
         const errors: Partial<iManualLoginPayload> = {};
-        if (!values.email) {
-          errors.email = "Required";
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = "Invalid email address";
+        if (!values.username) {
+          errors.username = "Required";
         }
 
         if (!values.password) {
@@ -73,12 +72,12 @@ const LoginForm = () => {
           </div>
 
           <div className=" mt-6 mb-4 flex flex-col gap-2 w-full relative">
-            <p className="text-md text-neutral-light">Email Address</p>
+            <p className="text-md text-neutral-light">Username</p>
             <input
-              type="email"
-              value={values.email}
+              type="text"
+              value={values.username}
               name="email"
-              placeholder="Enter your email address"
+              placeholder="Enter your username"
               onChange={handleChange}
               onBlur={handleBlur}
               className="px-10 w-full"
@@ -88,7 +87,7 @@ const LoginForm = () => {
               size={"22px"}
             />
             <p className="text-error">
-              {errors.email && touched.email && errors.email}
+              {errors.username && touched.username && errors.username}
             </p>
           </div>
           <div className="mb-4 flex flex-col gap-2 w-full relative">
@@ -135,6 +134,15 @@ const LoginForm = () => {
             >
               {isSubmitting ? <Loader color="white" /> : "Login"}
             </button>
+            <p className="text-neutral-light text-center mt-2">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/auth/register"
+                className="text-secondary font-bold underline"
+              >
+                Register
+              </Link>
+            </p>
           </div>
         </Form>
       )}
