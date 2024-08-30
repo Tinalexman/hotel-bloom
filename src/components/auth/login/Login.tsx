@@ -76,7 +76,7 @@ const LoginForm = () => {
             <input
               type="text"
               value={values.username}
-              name="email"
+              name="username"
               placeholder="Enter your username"
               onChange={handleChange}
               onBlur={handleBlur}
