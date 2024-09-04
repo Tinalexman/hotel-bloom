@@ -9,7 +9,7 @@ const LoginPage: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className="w-[100vw] h-[100vh] overflow-hidden flex justify-between bg-monokai">
       <Slider />
-      <div className="w-[50vw] h-full grid place-content-center">
+      <div className="w-[50vw] h-full grid place-content-center overflow-y-scroll scrollbar-custom">
         {children}
       </div>
     </div>

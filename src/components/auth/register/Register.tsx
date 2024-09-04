@@ -1,13 +1,15 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 
 import { useLogin } from "@/src/hooks/authHooks";
 
 import { Loader } from "@mantine/core";
 import { Form, Formik } from "formik";
 import { IoMail } from "react-icons/io5";
-import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { FaRegClock } from "react-icons/fa";
+import { MdVisibility, MdVisibilityOff, MdMapsHomeWork } from "react-icons/md";
+import { FaPerson } from "react-icons/fa6";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Link from "next/link";
 
@@ -15,6 +17,7 @@ interface iManualRegisterPayload {
   name: string;
   email: string;
   password: string;
+  hours: string;
   username: string;
 }
 
@@ -29,6 +32,7 @@ const Register = () => {
         password: "",
         name: "",
         username: "",
+        hours: "",
       }}
       validate={(values) => {
         const errors: Partial<iManualRegisterPayload> = {};
@@ -79,8 +83,7 @@ const Register = () => {
             </p>
           </div>
 
-          <div className=" mt-6 mb-4 flex flex-col gap-2 w-full relative">
-            <p className="text-md text-neutral-light">Company Name</p>
+          <div className=" mt-6 mb-4 flex flex-col gap-1 w-full relative">
             <input
               type="text"
               value={values.name}
@@ -90,17 +93,34 @@ const Register = () => {
               onBlur={handleBlur}
               className="px-10 w-full"
             />
-            <IoMail
-              className="text-contrast-base absolute top-[42px] left-2"
+            <MdMapsHomeWork
+              className="text-contrast-base absolute top-2.5 left-2"
               size={"22px"}
             />
             <p className="text-error">
               {errors.name && touched.name && errors.name}
             </p>
           </div>
+          <div className=" mb-4 flex flex-col gap-1 w-full relative">
+            <input
+              type="text"
+              value={values.hours}
+              name="hours"
+              placeholder="Enter your shift hours (default is 12)"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="px-10 w-full"
+            />
+            <FaRegClock
+              className="text-contrast-base absolute top-2.5 left-2"
+              size={"22px"}
+            />
+            <p className="text-error">
+              {errors.hours && touched.hours && errors.hours}
+            </p>
+          </div>
 
-          <div className="mb-4 flex flex-col gap-2 w-full relative">
-            <p className="text-md text-neutral-light">Email Address</p>
+          <div className="mb-4 flex flex-col gap-1 w-full relative">
             <input
               type="email"
               value={values.email}
@@ -111,15 +131,14 @@ const Register = () => {
               className="px-10 w-full"
             />
             <IoMail
-              className="text-contrast-base absolute top-[42px] left-2"
+              className="text-contrast-base absolute top-2.5 left-2"
               size={"22px"}
             />
             <p className="text-error">
               {errors.email && touched.email && errors.email}
             </p>
           </div>
-          <div className=" mt-6 mb-4 flex flex-col gap-2 w-full relative">
-            <p className="text-md text-neutral-light">Username</p>
+          <div className="  mb-4 flex flex-col gap-1 w-full relative">
             <input
               type="text"
               value={values.username}
@@ -129,16 +148,15 @@ const Register = () => {
               onBlur={handleBlur}
               className="px-10 w-full"
             />
-            <IoMail
-              className="text-contrast-base absolute top-[42px] left-2"
+            <FaPerson
+              className="text-contrast-base absolute top-2.5 left-2"
               size={"22px"}
             />
             <p className="text-error">
               {errors.username && touched.username && errors.username}
             </p>
           </div>
-          <div className="mb-4 flex flex-col gap-2 w-full relative">
-            <p className="text-md text-neutral-light">Password</p>
+          <div className="mb-4 flex flex-col gap-1 w-full relative">
             <input
               type={showPassword ? "text" : "password"}
               value={values.password}
@@ -149,12 +167,12 @@ const Register = () => {
               className="px-10 w-full"
             />
             <RiLockPasswordFill
-              className="text-contrast-base absolute top-[42px] left-2"
+              className="text-contrast-base absolute top-2.5 left-2"
               size={"22px"}
             />
             <div
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-[42px] right-2 text-contrast-base cursor-pointer"
+              className="absolute top-2.5 right-2 text-contrast-base cursor-pointer"
             >
               {showPassword ? (
                 <MdVisibilityOff size={"22px"} />

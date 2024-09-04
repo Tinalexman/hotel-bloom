@@ -10,14 +10,13 @@ import Image from "next/image";
 import Void from "@/public/Void.png";
 import { useDisclosure } from "@mantine/hooks";
 import { useDashboardData } from "@/src/stores/dashboardStore";
+import AddStaff from "./AddStaff";
 interface iViewAdminData {
   index: number;
   activate: boolean;
 }
 
 const Staff = () => {
-  // const { managers, loading, totalCount, totalPages } = useGetAllManagers();
-
   const [staff, setStaff] = useState<any[]>([]);
 
   const [info, setInfo] = useState<iViewAdminData>({
@@ -25,28 +24,7 @@ const Staff = () => {
     activate: false,
   });
 
-  const [
-    openedManagerStatusModal,
-    { open: openManagerStatusModal, close: closeManagerStatusModal },
-  ] = useDisclosure(false);
-
-  const [
-    openedAddManagerModal,
-    { open: openAddManagerModal, close: closeAddManagerModal },
-  ] = useDisclosure(false);
-
-  const totalCount = 0;
-
-  const handlePageClick = (event: any) => {
-    const itemsPerPage = 10;
-    const length = totalCount;
-    const newOffset = (event.selected * itemsPerPage) % length;
-  };
-
-  const openStatusModal = (index: number, activate: boolean) => {
-    setInfo({ index, activate });
-    openManagerStatusModal();
-  };
+  const [addStaff, shouldAddStaff] = useState<boolean>(false);
 
   const loading = false;
 
@@ -65,6 +43,7 @@ const Staff = () => {
       {openedAddManagerModal && (
         <AddManagerModal close={closeAddManagerModal} />
       )} */}
+      {addStaff && <AddStaff onClose={() => shouldAddStaff(false)} />}
 
       <div className="w-full h-full pt-10 flex flex-col">
         <div className="flex h-[100px] justify-between items-center">
@@ -85,7 +64,7 @@ const Staff = () => {
               Refresh
             </button>
             <button
-              onClick={openAddManagerModal}
+              onClick={() => shouldAddStaff(true)}
               className="rounded-[10px] font-medium flex items-center gap-2 justify-center text-lg bg-primary text-monokai dark:text-white px-5 py-2"
             >
               <IoAdd size={"26px"} />

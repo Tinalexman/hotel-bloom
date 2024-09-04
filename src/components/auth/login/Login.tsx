@@ -6,7 +6,7 @@ import { useLogin } from "@/src/hooks/authHooks";
 
 import { Loader } from "@mantine/core";
 import { Form, Formik } from "formik";
-import { IoMail } from "react-icons/io5";
+import { FaPerson } from "react-icons/fa6";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Link from "next/link";
@@ -71,27 +71,25 @@ const LoginForm = () => {
             </p>
           </div>
 
-          <div className=" mt-6 mb-4 flex flex-col gap-2 w-full relative">
-            <p className="text-md text-neutral-light">Username</p>
+          <div className=" mt-6 mb-4 flex flex-col gap-1 w-full relative">
             <input
               type="text"
               value={values.username}
-              name="email"
+              name="username"
               placeholder="Enter your username"
               onChange={handleChange}
               onBlur={handleBlur}
               className="px-10 w-full"
             />
-            <IoMail
-              className="text-contrast-base absolute top-[42px] left-2"
+            <FaPerson
+              className="text-contrast-base absolute top-2.5 left-2"
               size={"22px"}
             />
             <p className="text-error">
               {errors.username && touched.username && errors.username}
             </p>
           </div>
-          <div className="mb-4 flex flex-col gap-2 w-full relative">
-            <p className="text-md text-neutral-light">Password</p>
+          <div className="mb-4 flex flex-col gap-1 w-full relative">
             <input
               type={showPassword ? "text" : "password"}
               value={values.password}
@@ -102,12 +100,12 @@ const LoginForm = () => {
               className="px-10 w-full"
             />
             <RiLockPasswordFill
-              className="text-contrast-base absolute top-[42px] left-2"
+              className="text-contrast-base absolute top-2.5 left-2"
               size={"22px"}
             />
             <div
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-[42px] right-2 text-contrast-base cursor-pointer"
+              className="absolute top-2.5 right-2 text-contrast-base cursor-pointer"
             >
               {showPassword ? (
                 <MdVisibilityOff size={"22px"} />

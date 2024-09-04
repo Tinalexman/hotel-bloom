@@ -36,31 +36,31 @@ const DashboardNavigation = () => {
       name: "Overview",
       active: <TbLayoutDashboardFilled size={"26px"} />,
       inactive: <TbLayoutDashboard size={"26px"} />,
-      link: "/dashboard/admin/overview",
+      link: "/dashboard/overview",
     },
     {
       name: "Sections",
       active: <MdLocalOffer size={"26px"} />,
       inactive: <MdOutlineLocalOffer size={"26px"} />,
-      link: "/dashboard/admin/sections",
+      link: "/dashboard/sections",
     },
     {
       name: "Inventory",
       active: <HiGift size={"26px"} />,
       inactive: <HiOutlineGift size={"26px"} />,
-      link: "/dashboard/admin/inventory",
+      link: "/dashboard/inventory",
     },
     {
       name: "Staff",
       active: <HiUserGroup size={"26px"} />,
       inactive: <HiOutlineUserGroup size={"26px"} />,
-      link: "/dashboard/admin/staff",
+      link: "/dashboard/staff",
     },
     {
       name: "Settings",
       active: <TbSettingsFilled size={"26px"} />,
       inactive: <TbSettings size={"26px"} />,
-      link: "/dashboard/admin/settings",
+      link: "/dashboard/settings",
     },
   ];
 
@@ -78,7 +78,7 @@ const DashboardNavigation = () => {
   const pathName = usePathname();
 
   const determineIndex = () => {
-    const current = pathName.split("/")[3];
+    const current = pathName.split("/")[2];
     switch (current) {
       case "overview":
         return 0;

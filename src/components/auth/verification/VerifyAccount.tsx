@@ -54,9 +54,9 @@ const Content = () => {
         </div>
       ) : (
         <div className="w-full flex justify-center">
-          <div className="flex flex-col w-[450px] md:w-full md:px-5 items-start">
+          <div className="flex flex-col w-[400px] md:w-full md:px-5 items-start">
             <div className="md:flex md:flex-row justify-between items-center w-full md:pt-6 pb-6 md:pb-4 md:relative">
-              <h1 className="font-bold text-contrast-100 md:text-[20px] md:leading-[30px] text-[32px] leading-[42px] md:text-center w-full md:absolute">
+              <h1 className="font-bold text-white md:text-[20px] md:leading-[30px] text-[32px] leading-[42px] md:text-center w-full md:absolute">
                 Account Verification
               </h1>
             </div>
@@ -81,9 +81,7 @@ const Content = () => {
                 placeholder="000000"
                 skipDefaultStyles={true}
                 renderInput={(props) => <input {...props} />}
-                inputStyle={
-                  "bg-input px-6 text-[16px] text-contrast-100 font-medium size-[60px] rounded"
-                }
+                inputStyle={"size-12 pl-4"}
                 containerStyle={"w-full justify-center gap-4"}
               />
             </div>
