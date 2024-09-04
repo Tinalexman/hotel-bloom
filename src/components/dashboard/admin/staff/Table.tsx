@@ -18,7 +18,7 @@ const Table: FC<{
             <th>S/N</th>
             <th>USERNAME</th>
             <th>DATE JOINED</th>
-            <th>PERMISSIONS</th>
+            <th>ACTIONS</th>
           </tr>
         </thead>
         <tbody>
@@ -43,7 +43,14 @@ const Table: FC<{
                   </div>
                 </td>
                 <td>{convertDate(st.createdAt)}</td>
-                <td>{}</td>
+                <td className="flex items-center gap-2 w-fit">
+                  <button className="text-white large-1 font-semibold bg-primary rounded px-3 py-2">
+                    View Permissions
+                  </button>
+                  <button className="text-white large-1 font-semibold bg-primary rounded px-3 py-2">
+                    Edit Staff
+                  </button>
+                </td>
               </tr>
             );
           })}
