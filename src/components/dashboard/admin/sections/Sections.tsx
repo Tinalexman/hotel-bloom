@@ -6,9 +6,9 @@ import { IoAdd } from "react-icons/io5";
 import Image from "next/image";
 import Void from "@/public/Void.png";
 import { Loader } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
+import AddSection from "./AddSection";
 
 const Sections = () => {
   const [sections, setSections] = useState<any[]>([]);
@@ -17,14 +17,7 @@ const Sections = () => {
 
   return (
     <>
-      {/* {opened && <AddCategory opened={opened} close={close} />}
-      {viewing && (
-        <ViewCategory
-          opened={viewing}
-          close={closeView}
-          category={categories[index]}
-        />
-      )} */}
+      {addSection && <AddSection onClose={() => shouldAddSection(false)} />}
       <div className="w-full h-full pt-5 flex flex-col">
         <div className="w-full h-[100px] flex justify-between items-center">
           <div className="flex flex-col">
@@ -42,7 +35,10 @@ const Sections = () => {
             >
               <MdRefresh size={"26px"} />
             </button>
-            <button className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black">
+            <button
+              onClick={() => shouldAddSection(true)}
+              className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
+            >
               <IoAdd size={"26px"} />
             </button>
           </div>
