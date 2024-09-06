@@ -20,7 +20,7 @@ const Table: FC<{
             <th>S/N</th>
             <th>USERNAME</th>
             <th>DATE JOINED</th>
-            <th>ACTIONS</th>
+            <th>PERMISSIONS</th>
           </tr>
         </thead>
         <tbody>
@@ -43,17 +43,12 @@ const Table: FC<{
                   </div>
                 </td>
                 <td className="text-monokai">{convertDate(st.createdAt)}</td>
-                <td className="flex items-center gap-4 w-fit">
+                <td className="">
                   <button
                     onClick={() => setCurrentStaff(st)}
-                    className="flex gap-2 text-monokai items-center font-medium hover:bg-secondary hover:bg-opacity-10 px-2.5 py-1.5 rounded-xl transition-all duration-200 ease-out"
+                    className="flex gap-2 text-monokai items-center font-medium bg-secondary bg-opacity-10 px-2.5 py-1.5 rounded-xl transition-all duration-200 ease-out"
                   >
-                    <FaStreetView size={14} />
-                    View Permissions
-                  </button>
-                  <button className="flex gap-2 text-monokai items-center font-medium hover:bg-secondary hover:bg-opacity-10 px-2.5 py-1.5 rounded-xl transition-all duration-200 ease-out">
-                    <MdEdit size={14} />
-                    Edit Staff
+                    View
                   </button>
                 </td>
               </tr>

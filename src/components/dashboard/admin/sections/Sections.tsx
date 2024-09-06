@@ -11,17 +11,9 @@ import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 
 const Sections = () => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [viewing, { open: openView, close: closeView }] = useDisclosure(false);
-  const [index, setIndex] = useState<number>(-1);
-
   const [sections, setSections] = useState<any[]>([]);
+  const [addSection, shouldAddSection] = useState<boolean>(false);
   const loading = false;
-
-  const openViewModal = (choice: number) => {
-    setIndex(choice);
-    openView();
-  };
 
   return (
     <>
@@ -33,28 +25,25 @@ const Sections = () => {
           category={categories[index]}
         />
       )} */}
-      <div className="w-full h-full mt-5 flex flex-col gap-10">
+      <div className="w-full h-full pt-5 flex flex-col">
         <div className="w-full h-[100px] flex justify-between items-center">
-          <div className="flex flex-col gap-1">
-            <h1 className="big-4">Sections</h1>
-            <p className="text-md text-monokai dark:text-white">
+          <div className="flex flex-col">
+            <h2 className="big-4 font-medium text-monokai">
+              Sections <span className="big-3 font-bold">(0)</span>
+            </h2>
+            <p className="text-lg text-neutral-dark">
               Manage all your sections
             </p>
           </div>
-          <div className="flex w-fit gap-3 items-center">
+          <div className="w-fit gap-3 flex items-center">
             <button
-              onClick={useDashboardData.getState().refresh}
-              className="rounded-[10px] font-medium flex items-center gap-2 justify-center text-lg bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white px-5 py-2"
+              onClick={() => useDashboardData.getState().refresh()}
+              className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
             >
               <MdRefresh size={"26px"} />
-              Refresh
             </button>
-            <button
-              onClick={open}
-              className="rounded-[10px] font-medium flex items-center gap-2 justify-center text-lg bg-primary text-monokai dark:text-white px-5 py-2 transition-colors duration-300 ease-out"
-            >
+            <button className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black">
               <IoAdd size={"26px"} />
-              Create Section
             </button>
           </div>
         </div>
@@ -68,9 +57,7 @@ const Sections = () => {
               alt="no sections"
               className="size-[200px] object-cover"
             />
-            <p className="large-1 text-neutral-dark dark:text-neutral-light">
-              No sections available
-            </p>
+            <p className="large-1 text-neutral-dark ">No sections available</p>
           </div>
         )}
         {loading && (

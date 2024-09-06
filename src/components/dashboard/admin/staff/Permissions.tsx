@@ -108,6 +108,12 @@ const Permissions: FC<{ staff: tStaff; onClose: () => void }> = ({
                 </tbody>
               </table>
             </div>
+            <button
+              type="submit"
+              className={` bg-secondary rounded mt-2 w-[50%] h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
+            >
+              Update Permissions
+            </button>
           </div>
         </Modal.Content>
       </Modal.Body>
