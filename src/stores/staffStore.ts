@@ -49,7 +49,37 @@ function createRandomStaff(): tStaff {
     ],
     managedSections: [
       {
-        section: faker.string.uuid(),
+        section: faker.commerce.department(),
+        view: faker.datatype.boolean(),
+        update: faker.datatype.boolean(),
+      },
+      {
+        section: faker.commerce.department(),
+        view: faker.datatype.boolean(),
+        update: faker.datatype.boolean(),
+      },
+      {
+        section: faker.commerce.department(),
+        view: faker.datatype.boolean(),
+        update: faker.datatype.boolean(),
+      },
+      {
+        section: faker.commerce.department(),
+        view: faker.datatype.boolean(),
+        update: faker.datatype.boolean(),
+      },
+      {
+        section: faker.commerce.department(),
+        view: faker.datatype.boolean(),
+        update: faker.datatype.boolean(),
+      },
+      {
+        section: faker.commerce.department(),
+        view: faker.datatype.boolean(),
+        update: faker.datatype.boolean(),
+      },
+      {
+        section: faker.commerce.department(),
         view: faker.datatype.boolean(),
         update: faker.datatype.boolean(),
       },

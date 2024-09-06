@@ -41,6 +41,7 @@ const Permissions: FC<{ staff: tStaff; onClose: () => void }> = ({
                 <thead className="w-full">
                   <tr className="w-full">
                     <th>PERMISSIONS</th>
+                    <th>Allowed</th>
                   </tr>
                 </thead>
                 <tbody className="w-full">
@@ -68,13 +69,28 @@ const Permissions: FC<{ staff: tStaff; onClose: () => void }> = ({
                 <thead className="w-full">
                   <tr className="w-full">
                     <th>SECTIONS</th>
+                    <th className="px-5">View</th>
+                    <th className="px-5">Update</th>
                   </tr>
                 </thead>
                 <tbody className="w-full">
-                  {staff.permissions.map((p, i) => (
+                  {staff.managedSections.map((s, i) => (
                     <tr key={i} className="w-full">
-                      <td className="w-full">{p.name}</td>
-                      <td>
+                      <td className="w-full">{s.section}</td>
+                      <td className="px-5">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id=""
+                          checked={initialPermissions[i]}
+                          onChange={(e) => {
+                            const newPermissions = [...initialPermissions];
+                            newPermissions[i] = e.target.checked;
+                            setInitialPermissions(newPermissions);
+                          }}
+                        />
+                      </td>
+                      <td className="px-5">
                         <input
                           type="checkbox"
                           name=""
