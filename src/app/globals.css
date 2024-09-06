@@ -13,27 +13,27 @@ body {
 }
 
 input {
-  @apply bg-monokai rounded-[10px] focus:outline-none py-2 text-[14px]  font-medium placeholder:text-neutral-light text-white shadow-custom-white;
+  @apply bg-offWhite rounded-[10px] focus:outline-none focus:ring-2 focus:ring-purple-500 py-2 placeholder:text-[14px] text-[14px] font-medium placeholder:text-neutral-dark text-monokai shadow-custom-black;
 }
 
 textarea {
-  @apply bg-monokai rounded-[10px] focus:outline-none py-2 text-[14px] resize-none font-medium placeholder:text-neutral-light text-white shadow-custom-white;
+  @apply bg-offWhite rounded-[10px] focus:outline-none focus:ring-2 focus:ring-black py-2 placeholder:text-[14px] text-[14px] resize-none font-medium placeholder:text-neutral-dark text-monokai shadow-custom-black;
 }
 
 thead > tr {
-  @apply bg-monokai-faded border-none shadow-none;
+  @apply bg-white border-none shadow-none;
 }
 
 tr {
-  @apply py-2 border-b-2 border-neutral-light border-opacity-5;
+  @apply py-2 border-b-2 border-neutral-dark border-opacity-5;
 }
 
 th {
-  @apply text-white font-semibold text-[16px] text-start py-3;
+  @apply text-monokai font-semibold text-[16px] text-start py-3;
 }
 
 tr > th {
-  @apply font-[700];
+  @apply font-bold;
 }
 
 td {
@@ -41,11 +41,11 @@ td {
 }
 
 ::selection {
-  @apply bg-neutral-light text-monokai;
+  @apply bg-purple-500 text-white;
 }
 
 ::-moz-selection {
-  @apply bg-neutral-light text-monokai;
+  @apply bg-purple-500 text-white;
 }
 
 .table-row-fixed-height {
@@ -75,25 +75,25 @@ td {
 }
 
 .small-1 {
-  @apply text-sm text-white;
+  @apply text-sm text-monokai;
 }
 
 .large-1 {
-  @apply text-lg text-white;
+  @apply text-lg text-monokai;
 }
 
 .big-1 {
-  @apply text-xl text-white;
+  @apply text-xl text-monokai;
 }
 
 .big-2 {
-  @apply text-2xl text-white;
+  @apply text-2xl text-monokai;
 }
 
 .big-3 {
-  @apply text-3xl text-white;
+  @apply text-3xl text-monokai;
 }
 
 .big-4 {
-  @apply text-4xl text-white;
+  @apply text-4xl text-monokai;
 }

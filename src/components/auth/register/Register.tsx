@@ -75,10 +75,10 @@ const Register = () => {
           method="POST"
         >
           <div className="flex flex-col w-full">
-            <h1 className="font-bold text-white text-[32px] leading-[42px]">
+            <h1 className="font-bold text-monokai text-[32px] leading-[42px]">
               Hello There!
             </h1>
-            <p className="text-neutral-light text-lg">
+            <p className="text-neutral-dark text-lg">
               We are happy to have you at Servexi
             </p>
           </div>
@@ -194,14 +194,14 @@ const Register = () => {
                   ? "bg-secondary"
                   : isValid
                   ? "bg-secondary"
-                  : "bg-neutral-dark"
+                  : "bg-neutral-light"
               } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
             >
               {isSubmitting ? <Loader color="white" /> : "Register"}
             </button>
           </div>
 
-          <p className="text-neutral-light text-center mt-2">
+          <p className="text-neutral-dark text-center mt-2">
             Already have an account?{" "}
             <Link
               href="/auth/login"

@@ -7,7 +7,7 @@ const Tooltip: FC<{ text: string; visible: boolean }> = ({ text, visible }) => {
         visible
           ? "opacity-100 translate-x-0 scale-100"
           : "opacity-0 translate-x-40 scale-0"
-      } font-medium bg-monokai text-white rounded px-3 py-1 shadow-custom-white transition-all duration-300 ease-in-out`}
+      } font-medium bg-white text-monokai rounded px-3 py-1 shadow-custom-black transition-all duration-300 ease-in-out`}
     >
       {text}
     </div>

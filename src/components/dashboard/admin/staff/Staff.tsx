@@ -23,30 +23,28 @@ const Staff = () => {
     <>
       {addStaff && <AddStaff onClose={() => shouldAddStaff(false)} />}
 
-      <div className="w-full h-full pt-10 flex flex-col">
+      <div className="w-full h-full pt-5 flex flex-col">
         <div className="flex h-[100px] justify-between items-center">
-          <div className="flex flex-col gap-1">
-            <h2 className="big-4 font-medium">
+          <div className="flex flex-col">
+            <h2 className="big-4 font-medium text-monokai">
               Staff <span className="big-3 font-bold">({staff.length})</span>
             </h2>
-            <p className="text-md text-monokai dark:text-white">
+            <p className="text-lg text-neutral-dark">
               Manage your staff all in one place
             </p>
           </div>
           <div className="w-fit gap-3 flex items-center">
             <button
               onClick={() => useDashboardData.getState().refresh()}
-              className="rounded-[10px] font-medium flex items-center gap-2 justify-center text-lg bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white px-5 py-2"
+              className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
             >
               <MdRefresh size={"26px"} />
-              Refresh
             </button>
             <button
               onClick={() => shouldAddStaff(true)}
-              className="rounded-[10px] font-medium flex items-center gap-2 justify-center text-lg bg-primary text-monokai dark:text-white px-5 py-2"
+              className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
             >
               <IoAdd size={"26px"} />
-              Create Staff
             </button>
           </div>
         </div>
@@ -61,9 +59,7 @@ const Staff = () => {
                   alt="no staffs"
                   className="size-[200px] object-cover"
                 />
-                <p className="large-1 text-neutral-dark dark:text-neutral-light">
-                  No staffs available
-                </p>
+                <p className="large-1 text-neutral-dark">No staffs available</p>
               </div>
             )}
           </div>

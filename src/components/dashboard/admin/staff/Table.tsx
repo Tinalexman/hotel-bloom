@@ -1,15 +1,17 @@
-import { numberToFixedLengthHex, getRandomInt } from "@/src/functions/base";
 import { convertDate } from "@/src/functions/dateFunctions";
-import React, { FC } from "react";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import { MdOutlineCancel, MdOutlineDone } from "react-icons/md";
-import ReactPaginate from "react-paginate";
+import React, { FC, useState } from "react";
+import { FaStreetView } from "react-icons/fa6";
+import { MdEdit } from "react-icons/md";
 import Image from "next/image";
 import { tStaff } from "@/src/stores/staffStore";
+
+import Permissions from "./Permissions";
 
 const Table: FC<{
   staff: tStaff[];
 }> = ({ staff }) => {
+  const [currentStaff, setCurrentStaff] = useState<tStaff | null>(null);
+
   return (
     <>
       <table className="w-full">
@@ -26,28 +28,31 @@ const Table: FC<{
             return (
               <tr key={st.id}>
                 <td>
-                  <h2 className="text-lg text-white font-medium">{i + 1}.</h2>
+                  <h2 className="text-monokai font-medium">{i + 1}.</h2>
                 </td>
                 <td>
-                  <div className="flex gap-3 w-fit items-center">
+                  <div className="flex gap-2 w-fit items-center">
                     <Image
                       src={`https://gravatar.com/avatar/${st.id}?s=400&d=robohash&r=x`}
                       alt="admin-picture"
-                      width={50}
-                      height={50}
-                      className={`object-cover size-10 rounded-[10px] shadow-custom-white`}
+                      width={40}
+                      height={40}
+                      className={`object-cover size-10 rounded-[10px] shadow-custom-dark`}
                     />
-                    <h2 className="text-lg text-white font-medium">
-                      {st.username}
-                    </h2>
+                    <h2 className="text-monokai font-medium">{st.username}</h2>
                   </div>
                 </td>
-                <td>{convertDate(st.createdAt)}</td>
-                <td className="flex items-center gap-2 w-fit">
-                  <button className="text-white large-1 font-semibold bg-primary rounded px-3 py-2">
+                <td className="text-monokai">{convertDate(st.createdAt)}</td>
+                <td className="flex items-center gap-4 w-fit">
+                  <button
+                    onClick={() => setCurrentStaff(st)}
+                    className="flex gap-2 text-monokai items-center font-medium hover:bg-secondary hover:bg-opacity-10 px-2.5 py-1.5 rounded-xl transition-all duration-200 ease-out"
+                  >
+                    <FaStreetView size={14} />
                     View Permissions
                   </button>
-                  <button className="text-white large-1 font-semibold bg-primary rounded px-3 py-2">
+                  <button className="flex gap-2 text-monokai items-center font-medium hover:bg-secondary hover:bg-opacity-10 px-2.5 py-1.5 rounded-xl transition-all duration-200 ease-out">
+                    <MdEdit size={14} />
                     Edit Staff
                   </button>
                 </td>
@@ -56,6 +61,12 @@ const Table: FC<{
           })}
         </tbody>
       </table>
+      {currentStaff !== null && (
+        <Permissions
+          staff={currentStaff}
+          onClose={() => setCurrentStaff(null)}
+        />
+      )}
     </>
   );
 };

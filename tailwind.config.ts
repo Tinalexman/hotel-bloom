@@ -20,7 +20,7 @@ const config: Config = {
         tertiary: "#360056",
         neutral: "#647899",
         monokai: "#131313",
-        offWhite: "#FCFCFC",
+        offWhite: "#F9F9F9",
         "monokai-faded": "#161616",
         "neutral-light": "#CCCCCC",
         "neutral-dark": "#202020",
@@ -30,10 +30,33 @@ const config: Config = {
         "error-20": "rgba(255, 0, 0, 0.2)",
       },
       boxShadow: {
+        "custom-black": "0 0 5px rgba(0, 0, 0, 0.1)",
         "custom-white": "0 0 5px rgba(255, 255, 255, 0.1)",
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }: any) {
+      const newUtilities = {
+        ".scrollbar-thin": {
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgb(135 135 135) rgb(247 247 247)",
+        },
+        ".scrollbar-webkit": {
+          "&::-webkit-scrollbar": {
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "rgb(247 247 247)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "rgb(135 135 135)",
+            borderRadius: "4px",
+          },
+        },
+      };
+      addUtilities(newUtilities, ["responsive", "hover", "focus"]);
+    },
+  ],
 };
 export default config;

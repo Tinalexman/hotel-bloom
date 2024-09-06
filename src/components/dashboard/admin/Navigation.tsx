@@ -11,10 +11,10 @@ import {
   TbLayoutDashboardFilled,
   TbSettings,
   TbSettingsFilled,
-  TbLayoutSidebarLeftCollapseFilled,
-  TbLayoutSidebarRightCollapseFilled,
   TbLogout2,
 } from "react-icons/tb";
+
+import { BiExpand, BiCollapse } from "react-icons/bi";
 
 import { HiUserGroup, HiOutlineUserGroup } from "react-icons/hi2";
 import { HiGift, HiOutlineGift } from "react-icons/hi";
@@ -62,9 +62,6 @@ const DashboardNavigation = () => {
       inactive: <TbSettings size={"26px"} />,
       link: "/dashboard/settings",
     },
-  ];
-
-  const bottomSection: iNavigationItem[] = [
     {
       name: "Logout",
       active: <TbLogout2 size={"26px"} />,
@@ -107,7 +104,7 @@ const DashboardNavigation = () => {
     <div
       className={`${
         expanded ? "w-[300px] pl-5" : "w-[70px] px-3"
-      } h-[100vh] z-10 pt-5 duration-300 transition-all ease-in flex flex-col gap-8 items-center shadow-custom-white bg-monokai`}
+      } h-[100vh] z-10 pt-5 duration-300 transition-all ease-in flex flex-col gap-8 items-center shadow-custom-black bg-white`}
     >
       <div className="relative w-full flex justify-center pt-10">
         <div
@@ -128,27 +125,27 @@ const DashboardNavigation = () => {
           }}
           className={`cursor-pointer absolute ${
             expanded ? "left-[80%]" : "left-3"
-          } -top-2 duration-300 transition-all ease-out`}
+          } -top-3 duration-300 transition-all ease-out`}
         >
           {expanded ? (
-            <TbLayoutSidebarLeftCollapseFilled
-              size={"26px"}
-              className="text-white"
-            />
+            <BiCollapse size={"26px"} className="text-monokai" />
           ) : (
-            <TbLayoutSidebarRightCollapseFilled
-              size={"26px"}
-              className="text-white"
-            />
+            <BiExpand size={"26px"} className="text-monokai" />
           )}
         </div>
       </div>
       <div className={`flex flex-col w-full gap-2`}>
         {navs.map((navItem: iNavigationItem, i: number) => {
           return (
-            <Link
+            <div
               key={i}
-              href={navItem.link}
+              onClick={() => {
+                if (i !== navs.length - 2) {
+                  window.location.assign(navItem.link);
+                } else {
+                  logout();
+                }
+              }}
               className="flex w-full gap-[6px] items-center"
             >
               <div
@@ -158,11 +155,10 @@ const DashboardNavigation = () => {
                   }
                 }}
                 onMouseLeave={() => setHoveredItem(-1)}
-                className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer hover:bg-primary ${
-                  page === i
-                    ? "bg-neutral-dark text-white shadow-custom-white"
-                    : "text-slate-300"
-                }   hover:scale-105 scale-100 transition-all ease-out duration-200 relative`}
+                className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer font-medium ${
+                  page === i &&
+                  "bg-secondary text-white shadow-custom-black font-bold"
+                } text-monokai hover:scale-105 scale-100 transition-all ease-out duration-200 relative`}
               >
                 <div style={{ fontSize: "26px" }}>
                   {page === i && navItem.active}
@@ -172,9 +168,7 @@ const DashboardNavigation = () => {
                   style={{
                     transitionDelay: `${i + 3}00ms`,
                   }}
-                  className={`whitespace-pre text-md duration-500 ${
-                    page === i ? "font-[700]" : "font-medium"
-                  } ${
+                  className={`whitespace-pre  duration-500 ${
                     !expanded && "opacity-0 translate-x-28 overflow-hidden "
                   }`}
                 >
@@ -188,61 +182,7 @@ const DashboardNavigation = () => {
 
               <div
                 className={`w-[6px] h-8 rounded-bl-[4px] rounded-tl-[4px] ${
-                  page === i && "bg-primary"
-                }`}
-              />
-            </Link>
-          );
-        })}
-      </div>
-      <div className={`flex flex-col w-full gap-2`}>
-        {bottomSection.map((navItem: iNavigationItem, i: number) => {
-          return (
-            <div
-              key={i + navs.length}
-              className="flex w-full gap-[6px] items-center"
-            >
-              <div
-                onMouseEnter={() => {
-                  if (i + navs.length !== hoveredItem) {
-                    setHoveredItem(i + navs.length);
-                  }
-                }}
-                onMouseLeave={() => setHoveredItem(-1)}
-                onClick={() => {
-                  if (i === bottomSection.length - 1) {
-                    logout();
-                  }
-                }}
-                className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer hover:bg-primary ${
-                  page === i + navs.length
-                    ? "bg-neutral-dark text-white shadow-custom-white "
-                    : "text-slate-300"
-                }  hover:scale-105 scale-100 transition-all ease-out duration-200`}
-              >
-                <div style={{ fontSize: "26px" }}>
-                  {page === i + navs.length && navItem.active}
-                  {page !== i + navs.length && navItem.inactive}
-                </div>
-                <h2
-                  style={{
-                    transitionDelay: `${i + 3}00ms`,
-                  }}
-                  className={`whitespace-pre text-md duration-500 ${
-                    !expanded && "opacity-0 translate-x-28 overflow-hidden "
-                  }`}
-                >
-                  {navItem.name}
-                </h2>
-                <Tooltip
-                  text={navItem.name}
-                  visible={!expanded && hoveredItem === i + navs.length}
-                />
-              </div>
-
-              <div
-                className={`w-[6px] h-8 rounded-bl-[4px] rounded-tl-[4px] ${
-                  page === i + navs.length && "bg-primary"
+                  page === i && "bg-secondary"
                 }`}
               />
             </div>

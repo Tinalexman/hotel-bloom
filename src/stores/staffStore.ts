@@ -17,7 +17,11 @@ export type tStaff = {
 };
 
 export function createRandomStaffs(count: number): tStaff[] {
-  return Array(count).fill(createRandomStaff());
+  let staffs: tStaff[] = [];
+  for (let i = 0; i < count; i++) {
+    staffs.push(createRandomStaff());
+  }
+  return staffs;
 }
 
 function createRandomStaff(): tStaff {

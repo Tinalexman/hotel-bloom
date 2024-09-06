@@ -6,125 +6,92 @@ import { Formik, Form } from "formik";
 import { FaPerson } from "react-icons/fa6";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { tStaff } from "@/src/stores/staffStore";
 
-interface iAddStaff {
-  username: string;
-  password: string;
-}
-
-const Permissions: FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+const Permissions: FC<{ staff: tStaff; onClose: () => void }> = ({
+  staff,
+  onClose,
+}) => {
+  const [initialPermissions, setInitialPermissions] = useState<boolean[]>(
+    staff.permissions.map((p, i) => p.value)
+  );
 
   return (
-    <Modal.Root opened={true} onClose={onClose} padding={0} top={0} centered>
+    <Modal.Root
+      opened={true}
+      onClose={onClose}
+      padding={0}
+      top={0}
+      size={"50%"}
+      centered
+    >
       <Modal.Overlay />
 
       <Modal.Body>
         <Modal.Content>
-          <div className="w-full p-10 bg-monokai flex flex-col gap-10 items-center">
+          <div className="w-full h-full p-10 bg-white text-monokai flex flex-col gap-5 items-center overflow-y-auto scrollbar-custom">
             <div className="w-full">
-              <h2 className="font-bold big-2">Staff Permission</h2>
+              <h2 className="font-bold big-2">Staff Permissions</h2>
+              <p className="text-neutral-dark text-lg">
+                View and update the permissions of your staff
+              </p>
             </div>
-            <Formik
-              initialValues={{
-                username: "",
-                password: "",
-              }}
-              validate={(values) => {
-                const errors: Partial<iAddStaff> = {};
-
-                if (!values.password) {
-                  errors.password = "Required";
-                } else if (values.password.length < 8) {
-                  errors.password =
-                    "Password must be more at least 8 characters";
-                }
-
-                return errors;
-              }}
-              onSubmit={(values, { setSubmitting }) => {}}
-              validateOnMount={true}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                isInitialValid,
-                isValid,
-              }) => (
-                <Form className="w-full flex flex-col gap-2" method="POST">
-                  <div className=" mb-4 flex flex-col gap-1 w-full">
-                    <p className="text-neutral-light text-sm">Staff Username</p>
-                    <div className="relative w-full">
-                      <input
-                        type="text"
-                        value={values.username}
-                        name="username"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        className="px-10 w-full"
-                      />
-                      <FaPerson
-                        className="text-contrast-base absolute top-2.5 left-2"
-                        size={"22px"}
-                      />
-                    </div>
-                    <p className="text-error">
-                      {errors.username && touched.username && errors.username}
-                    </p>
-                  </div>
-                  <div className="mb-4 flex flex-col gap-1 w-full">
-                    <p className="text-neutral-light text-sm">
-                      Staff Password <span className="text-error">*</span>
-                    </p>
-                    <div className="relative w-full">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        value={values.password}
-                        name="password"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        className="px-10 w-full"
-                      />
-                      <RiLockPasswordFill
-                        className="text-contrast-base absolute top-2.5 left-2"
-                        size={"22px"}
-                      />
-                      <div
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute top-2.5 right-2 text-contrast-base cursor-pointer"
-                      >
-                        {showPassword ? (
-                          <MdVisibilityOff size={"22px"} />
-                        ) : (
-                          <MdVisibility size={"22px"} />
-                        )}
-                      </div>
-                    </div>
-                    <p className="text-error">
-                      {errors.password && touched.password && errors.password}
-                    </p>
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={` ${
-                      isInitialValid
-                        ? "bg-secondary"
-                        : isValid
-                        ? "bg-secondary"
-                        : "bg-neutral-dark"
-                    } rounded mt-2 w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
-                  >
-                    {isSubmitting ? <Loader color="white" /> : "Create"}
-                  </button>
-                </Form>
-              )}
-            </Formik>
+            <div className="w-full flex flex-col gap-5">
+              <table>
+                <thead className="w-full">
+                  <tr className="w-full">
+                    <th>PERMISSIONS</th>
+                  </tr>
+                </thead>
+                <tbody className="w-full">
+                  {staff.permissions.map((p, i) => (
+                    <tr key={i} className="w-full">
+                      <td className="w-full">{p.name}</td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          name=""
+                          id=""
+                          checked={initialPermissions[i]}
+                          onChange={(e) => {
+                            const newPermissions = [...initialPermissions];
+                            newPermissions[i] = e.target.checked;
+                            setInitialPermissions(newPermissions);
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <table>
+                <thead className="w-full">
+                  <tr className="w-full">
+                    <th>SECTIONS</th>
+                  </tr>
+                </thead>
+                <tbody className="w-full">
+                  {staff.permissions.map((p, i) => (
+                    <tr key={i} className="w-full">
+                      <td className="w-full">{p.name}</td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          name=""
+                          id=""
+                          checked={initialPermissions[i]}
+                          onChange={(e) => {
+                            const newPermissions = [...initialPermissions];
+                            newPermissions[i] = e.target.checked;
+                            setInitialPermissions(newPermissions);
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </Modal.Content>
       </Modal.Body>

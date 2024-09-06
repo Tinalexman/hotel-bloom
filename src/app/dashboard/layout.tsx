@@ -15,17 +15,17 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     <div className="w-[100vw] h-[100vh] flex ">
       <DashboardNavigation />
       <div
-        className={`flex flex-col bg-monokai-faded duration-300 transition-all ease-in w-full h-[100vh] overflow-y-scroll`}
+        className={`flex flex-col bg-white duration-300 transition-all ease-in w-full h-[100vh] overflow-y-scroll`}
       >
         <div
           className={`h-[100px]  
-          w-full z-50 py-5 px-8 shadow-custom-white flex items-center justify-between`}
+          w-full z-50 py-5 px-8 shadow-custom-black flex items-center justify-between`}
         >
           <div className="flex flex-col gap-1 ">
-            <h1 className="big-3 font-bold text-white">
+            <h1 className="big-3 font-bold text-monokai">
               {getTimeOfDay(currentDate)} 🥳
             </h1>
-            <p className="text-md font-medium text-neutral-light">
+            <p className="text-md font-medium text-neutral-dark">
               {convertDate(currentDate)}
             </p>
           </div>

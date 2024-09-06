@@ -7,7 +7,7 @@ const LoginPage: FC<{ children: ReactNode }> = ({ children }) => {
   //<a target="_blank" href="https://icons8.com/icon/AVe9YeyAXTql/hotel">Hotel</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 
   return (
-    <div className="w-[100vw] h-[100vh] overflow-hidden flex justify-between bg-monokai">
+    <div className="w-[100vw] h-[100vh] overflow-hidden flex justify-between bg-white">
       <Slider />
       <div className="w-[50vw] h-full grid place-content-center overflow-y-scroll scrollbar-custom">
         {children}

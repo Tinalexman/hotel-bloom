@@ -63,10 +63,10 @@ const LoginForm = () => {
           method="POST"
         >
           <div className="flex flex-col w-full">
-            <h1 className="font-bold text-white text-[32px] leading-[42px]">
+            <h1 className="font-bold text-monokai text-[32px] leading-[42px]">
               Welcome Back!
             </h1>
-            <p className="text-neutral-light text-lg">
+            <p className="text-neutral-dark text-lg">
               Log in to your Servexi account
             </p>
           </div>
@@ -85,7 +85,7 @@ const LoginForm = () => {
               className="text-contrast-base absolute top-2.5 left-2"
               size={"22px"}
             />
-            <p className="text-error">
+            <p className="text-error text-sm">
               {errors.username && touched.username && errors.username}
             </p>
           </div>
@@ -113,7 +113,7 @@ const LoginForm = () => {
                 <MdVisibility size={"22px"} />
               )}
             </div>
-            <p className="text-error">
+            <p className="text-error text-sm">
               {errors.password && touched.password && errors.password}
             </p>
           </div>
@@ -127,12 +127,12 @@ const LoginForm = () => {
                   ? "bg-secondary"
                   : isValid
                   ? "bg-secondary"
-                  : "bg-neutral-dark"
+                  : "bg-neutral-light"
               } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
             >
               {isSubmitting ? <Loader color="white" /> : "Login"}
             </button>
-            <p className="text-neutral-light text-center mt-2">
+            <p className="text-neutral-dark text-center mt-2">
               Don&apos;t have an account?{" "}
               <Link
                 href="/auth/register"
