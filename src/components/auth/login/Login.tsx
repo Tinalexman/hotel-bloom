@@ -24,7 +24,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (success && data) {
-      router.push(`/dashboard/overview`);
+      router.push(`/dashboard`);
     }
   }, [success, data]);
 

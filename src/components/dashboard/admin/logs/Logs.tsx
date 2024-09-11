@@ -6,7 +6,7 @@ import Stats from "./Stats";
 import Graph from "./Graph";
 import Performance from "./Performance";
 
-const Overview = () => {
+const Logs = () => {
   return (
     <div className="w-full mt-5 flex flex-col gap-8">
       <Stats />
@@ -19,4 +19,4 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+export default Logs;

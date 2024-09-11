@@ -5,14 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 
 import Logo from "@/public/Logo.png";
 
-import {
-  TbLayoutDashboard,
-  TbLayoutDashboardFilled,
-  TbSettings,
-  TbSettingsFilled,
-  TbLogout2,
-} from "react-icons/tb";
+import { TbLogout2 } from "react-icons/tb";
 
+import { BsClipboard2Pulse, BsClipboard2PulseFill } from "react-icons/bs";
 import { BiExpand, BiCollapse } from "react-icons/bi";
 
 import { HiUserGroup, HiOutlineUserGroup } from "react-icons/hi2";
@@ -22,6 +17,7 @@ import { useDashboardData } from "@/src/stores/dashboardStore";
 import Tooltip from "@/src/components/reusable/Tooltip";
 
 import { useLogout } from "@/src/hooks/authHooks";
+import { useCurrentStaffStore } from "@/src/stores/userStore";
 
 export interface iNavigationItem {
   name: string;
@@ -31,44 +27,20 @@ export interface iNavigationItem {
 }
 
 const DashboardNavigation = () => {
-  const navs: iNavigationItem[] = [
-    {
-      name: "Overview",
-      active: <TbLayoutDashboardFilled size={"26px"} />,
-      inactive: <TbLayoutDashboard size={"26px"} />,
-      link: "/dashboard/overview",
-    },
-    {
-      name: "Sections",
-      active: <MdLocalOffer size={"26px"} />,
-      inactive: <MdOutlineLocalOffer size={"26px"} />,
-      link: "/dashboard/sections",
-    },
-    {
-      name: "Inventory",
-      active: <HiGift size={"26px"} />,
-      inactive: <HiOutlineGift size={"26px"} />,
-      link: "/dashboard/inventory",
-    },
-    {
-      name: "Staff",
-      active: <HiUserGroup size={"26px"} />,
-      inactive: <HiOutlineUserGroup size={"26px"} />,
-      link: "/dashboard/staff",
-    },
-    {
-      name: "Settings",
-      active: <TbSettingsFilled size={"26px"} />,
-      inactive: <TbSettings size={"26px"} />,
-      link: "/dashboard/settings",
-    },
-    {
-      name: "Logout",
-      active: <TbLogout2 size={"26px"} />,
-      inactive: <TbLogout2 size={"26px"} />,
-      link: "",
-    },
-  ];
+  const currentStaff = useCurrentStaffStore((state) => state);
+  const viewLog = useCurrentStaffStore((state) => state.permissions.view_log);
+  const createSection = useCurrentStaffStore(
+    (state) => state.permissions.create_section
+  );
+  const manageInventory = useCurrentStaffStore(
+    (state) => state.permissions.manage_inventory
+  );
+  const manageStaff = useCurrentStaffStore(
+    (state) => state.permissions.manage_staff
+  );
+
+  const [navs, setNavs] = useState<iNavigationItem[]>([]);
+  const [paths, setPaths] = useState<string[]>([]);
 
   const [hoveredItem, setHoveredItem] = useState<number>(0);
   const router = useRouter();
@@ -76,19 +48,11 @@ const DashboardNavigation = () => {
 
   const determineIndex = () => {
     const current = pathName.split("/")[2];
-    switch (current) {
-      case "overview":
-        return 0;
-      case "sections":
-        return 1;
-      case "inventory":
-        return 2;
-      case "staff":
-        return 3;
-      case "settings":
-        return 4;
+    for (let i = 0; i < paths.length; ++i) {
+      if (paths[i] === current) {
+        return i;
+      }
     }
-
     return -1;
   };
 
@@ -102,6 +66,61 @@ const DashboardNavigation = () => {
       router.replace("/auth/login");
     }
   }, [success]);
+
+  useEffect(() => {
+    let newNavs: iNavigationItem[] = [];
+    let newPaths: string[] = [];
+
+    if (createSection) {
+      newNavs.push({
+        name: "Sections",
+        active: <BsClipboard2PulseFill size={"26px"} />,
+        inactive: <BsClipboard2Pulse size={"26px"} />,
+        link: "/dashboard/sections",
+      });
+      newPaths.push("sections");
+    }
+
+    if (manageInventory) {
+      newNavs.push({
+        name: "Inventory",
+        active: <HiGift size={"26px"} />,
+        inactive: <HiOutlineGift size={"26px"} />,
+        link: "/dashboard/inventory",
+      });
+      newPaths.push("inventory");
+    }
+
+    if (manageStaff) {
+      newNavs.push({
+        name: "Staff",
+        active: <HiUserGroup size={"26px"} />,
+        inactive: <HiOutlineUserGroup size={"26px"} />,
+        link: "/dashboard/staff",
+      });
+      newPaths.push("staff");
+    }
+
+    if (viewLog) {
+      newNavs.push({
+        name: "Logs",
+        active: <MdLocalOffer size={"26px"} />,
+        inactive: <MdOutlineLocalOffer size={"26px"} />,
+        link: "/dashboard/logs",
+      });
+      newPaths.push("logs");
+    }
+
+    newNavs.push({
+      name: "Logout",
+      active: <TbLogout2 size={"26px"} />,
+      inactive: <TbLogout2 size={"26px"} />,
+      link: "",
+    });
+
+    setNavs(newNavs);
+    setPaths(newPaths);
+  }, [currentStaff]);
 
   return (
     <div
