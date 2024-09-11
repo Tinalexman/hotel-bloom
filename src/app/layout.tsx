@@ -12,6 +12,7 @@ import {
   ColorSchemeScript,
 } from "@mantine/core";
 import AuthProvider from "@/src/providers/AuthProvider";
+import UserProvider from "../providers/UserProvider";
 
 const myColor: MantineColorsTuple = [
   "#ffecff",
@@ -72,7 +73,9 @@ export default function RootLayout({
       <body className={corben.className}>
         <Toaster />
         <MantineProvider theme={theme}>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <UserProvider>{children}</UserProvider>
+          </AuthProvider>
         </MantineProvider>
       </body>
     </html>

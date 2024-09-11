@@ -1,93 +1,66 @@
 "use client";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-import { SERVEXI_KEY } from "../services/base";
-import toast from "react-hot-toast";
+import { useEffect } from "react";
+
 import { jwtDecode } from "jwt-decode";
-import { useCurrentAdminStore } from "../stores/adminStore";
-// import { useCurrentManagerStore } from "../stores/userStore";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
 
-interface iAdmin {
-  token: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  id: string;
-  status: string;
-}
+export default function AuthProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // const pathName = usePathname();
 
-interface iManager {
-  token: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  id: string;
-  status: string;
-  businessName: string;
-  categoryId: string;
-}
+  // const determineIndex = () => {
+  //   const current = pathName.split("/")[2];
+  //   switch (current) {
+  //     case "scout":
+  //       return 0;
+  //     case "player":
+  //       return 1;
+  //     case "coach":
+  //       return 2;
+  //   }
 
-const AuthProvider = ({ children }: any) => {
+  //   return -1;
+  // };
+
+  // const page = determineIndex();
   const router = useRouter();
 
-  let init = async () => {
-    let route: string = window.location.pathname;
-    let data = window.localStorage.getItem(SERVEXI_KEY);
-
-    const isProtectedRoute: boolean =
-      route.startsWith("/dashboard/admin") ||
-      route.startsWith("/dashboard/manager");
-
-    if (!isProtectedRoute) return;
-
-    if (data === null) {
-      toast.error("Please login to your SureAgro account");
-      router.replace("/auth/login");
-      return;
-    }
-
-    let user: iAdmin | iManager = JSON.parse(data!);
-    let decodedToken = jwtDecode(user.token);
-
-    const expTimeInSeconds = decodedToken.exp;
-    if (expTimeInSeconds !== undefined) {
-      const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-      if (currentTimeInSeconds >= expTimeInSeconds) {
-        toast.error("Please login to your SureAgro account");
-        router.replace("/auth/login");
-        return;
-      }
-    }
-
-    if (route.startsWith("/dashboard/manager")) {
-      const mng = user as iManager;
-      // useCurrentManagerStore.setState({
-      //   email: mng.email,
-      //   active: mng.status === "active",
-      //   firstName: mng.firstName,
-      //   lastName: mng.lastName,
-      //   id: mng.id,
-      //   businessName: mng.businessName,
-      //   categoryId: mng.categoryId,
-      //   token: mng.token,
-      // });
-    } else if (route.startsWith("/dashboard/admin")) {
-      useCurrentAdminStore.setState({
-        email: user.email,
-        active: user.status === "active",
-        firstName: user.firstName,
-        lastName: user.lastName,
-        id: user.id,
-        token: user.token,
-      });
-    }
-  };
+  const { getToken } = useToken();
 
   useEffect(() => {
-    // init();
-  }, []);
+    const token = getToken();
+    if (token === undefined) {
+      toast.error("Please login to continue");
+      router.replace("/auth/login");
+    }
+  }, [router]);
 
   return <>{children}</>;
-};
+}
 
-export default AuthProvider;
+export const useToken = () => {
+  const getToken = () => Cookies.get("servexi-token");
+  const setToken = (token: string) => {
+    const decoded = jwtDecode(token);
+    let expiryDate: Date | undefined;
+    if (decoded.exp) {
+      expiryDate = new Date(decoded?.exp * 1000);
+    }
+
+    Cookies.set("servexi-token", token, {
+      expires: expiryDate,
+      secure: true,
+      sameSite: "strict",
+    });
+  };
+  const removeToken = () => {
+    Cookies.remove("servexi-token");
+  };
+
+  return { getToken, setToken, removeToken };
+};
