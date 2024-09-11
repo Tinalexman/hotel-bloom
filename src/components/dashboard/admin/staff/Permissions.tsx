@@ -6,15 +6,14 @@ import { Formik, Form } from "formik";
 import { FaPerson } from "react-icons/fa6";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-import { tStaff } from "@/src/stores/staffStore";
+import { iStaff } from "@/src/stores/userStore";
 
-const Permissions: FC<{ staff: tStaff; onClose: () => void }> = ({
+const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
   staff,
   onClose,
 }) => {
-  const [initialPermissions, setInitialPermissions] = useState<boolean[]>(
-    staff.permissions.map((p, i) => p.value)
-  );
+  const [initialPermissions, setInitialPermissions] = useState<boolean[]>();
+  // staff.permissions.map((p, i) => p.value)
 
   return (
     <Modal.Root
@@ -36,7 +35,7 @@ const Permissions: FC<{ staff: tStaff; onClose: () => void }> = ({
                 View and update the permissions of your staff
               </p>
             </div>
-            <div className="w-full flex flex-col gap-5">
+            {/* <div className="w-full flex flex-col gap-5">
               <table>
                 <thead className="w-full">
                   <tr className="w-full">
@@ -107,7 +106,7 @@ const Permissions: FC<{ staff: tStaff; onClose: () => void }> = ({
                   ))}
                 </tbody>
               </table>
-            </div>
+            </div> */}
             <button
               type="submit"
               className={` bg-secondary rounded mt-2 w-[50%] h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}

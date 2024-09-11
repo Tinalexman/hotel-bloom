@@ -3,14 +3,14 @@ import React, { FC, useState } from "react";
 import { FaStreetView } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import Image from "next/image";
-import { tStaff } from "@/src/stores/staffStore";
+import { iStaff } from "@/src/stores/userStore";
 
 import Permissions from "./Permissions";
 
 const Table: FC<{
-  staff: tStaff[];
+  staff: iStaff[];
 }> = ({ staff }) => {
-  const [currentStaff, setCurrentStaff] = useState<tStaff | null>(null);
+  const [currentStaff, setCurrentStaff] = useState<iStaff | null>(null);
 
   return (
     <>
@@ -19,12 +19,18 @@ const Table: FC<{
           <tr>
             <th>S/N</th>
             <th>USERNAME</th>
-            <th>DATE JOINED</th>
+            <th>ORGANIZATION</th>
             <th>PERMISSIONS</th>
           </tr>
         </thead>
         <tbody>
           {staff.map((st, i) => {
+            let count = 0;
+            if (st.permissions.create_section) count += 1;
+            if (st.permissions.manage_inventory) count += 1;
+            if (st.permissions.manage_staff) count += 1;
+            if (st.permissions.view_log) count += 1;
+
             return (
               <tr key={st.id}>
                 <td>
@@ -42,13 +48,14 @@ const Table: FC<{
                     <h2 className="text-monokai font-medium">{st.username}</h2>
                   </div>
                 </td>
-                <td className="text-monokai">{convertDate(st.createdAt)}</td>
-                <td className="">
+                <td className="text-monokai">{st.organization_name}</td>
+                <td className="flex w-fit gap-3 items-center">
+                  <p className="text-monokai">{count} permissions</p>
                   <button
                     onClick={() => setCurrentStaff(st)}
-                    className="flex gap-2 text-monokai items-center font-medium bg-secondary bg-opacity-10 px-2.5 py-1.5 rounded-xl transition-all duration-200 ease-out"
+                    className="flex gap-2 items-center font-bold text-secondary "
                   >
-                    View
+                    Modify
                   </button>
                 </td>
               </tr>

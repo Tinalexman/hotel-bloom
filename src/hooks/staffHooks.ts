@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAxios } from "../services/base";
 import toast from "react-hot-toast";
 import { iStaff } from "../stores/userStore";
+import { useDashboardData } from "../stores/dashboardStore";
 
 export interface iCreateStaffPayload {
   password: string;
@@ -114,6 +115,8 @@ export const useGetAllStaffs = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const { requestApi } = useAxios();
 
+  const refresh = useDashboardData((state) => state.shouldRefresh);
+
   let get = async () => {
     if (loading) return;
     setLoading(true);
@@ -129,6 +132,10 @@ export const useGetAllStaffs = () => {
       toast.error("Something went wrong. Please try again");
     }
   };
+
+  useEffect(() => {
+    get();
+  }, [refresh]);
 
   return {
     loading,

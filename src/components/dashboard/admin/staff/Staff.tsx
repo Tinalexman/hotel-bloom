@@ -10,14 +10,12 @@ import Image from "next/image";
 import Void from "@/public/Void.png";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import AddStaff from "./AddStaff";
-import { createRandomStaffs, tStaff } from "@/src/stores/staffStore";
 import Table from "./Table";
+import { useGetAllStaffs } from "@/src/hooks/staffHooks";
 
 const Staff = () => {
-  const [staff, setStaff] = useState<tStaff[]>(createRandomStaffs(10));
   const [addStaff, shouldAddStaff] = useState<boolean>(false);
-
-  const loading = false;
+  const { data: staff, loading } = useGetAllStaffs();
 
   return (
     <>
@@ -53,7 +51,7 @@ const Staff = () => {
             {staff.length > 0 && <Table staff={staff} />}
 
             {staff.length === 0 && (
-              <div className="w-full h-full flex flex-col justify-center gap-5 items-center">
+              <div className="w-full h-[calc(100vh-245px)] flex flex-col justify-center gap-5 items-center">
                 <Image
                   src={Void}
                   alt="no staffs"
@@ -66,7 +64,7 @@ const Staff = () => {
         )}
 
         {loading && (
-          <div className="w-full h-full flex justify-center items-center">
+          <div className="w-full h-[calc(100vh-245px)] grid place-content-center">
             <Loader color="myColor.9" />
           </div>
         )}
