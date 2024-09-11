@@ -74,8 +74,8 @@ const DashboardNavigation = () => {
     if (createSection) {
       newNavs.push({
         name: "Sections",
-        active: <BsClipboard2PulseFill size={"26px"} />,
-        inactive: <BsClipboard2Pulse size={"26px"} />,
+        active: <MdLocalOffer size={"26px"} />,
+        inactive: <MdOutlineLocalOffer size={"26px"} />,
         link: "/dashboard/sections",
       });
       newPaths.push("sections");
@@ -104,8 +104,8 @@ const DashboardNavigation = () => {
     if (viewLog) {
       newNavs.push({
         name: "Logs",
-        active: <MdLocalOffer size={"26px"} />,
-        inactive: <MdOutlineLocalOffer size={"26px"} />,
+        active: <BsClipboard2PulseFill size={"26px"} />,
+        inactive: <BsClipboard2Pulse size={"26px"} />,
         link: "/dashboard/logs",
       });
       newPaths.push("logs");

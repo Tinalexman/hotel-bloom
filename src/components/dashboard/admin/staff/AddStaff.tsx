@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 
 import { Loader, Modal } from "@mantine/core";
 
@@ -7,13 +7,23 @@ import { FaPerson } from "react-icons/fa6";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 
+import { useCreateStaff } from "@/src/hooks/staffHooks";
+
 interface iAddStaff {
-  username: string;
+  username?: string;
   password: string;
 }
 
 const AddStaff: FC<{ onClose: () => void }> = ({ onClose }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const { loading, success, register } = useCreateStaff();
+
+  useEffect(() => {
+    if (success) {
+      onClose();
+    }
+  }, [success]);
 
   return (
     <Modal.Root opened={true} onClose={onClose} padding={0} top={0} centered>
@@ -41,12 +51,27 @@ const AddStaff: FC<{ onClose: () => void }> = ({ onClose }) => {
                   errors.password = "Required";
                 } else if (values.password.length < 8) {
                   errors.password =
-                    "Password must be more at least 8 characters";
+                    "Password must be at least 8 characters long";
+                } else if (!/[A-Z]/.test(values.password)) {
+                  errors.password =
+                    "Password must contain at least one uppercase letter";
+                } else if (!/[a-z]/.test(values.password)) {
+                  errors.password =
+                    "Password must contain at least one lowercase letter";
+                } else if (!/[0-9]/.test(values.password)) {
+                  errors.password = "Password must contain at least one number";
+                } else if (
+                  !/[!@#$%^&*()_+\-=\[\]{}|;':"\\/?]/.test(values.password)
+                ) {
+                  errors.password = "Password must contain at least one symbol";
                 }
 
                 return errors;
               }}
-              onSubmit={(values, { setSubmitting }) => {}}
+              onSubmit={(values, { setSubmitting }) => {
+                setSubmitting(false);
+                register(values);
+              }}
               validateOnMount={true}
             >
               {({
@@ -55,7 +80,6 @@ const AddStaff: FC<{ onClose: () => void }> = ({ onClose }) => {
                 touched,
                 handleChange,
                 handleBlur,
-                handleSubmit,
                 isSubmitting,
                 isInitialValid,
                 isValid,
@@ -124,7 +148,7 @@ const AddStaff: FC<{ onClose: () => void }> = ({ onClose }) => {
                         : "bg-neutral-light"
                     } rounded mt-2 w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
                   >
-                    {isSubmitting ? <Loader color="white" /> : "Create"}
+                    {loading ? <Loader color="white.6" /> : "Create"}
                   </button>
                 </Form>
               )}
