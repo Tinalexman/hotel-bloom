@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import Logo from "@/public/Logo.png";
 
@@ -21,7 +20,8 @@ import { HiGift, HiOutlineGift } from "react-icons/hi";
 import { MdLocalOffer, MdOutlineLocalOffer } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import Tooltip from "@/src/components/reusable/Tooltip";
-import { SERVEXI_KEY } from "@/src/services/base";
+
+import { useLogout } from "@/src/hooks/authHooks";
 
 export interface iNavigationItem {
   name: string;
@@ -71,7 +71,7 @@ const DashboardNavigation = () => {
   ];
 
   const [hoveredItem, setHoveredItem] = useState<number>(0);
-
+  const router = useRouter();
   const pathName = usePathname();
 
   const determineIndex = () => {
@@ -95,10 +95,13 @@ const DashboardNavigation = () => {
   const page = determineIndex();
   const expanded = useDashboardData((state) => state.expanded);
 
-  const logout = () => {
-    window.localStorage.removeItem(SERVEXI_KEY);
-    window.location.replace("/auth/login");
-  };
+  const { success, logout } = useLogout();
+
+  useEffect(() => {
+    if (success) {
+      router.replace("/auth/login");
+    }
+  }, [success]);
 
   return (
     <div
@@ -140,7 +143,7 @@ const DashboardNavigation = () => {
             <div
               key={i}
               onClick={() => {
-                if (i !== navs.length - 2) {
+                if (i !== navs.length - 1) {
                   window.location.assign(navItem.link);
                 } else {
                   logout();

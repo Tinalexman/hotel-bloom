@@ -34,11 +34,13 @@ export const useLogout = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const { requestApi } = useAxios();
 
-  let logout = async (payload: { email: string; password: string }) => {
+  const { removeToken } = useToken();
+
+  let logout = async () => {
     if (loading) return;
     setLoading(true);
 
-    const { status } = await requestApi("/org/log-out", "PUT", payload);
+    const { status } = await requestApi("/log-out", "PUT");
     setLoading(false);
     setSuccess(status);
 
@@ -46,6 +48,7 @@ export const useLogout = () => {
       toast.error("Something went wrong. Please try again");
     } else {
       clearStaffData();
+      removeToken();
     }
   };
 

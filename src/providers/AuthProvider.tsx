@@ -14,17 +14,8 @@ export default function AuthProvider({
   const pathName = usePathname();
 
   const determineIndex = () => {
-    const current = pathName.split("/")[2];
-    switch (current) {
-      case "scout":
-        return 0;
-      case "player":
-        return 1;
-      case "coach":
-        return 2;
-    }
-
-    return -1;
+    const current = pathName.split("/")[1];
+    return current === "dashboard" ? 1 : -1;
   };
 
   const page = determineIndex();
