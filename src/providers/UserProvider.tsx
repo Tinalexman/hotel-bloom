@@ -1,91 +1,53 @@
 "use client";
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+
+import React, { useEffect } from "react";
+
+import { useCurrentStaffStore } from "@/src/stores/userStore";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function AuthProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathName = usePathname();
-  // const { data, get, success } = useGetPlayer();
+  const router = useRouter();
+  const currentStaff = useCurrentStaffStore((state) => state);
+  const viewLog = useCurrentStaffStore((state) => state.permissions.view_log);
+  const createSection = useCurrentStaffStore(
+    (state) => state.permissions.create_section
+  );
+  const manageInventory = useCurrentStaffStore(
+    (state) => state.permissions.manage_inventory
+  );
+  const manageStaff = useCurrentStaffStore(
+    (state) => state.permissions.manage_staff
+  );
 
-  // useEffect(() => {
-  //   get();
-  //   determineUser();
-  // }, []);
+  useEffect(() => {
+    let home = "";
 
-  // useEffect(() => {
-  //   if (success) {
-  //     const date: string = data?.dob!;
-  //     useCurrentUserStore.setState({
-  //       role: "PLAYER",
-  //       name: data?.fullName,
-  //       image: data?.imageUrl,
-  //     });
+    if (createSection && home.length === 0) {
+      home = "sections";
+    }
+    if (manageInventory && home.length === 0) {
+      home = "inventory";
+    }
 
-  //     const dob = new Date(date);
-  //     const years = getYearDifference(dob, new Date());
+    if (manageStaff && home.length === 0) {
+      home = "staff";
+    }
 
-  //     usePlayerDataStore.setState({
-  //       role: data?.position,
-  //       age: years,
-  //       bio: data?.biography,
-  //       dob: dob,
-  //       email: data?.email,
-  //       nationality: data?.nationality,
-  //       foot: data?.preferredFoot,
-  //       height: Number(data?.height),
-  //       weight: Number(data?.weight),
-  //       recommendedName: "",
-  //       recommendedEmail: "",
-  //       recommendedPhone: "",
-  //       jersey: Number(data?.jerseyNumber),
-  //       status: "",
-  //       fbLink: data?.facebookUrl ?? "",
-  //       igLink: data?.igUrl ?? "",
-  //       xLink: data?.xurl ?? "",
-  //       ttLink: data?.ticTokUrl ?? "",
-  //     });
-  //   }
-  // }, [data, success]);
+    if (viewLog && home.length === 0) {
+      home = "logs";
+    }
 
-  // const determineUser = () => {
-  //   const current = pathName.split("/")[2];
-
-  //   if (current === "player") {
-  //     useCurrentUserStore.setState({
-  //       role: "PLAYER",
-  //       name: "",
-  //     });
-
-  //     usePlayerDataStore.setState({
-  //       role: "",
-  //       age: 0,
-  //       bio: "",
-  //       dob: new Date(),
-  //       nationality: "",
-  //       foot: "",
-  //       height: 0,
-  //       weight: 0,
-  //       recommendedName: "",
-  //       recommendedEmail: "",
-  //       recommendedPhone: "",
-  //       jersey: 0,
-  //       status: "",
-  //       fbLink: "",
-  //       igLink: "",
-  //       xLink: "",
-  //       ttLink: "",
-  //     });
-  //   } else if (current === "scout") {
-  //     useCurrentUserStore.setState({
-  //       role: "SCOUT",
-  //       name: "Josh Fayomi",
-  //     });
-  //   } else if (current === "coach") {
-  //   }
-  // };
+    if (home.length === 0) {
+      toast.error("Permissions not assigned by organization owner");
+    } else {
+      router.replace(`/dashboard/${home}`);
+    }
+  }, [currentStaff]);
 
   return <>{children}</>;
 }
