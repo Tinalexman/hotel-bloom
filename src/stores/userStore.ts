@@ -56,3 +56,12 @@ export function clearStaffData() {
     },
   });
 }
+
+export function isEmptyStaff(staff: iStaff): boolean {
+  return (
+    staff.id === "" &&
+    staff.username === "" &&
+    staff.organization === "" &&
+    staff.organization_name === ""
+  );
+}

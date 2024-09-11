@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 
-import { useCurrentStaffStore } from "@/src/stores/userStore";
+import { isEmptyStaff, useCurrentStaffStore } from "@/src/stores/userStore";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -25,6 +25,10 @@ export default function AuthProvider({
   );
 
   useEffect(() => {
+    if (isEmptyStaff(currentStaff)) return;
+
+    console.log("Continue", currentStaff);
+
     let home = "";
 
     if (createSection && home.length === 0) {

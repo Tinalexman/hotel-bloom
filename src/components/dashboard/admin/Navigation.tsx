@@ -17,7 +17,7 @@ import { useDashboardData } from "@/src/stores/dashboardStore";
 import Tooltip from "@/src/components/reusable/Tooltip";
 
 import { useLogout } from "@/src/hooks/authHooks";
-import { useCurrentStaffStore } from "@/src/stores/userStore";
+import { isEmptyStaff, useCurrentStaffStore } from "@/src/stores/userStore";
 
 export interface iNavigationItem {
   name: string;
@@ -68,6 +68,8 @@ const DashboardNavigation = () => {
   }, [success]);
 
   useEffect(() => {
+    if (isEmptyStaff(currentStaff)) return;
+
     let newNavs: iNavigationItem[] = [];
     let newPaths: string[] = [];
 
