@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-
-import { useLogin } from "@/src/hooks/authHooks";
-
+import React, { useState, useEffect } from "react";
+import { iManualRegisterPayload, useRegister } from "@/src/hooks/authHooks";
 import { Loader } from "@mantine/core";
 import { Form, Formik } from "formik";
 import { IoMail } from "react-icons/io5";
@@ -12,18 +10,18 @@ import { MdVisibility, MdVisibilityOff, MdMapsHomeWork } from "react-icons/md";
 import { FaPerson } from "react-icons/fa6";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Link from "next/link";
-
-interface iManualRegisterPayload {
-  name: string;
-  email: string;
-  password: string;
-  hours: string;
-  username: string;
-}
+import { useRouter } from "next/navigation";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { fn } = useLogin();
+  const { loading, success, data, register } = useRegister();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (success && data) {
+      router.push(`/auth/verify-account?email=${data.email}`);
+    }
+  }, [success, data]);
 
   return (
     <Formik
@@ -32,7 +30,7 @@ const Register = () => {
         password: "",
         name: "",
         username: "",
-        hours: "",
+        shift_hours: "",
       }}
       validate={(values) => {
         const errors: Partial<iManualRegisterPayload> = {};
@@ -47,14 +45,43 @@ const Register = () => {
         if (!values.password) {
           errors.password = "Required";
         } else if (values.password.length < 8) {
-          errors.password = "Password must be more at least 8 characters";
+          errors.password = "Password must be at least 8 characters long";
+        } else if (!/[A-Z]/.test(values.password)) {
+          errors.password =
+            "Password must contain at least one uppercase letter";
+        } else if (!/[a-z]/.test(values.password)) {
+          errors.password =
+            "Password must contain at least one lowercase letter";
+        } else if (!/[0-9]/.test(values.password)) {
+          errors.password = "Password must contain at least one number";
+        } else if (!/[!@#$%^&*()_+\-=\[\]{}|;':"\\/?]/.test(values.password)) {
+          errors.password = "Password must contain at least one symbol";
+        }
+
+        if (!values.username) {
+          errors.username = "Required";
+        } else if (values.username.length < 3) {
+          errors.username = "Username must be more at least 3 characters";
+        }
+
+        if (!values.name) {
+          errors.name = "Required";
+        } else if (values.name.length < 3) {
+          errors.name = "Organization Name must be more at least 3 characters";
+        }
+
+        if (values.shift_hours) {
+          const n = Number(values.shift_hours);
+          if (n > 24 || n < 1) {
+            errors.shift_hours = "Hours must be between 1 and 24";
+          }
         }
 
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        setSubmitting(true);
-        window.location.assign("/dashboard/admin/overview");
+        setSubmitting(false);
+        register(values);
       }}
       validateOnMount={true}
     >
@@ -68,6 +95,7 @@ const Register = () => {
         isSubmitting,
         isInitialValid,
         isValid,
+        setFieldValue,
       }) => (
         <Form
           onSubmit={handleSubmit}
@@ -101,13 +129,18 @@ const Register = () => {
               {errors.name && touched.name && errors.name}
             </p>
           </div>
-          <div className=" mb-4 flex flex-col gap-1 w-full relative">
+          <div className="mb-4 flex flex-col gap-1 w-full relative">
             <input
               type="text"
-              value={values.hours}
-              name="hours"
+              value={values.shift_hours}
+              name="shift_hours"
               placeholder="Enter your shift hours (default is 12)"
-              onChange={handleChange}
+              onChange={(e) => {
+                const res = e.target.value.trim();
+                if (!isNaN(Number(res))) {
+                  setFieldValue("shift_hours", res);
+                }
+              }}
               onBlur={handleBlur}
               className="px-10 w-full"
             />
@@ -116,7 +149,7 @@ const Register = () => {
               size={"22px"}
             />
             <p className="text-error">
-              {errors.hours && touched.hours && errors.hours}
+              {errors.shift_hours && touched.shift_hours && errors.shift_hours}
             </p>
           </div>
 
@@ -197,7 +230,7 @@ const Register = () => {
                   : "bg-neutral-light"
               } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
             >
-              {isSubmitting ? <Loader color="white" /> : "Register"}
+              {loading ? <Loader color="white" /> : "Register"}
             </button>
           </div>
 

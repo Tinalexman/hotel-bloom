@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useLogin } from "@/src/hooks/authHooks";
 
@@ -10,6 +10,7 @@ import { FaPerson } from "react-icons/fa6";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface iManualLoginPayload {
   username: string;
@@ -18,7 +19,14 @@ interface iManualLoginPayload {
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { fn } = useLogin();
+  const { loading, data, login, success } = useLogin();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (success && data) {
+      router.push(`/dashboard/overview`);
+    }
+  }, [success, data]);
 
   return (
     <Formik
@@ -35,14 +43,24 @@ const LoginForm = () => {
         if (!values.password) {
           errors.password = "Required";
         } else if (values.password.length < 8) {
-          errors.password = "Password must be more at least 8 characters";
+          errors.password = "Password must be at least 8 characters long";
+        } else if (!/[A-Z]/.test(values.password)) {
+          errors.password =
+            "Password must contain at least one uppercase letter";
+        } else if (!/[a-z]/.test(values.password)) {
+          errors.password =
+            "Password must contain at least one lowercase letter";
+        } else if (!/[0-9]/.test(values.password)) {
+          errors.password = "Password must contain at least one number";
+        } else if (!/[!@#$%^&*()_+\-=\[\]{}|;':"\\/?]/.test(values.password)) {
+          errors.password = "Password must contain at least one symbol";
         }
 
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        setSubmitting(true);
-        window.location.assign("/dashboard/admin/overview");
+        setSubmitting(false);
+        login(values);
       }}
       validateOnMount={true}
     >
@@ -130,7 +148,7 @@ const LoginForm = () => {
                   : "bg-neutral-light"
               } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
             >
-              {isSubmitting ? <Loader color="white" /> : "Login"}
+              {loading ? <Loader color="white.6" /> : "Login"}
             </button>
             <p className="text-neutral-dark text-center mt-2">
               Don&apos;t have an account?{" "}

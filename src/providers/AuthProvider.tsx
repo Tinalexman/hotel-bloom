@@ -11,30 +11,30 @@ export default function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  // const pathName = usePathname();
+  const pathName = usePathname();
 
-  // const determineIndex = () => {
-  //   const current = pathName.split("/")[2];
-  //   switch (current) {
-  //     case "scout":
-  //       return 0;
-  //     case "player":
-  //       return 1;
-  //     case "coach":
-  //       return 2;
-  //   }
+  const determineIndex = () => {
+    const current = pathName.split("/")[2];
+    switch (current) {
+      case "scout":
+        return 0;
+      case "player":
+        return 1;
+      case "coach":
+        return 2;
+    }
 
-  //   return -1;
-  // };
+    return -1;
+  };
 
-  // const page = determineIndex();
+  const page = determineIndex();
   const router = useRouter();
 
   const { getToken } = useToken();
 
   useEffect(() => {
     const token = getToken();
-    if (token === undefined) {
+    if (token === undefined && page !== -1) {
       toast.error("Please login to continue");
       router.replace("/auth/login");
     }
