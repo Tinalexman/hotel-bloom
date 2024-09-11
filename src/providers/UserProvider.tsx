@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 
 import { isEmptyStaff, useCurrentStaffStore } from "@/src/stores/userStore";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function AuthProvider({
   children,
@@ -12,6 +12,7 @@ export default function AuthProvider({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathName = usePathname();
   const currentStaff = useCurrentStaffStore((state) => state);
   const viewLog = useCurrentStaffStore((state) => state.permissions.view_log);
   const createSection = useCurrentStaffStore(
@@ -27,29 +28,35 @@ export default function AuthProvider({
   useEffect(() => {
     if (isEmptyStaff(currentStaff)) return;
 
-    console.log("Continue", currentStaff);
-
     let home = "";
+    const currentPath = pathName.split("/")[3];
 
-    if (createSection && home.length === 0) {
-      home = "sections";
-    }
-    if (manageInventory && home.length === 0) {
-      home = "inventory";
-    }
+    if (currentPath === undefined) {
+      if (createSection && home.length === 0) {
+        home = "sections";
+      }
 
-    if (manageStaff && home.length === 0) {
-      home = "staff";
-    }
+      if (manageInventory && home.length === 0) {
+        home = "inventory";
+      }
 
-    if (viewLog && home.length === 0) {
-      home = "logs";
+      if (manageStaff && home.length === 0) {
+        home = "staff";
+      }
+
+      if (viewLog && home.length === 0) {
+        home = "logs";
+      }
+    } else {
+      home = currentPath;
     }
 
     if (home.length === 0) {
       toast.error("Permissions not assigned by organization owner");
     } else {
-      router.replace(`/dashboard/${home}`);
+      // if (currentPath === undefined) {
+      //   router.replace(`/dashboard/${home}`);
+      // }
     }
   }, [currentStaff]);
 

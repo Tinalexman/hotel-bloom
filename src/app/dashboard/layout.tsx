@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 
 import DashboardNavigation from "@/src/components/dashboard/admin/Navigation";
 import { useDashboardData } from "@/src/stores/dashboardStore";
