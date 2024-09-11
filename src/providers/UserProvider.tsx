@@ -29,7 +29,9 @@ export default function AuthProvider({
     if (isEmptyStaff(currentStaff)) return;
 
     let home = "";
-    const currentPath = pathName.split("/")[3];
+    const currentPath = pathName.split("/")[2];
+
+    // CHECK IF USER IS AUTHORIZED TO GO TO THE ROUTE INDICIATED BY CURRENT PATH
 
     if (currentPath === undefined) {
       if (createSection && home.length === 0) {
@@ -47,16 +49,14 @@ export default function AuthProvider({
       if (viewLog && home.length === 0) {
         home = "logs";
       }
-    } else {
-      home = currentPath;
     }
 
-    if (home.length === 0) {
+    if (home === "") {
       toast.error("Permissions not assigned by organization owner");
     } else {
-      // if (currentPath === undefined) {
-      //   router.replace(`/dashboard/${home}`);
-      // }
+      if (currentPath === undefined) {
+        router.replace(`/dashboard/${home}`);
+      }
     }
   }, [currentStaff]);
 
