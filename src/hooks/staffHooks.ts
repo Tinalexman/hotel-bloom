@@ -16,12 +16,10 @@ export interface iUpdateStaffPayload {
 }
 
 export interface iAddPermissionPayload {
-  permission:
-    | "View Log"
-    | "Create Section"
-    | "Manage Inventory"
-    | "Manage Section Inventory";
+  permission: string;
   user: string;
+  section?: string;
+  update_access?: boolean;
 }
 
 export const useCreateStaff = () => {
@@ -61,7 +59,7 @@ export const useUpdateStaff = () => {
     if (loading) return;
     setLoading(true);
 
-    const { status } = await requestApi(
+    const { data, status } = await requestApi(
       `/org/staffs/${payload.staff_id}`,
       "PUT",
       payload
@@ -73,7 +71,9 @@ export const useUpdateStaff = () => {
       toast.success("Staff Details Updated");
       useDashboardData.getState().refresh();
     } else {
-      toast.error("Something went wrong. Please try again");
+      toast.error(
+        data.response.data.message ?? "Something went wrong. Please try again"
+      );
     }
   };
 
@@ -153,7 +153,7 @@ export const useAddStaffPermission = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const { requestApi } = useAxios();
 
-  let add = async (payload: iCreateStaffPayload) => {
+  let add = async (payload: iAddPermissionPayload) => {
     if (loading) return;
     setLoading(true);
 
@@ -167,6 +167,7 @@ export const useAddStaffPermission = () => {
 
     if (status) {
       toast.success("Permissions Added");
+      useDashboardData.getState().refresh();
     } else {
       toast.error("Something went wrong. Please try again");
     }

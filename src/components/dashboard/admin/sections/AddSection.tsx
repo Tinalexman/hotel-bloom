@@ -1,11 +1,21 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect } from "react";
 
 import { Loader, Modal } from "@mantine/core";
 
 import { Formik, Form } from "formik";
 import { MdLocalOffer } from "react-icons/md";
 
+import { useCreateSection } from "@/src/hooks/sectionHooks";
+
 const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { loading, success, register } = useCreateSection();
+
+  useEffect(() => {
+    if (success) {
+      onClose();
+    }
+  }, [success]);
+
   return (
     <Modal.Root opened={true} onClose={onClose} padding={0} top={0} centered>
       <Modal.Overlay />
@@ -33,7 +43,10 @@ const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
 
                 return errors;
               }}
-              onSubmit={(values, { setSubmitting }) => {}}
+              onSubmit={(values, { setSubmitting }) => {
+                setSubmitting(false);
+                register(values.name);
+              }}
               validateOnMount={true}
             >
               {({

@@ -9,11 +9,12 @@ import { Loader } from "@mantine/core";
 import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import AddSection from "./AddSection";
+import { useGetAllSections } from "@/src/hooks/sectionHooks";
+import { MdLocalOffer } from "react-icons/md";
 
 const Sections = () => {
-  const [sections, setSections] = useState<any[]>([]);
   const [addSection, shouldAddSection] = useState<boolean>(false);
-  const loading = false;
+  const { data: sections, loading } = useGetAllSections();
 
   return (
     <>
@@ -22,7 +23,8 @@ const Sections = () => {
         <div className="w-full h-[100px] flex justify-between items-center">
           <div className="flex flex-col">
             <h2 className="big-4 font-medium text-monokai">
-              Sections <span className="big-3 font-bold">(0)</span>
+              Sections{" "}
+              <span className="big-3 font-bold">({sections.length})</span>
             </h2>
             <p className="text-lg text-neutral-dark">
               Manage all your sections
@@ -44,7 +46,23 @@ const Sections = () => {
           </div>
         </div>
         {!loading && sections.length > 0 && (
-          <div className="w-full grid grid-cols-4 gap-6 px-4 py-[5px]">{}</div>
+          <div className="w-full grid grid-cols-5 gap-6">
+            {sections.map((sc, i) => (
+              <div
+                key={i}
+                className="w-full cursor-pointer overflow-hidden h-40 bg-neutral-light rounded-lg shadow-custom flex flex-col p-2 relative"
+              >
+                <h2 className="text-xl font-bold text-monokai">{sc.name}</h2>
+                <p className="text-lg underline text-monokai">
+                  {sc.inventories.length} items
+                </p>
+                <MdLocalOffer
+                  className="text-secondary absolute bottom-0 -left-0 -rotate-90"
+                  size={64}
+                />
+              </div>
+            ))}
+          </div>
         )}
         {!loading && sections.length === 0 && (
           <div className="w-full h-[calc(100vh-100px)] flex flex-col justify-center gap-5 items-center">

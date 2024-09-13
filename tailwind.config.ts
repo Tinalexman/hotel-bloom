@@ -22,7 +22,7 @@ const config: Config = {
         monokai: "#131313",
         offWhite: "#F9F9F9",
         "monokai-faded": "#161616",
-        "neutral-light": "#CCCCCC",
+        "neutral-light": "#EEEEEE",
         "neutral-dark": "#202020",
         input: "#F4F4F4",
         "contrast-base": "#474747",

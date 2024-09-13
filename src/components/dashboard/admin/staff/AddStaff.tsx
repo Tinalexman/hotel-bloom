@@ -16,7 +16,6 @@ interface iAddStaff {
 
 const AddStaff: FC<{ onClose: () => void }> = ({ onClose }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
   const { loading, success, register } = useCreateStaff();
 
   useEffect(() => {

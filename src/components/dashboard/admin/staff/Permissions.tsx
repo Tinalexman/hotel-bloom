@@ -9,6 +9,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { iStaff } from "@/src/stores/userStore";
 
 import CustomCheckBox from "@/src/components/reusable/CustomCheckbox";
+import { useAddStaffPermission } from "@/src/hooks/staffHooks";
 
 interface iSectionValue {
   name: string;
@@ -34,6 +35,10 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
       update: staff.permissions.managed_sections[s].update_access,
     }))
   );
+
+  const [index, setIndex] = useState<string>("");
+
+  const { loading, success, add } = useAddStaffPermission();
 
   return (
     <Modal.Root
@@ -80,6 +85,7 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                             const newPermissions = [...initialPermissions];
                             newPermissions[i] = !newPermissions[i];
                             setInitialPermissions(newPermissions);
+                            setIndex(p);
                           }}
                         />
                       </td>
@@ -134,9 +140,13 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
             </div>
             <button
               type="submit"
+              onClick={() => {
+                if (index === "") return;
+                add({ permission: index, user: staff.id });
+              }}
               className={` bg-secondary rounded mt-2 w-[50%] h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
             >
-              Update Permissions
+              {loading ? <Loader color="white.6" /> : "Update Permissions"}
             </button>
           </div>
         </Modal.Content>
