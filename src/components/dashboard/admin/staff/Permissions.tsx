@@ -8,6 +8,8 @@ import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { iStaff } from "@/src/stores/userStore";
 
+import CustomCheckBox from "@/src/components/reusable/CustomCheckbox";
+
 interface iSectionValue {
   name: string;
   view: boolean;
@@ -50,7 +52,8 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
             <div className="w-full">
               <h2 className="font-bold big-2">Staff Permissions</h2>
               <p className="text-neutral-dark text-lg">
-                View and update the permissions of your staff
+                View and update the permissions of{" "}
+                <span className="font-semibold">{staff.username}</span>
               </p>
             </div>
             <div className="w-full flex flex-col gap-5">
@@ -58,7 +61,7 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                 <thead className="w-full">
                   <tr className="w-full">
                     <th>PERMISSIONS</th>
-                    <th>Allowed</th>
+                    <th>ALLOWED</th>
                   </tr>
                 </thead>
                 <tbody className="w-full">
@@ -71,14 +74,11 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                     <tr key={i} className="w-full">
                       <td className="w-full">{p}</td>
                       <td>
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          checked={initialPermissions[i]}
-                          onChange={(e) => {
+                        <CustomCheckBox
+                          value={initialPermissions[i]}
+                          onChange={() => {
                             const newPermissions = [...initialPermissions];
-                            newPermissions[i] = e.target.checked;
+                            newPermissions[i] = !newPermissions[i];
                             setInitialPermissions(newPermissions);
                           }}
                         />

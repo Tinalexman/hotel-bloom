@@ -39,6 +39,7 @@ export const useCreateStaff = () => {
 
     if (status) {
       toast.success("New Staff Created");
+      useDashboardData.getState().refresh();
     } else {
       toast.error("Something went wrong. Please try again");
     }
@@ -56,7 +57,7 @@ export const useUpdateStaff = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const { requestApi } = useAxios();
 
-  let register = async (payload: iUpdateStaffPayload) => {
+  let update = async (payload: iUpdateStaffPayload) => {
     if (loading) return;
     setLoading(true);
 
@@ -70,6 +71,7 @@ export const useUpdateStaff = () => {
 
     if (status) {
       toast.success("Staff Details Updated");
+      useDashboardData.getState().refresh();
     } else {
       toast.error("Something went wrong. Please try again");
     }
@@ -78,16 +80,16 @@ export const useUpdateStaff = () => {
   return {
     loading,
     success,
-    register,
+    update,
   };
 };
 
-export const useDeleteStaff = () => {
+export const useDeleteStaff = (staff_id: string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const { requestApi } = useAxios();
 
-  let del = async (staff_id: string) => {
+  let del = async () => {
     if (loading) return;
     setLoading(true);
 
@@ -97,6 +99,7 @@ export const useDeleteStaff = () => {
 
     if (status) {
       toast.success("Staff Deleted");
+      useDashboardData.getState().refresh();
     } else {
       toast.error("Something went wrong. Please try again");
     }
@@ -154,7 +157,11 @@ export const useAddStaffPermission = () => {
     if (loading) return;
     setLoading(true);
 
-    const { status } = await requestApi("/org/staffs", "POST", payload);
+    const { status } = await requestApi(
+      "/org/staffs/permissions",
+      "POST",
+      payload
+    );
     setLoading(false);
     setSuccess(status);
 

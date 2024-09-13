@@ -31,32 +31,43 @@ export default function AuthProvider({
     let home = "";
     const currentPath = pathName.split("/")[2];
 
-    // CHECK IF USER IS AUTHORIZED TO GO TO THE ROUTE INDICIATED BY CURRENT PATH
-
     if (currentPath === undefined) {
-      if (createSection && home.length === 0) {
+      if (createSection && home === "") {
         home = "sections";
       }
 
-      if (manageInventory && home.length === 0) {
+      if (manageInventory && home === "") {
         home = "inventory";
       }
 
-      if (manageStaff && home.length === 0) {
+      if (manageStaff && home === "") {
         home = "staff";
       }
 
-      if (viewLog && home.length === 0) {
+      if (viewLog && home === "") {
         home = "logs";
+      }
+    } else {
+      let invalidPath: boolean = false;
+      if (!createSection && currentPath === "sections") {
+        invalidPath = true;
+      } else if (!manageInventory && currentPath === "inventory") {
+        invalidPath = true;
+      } else if (!manageStaff && currentPath === "staff") {
+        invalidPath = true;
+      } else if (!viewLog && currentPath === "logs") {
+        invalidPath = true;
+      }
+
+      if (invalidPath) {
+        toast.error("You do not have permissions to view this page");
+        router.back();
+        return;
       }
     }
 
-    if (home === "") {
-      toast.error("Permissions not assigned by organization owner");
-    } else {
-      if (currentPath === undefined) {
-        router.replace(`/dashboard/${home}`);
-      }
+    if (home !== "") {
+      router.replace(`/dashboard/${home}`);
     }
   }, [currentStaff]);
 

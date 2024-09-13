@@ -1,16 +1,26 @@
-import { convertDate } from "@/src/functions/dateFunctions";
 import React, { FC, useState } from "react";
-import { FaStreetView } from "react-icons/fa6";
-import { MdEdit } from "react-icons/md";
-import Image from "next/image";
 import { iStaff } from "@/src/stores/userStore";
 
 import Permissions from "./Permissions";
+import UpdateStaff from "./UpdateStaff";
+import DeleteStaff from "./DeleteStaff";
+
+interface iStaffDetail {
+  staff: iStaff | null;
+  edit: boolean;
+  permission: boolean;
+  del: boolean;
+}
 
 const Table: FC<{
   staff: iStaff[];
 }> = ({ staff }) => {
-  const [currentStaff, setCurrentStaff] = useState<iStaff | null>(null);
+  const [detail, setDetail] = useState<iStaffDetail>({
+    staff: null,
+    edit: false,
+    permission: false,
+    del: false,
+  });
 
   return (
     <>
@@ -21,6 +31,7 @@ const Table: FC<{
             <th>USERNAME</th>
             <th>ORGANIZATION</th>
             <th>PERMISSIONS</th>
+            <th>DETAILS</th>
           </tr>
         </thead>
         <tbody>
@@ -37,25 +48,35 @@ const Table: FC<{
                   <h2 className="text-monokai font-medium">{i + 1}.</h2>
                 </td>
                 <td>
-                  <div className="flex gap-2 w-fit items-center">
-                    <Image
-                      src={`https://gravatar.com/avatar/${st.id}?s=400&d=robohash&r=x`}
-                      alt="admin-picture"
-                      width={40}
-                      height={40}
-                      className={`object-cover size-10 rounded-[10px] shadow-custom-dark`}
-                    />
-                    <h2 className="text-monokai font-medium">{st.username}</h2>
-                  </div>
+                  <h2 className="text-monokai font-medium">{st.username}</h2>
                 </td>
                 <td className="text-monokai">{st.organization_name}</td>
-                <td className="flex w-fit gap-3 items-center">
-                  <p className="text-monokai">{count} permissions</p>
+                <td>
                   <button
-                    onClick={() => setCurrentStaff(st)}
-                    className="flex gap-2 items-center font-bold text-secondary "
+                    onClick={() =>
+                      setDetail({ ...detail, staff: st, permission: true })
+                    }
+                    className="flex gap-2 items-center text-secondary underline font-bold "
                   >
-                    Modify
+                    {count} permission{count !== 1 ? "s" : ""}
+                  </button>
+                </td>
+                <td className="flex w-fit gap-5">
+                  <button
+                    onClick={() =>
+                      setDetail({ ...detail, staff: st, edit: true })
+                    }
+                    className="flex gap-2 items-center text-monokai font-bold "
+                  >
+                    <h6>Update</h6>
+                  </button>
+                  <button
+                    onClick={() =>
+                      setDetail({ ...detail, staff: st, del: true })
+                    }
+                    className="flex gap-2 items-center text-error font-bold "
+                  >
+                    <h6>Delete</h6>
                   </button>
                 </td>
               </tr>
@@ -63,10 +84,24 @@ const Table: FC<{
           })}
         </tbody>
       </table>
-      {currentStaff !== null && (
+      {detail.staff !== null && detail.permission && (
         <Permissions
-          staff={currentStaff}
-          onClose={() => setCurrentStaff(null)}
+          staff={detail.staff}
+          onClose={() =>
+            setDetail({ ...detail, staff: null, permission: false })
+          }
+        />
+      )}
+      {detail.staff !== null && detail.edit && (
+        <UpdateStaff
+          staff={detail.staff}
+          onClose={() => setDetail({ ...detail, staff: null, edit: false })}
+        />
+      )}
+      {detail.staff !== null && detail.del && (
+        <DeleteStaff
+          staff={detail.staff}
+          onClose={() => setDetail({ ...detail, staff: null, edit: false })}
         />
       )}
     </>
