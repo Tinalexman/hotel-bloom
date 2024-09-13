@@ -10,7 +10,6 @@ import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 
 const Inventory = () => {
-
   const [items, setItems] = useState<any[]>([]);
 
   const loading = false;
@@ -24,7 +23,7 @@ const Inventory = () => {
               Inventory <span className="big-3 font-bold">(0)</span>
             </h2>
             <p className="text-lg text-neutral-dark">
-              Manage all your contents
+              Manage all your section inventories
             </p>
           </div>
           <div className="w-fit gap-3 flex items-center">

@@ -70,6 +70,26 @@ export function convertDateWithSlashes(date: Date) {
   }`;
 }
 
+export function convertDateWithSlashesAndTime(date: Date) {
+  let isPM = date.getHours() > 11;
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  return `${date.getDate() < 10 ? "0" : ""}${date.getDate()}/${
+    date.getMonth() < 10 ? "0" : ""
+  }${date.getMonth()}/${date.getFullYear()}, ${hours % 12 < 10 ? "0" : ""}${
+    hours === 0 || hours % 12 === 0 ? "12" : hours % 12
+  }:${minutes < 10 ? "0" : ""}${minutes} ${isPM ? "PM" : "AM"}`;
+}
+
+export function convertTime(date: Date) {
+  let isPM = date.getHours() > 11;
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  return `${hours !== 12 && hours % 12 < 10 ? "0" : ""}${
+    hours === 0 || hours % 12 === 0 ? "12" : hours % 12
+  }:${minutes < 10 ? "0" : ""}${minutes} ${isPM ? "PM" : "AM"}`;
+}
+
 export function convertDateWithJustSlashes(date: Date) {
   return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
 }
