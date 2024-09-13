@@ -14,19 +14,13 @@ export const useGetAllLogs = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const { requestApi } = useAxios();
 
-  const refresh = useDashboardData((state) => state.shouldRefresh);
-
-  let get = async (page?: number, limit?: number) => {
+  let get = async (page?: string) => {
     if (loading) return;
     setLoading(true);
 
     let query = "";
-    if (page && limit) {
-      query = `?page=${page}&limit=${limit}`;
-    } else if (page) {
-      query = `?page=${page}`;
-    } else if (limit) {
-      query = `?limit=${limit}`;
+    if (page) {
+      query = `?page=${page}&limit=10`;
     }
 
     const { data, status } = await requestApi(`/org/logs${query}`, "GET");
@@ -42,12 +36,13 @@ export const useGetAllLogs = () => {
   };
 
   useEffect(() => {
-    get();
-  }, [refresh]);
+    get("1");
+  }, []);
 
   return {
     loading,
     success,
     data,
+    get,
   };
 };

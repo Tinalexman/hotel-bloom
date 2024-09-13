@@ -18,6 +18,7 @@ import Tooltip from "@/src/components/reusable/Tooltip";
 
 import { useLogout } from "@/src/hooks/authHooks";
 import { isEmptyStaff, useCurrentStaffStore } from "@/src/stores/userStore";
+import Logout from "./Logout";
 
 export interface iNavigationItem {
   name: string;
@@ -59,13 +60,7 @@ const DashboardNavigation = () => {
   const page = determineIndex();
   const expanded = useDashboardData((state) => state.expanded);
 
-  const { success, logout } = useLogout();
-
-  useEffect(() => {
-    if (success) {
-      router.replace("/auth/login");
-    }
-  }, [success]);
+  const [logout, shouldLogout] = useState<boolean>(false);
 
   useEffect(() => {
     if (isEmptyStaff(currentStaff)) return;
@@ -125,95 +120,98 @@ const DashboardNavigation = () => {
   }, [currentStaff]);
 
   return (
-    <div
-      className={`${
-        expanded ? "w-[300px] pl-5" : "w-[70px] px-3"
-      } h-[100vh] z-10 pt-5 duration-300 transition-all ease-in flex flex-col gap-8 items-center shadow-custom-black bg-white`}
-    >
-      <div className="relative w-full flex justify-center pt-10">
-        <div
-          className={`${
-            expanded ? "scale-100" : "scale-0"
-          } w-fit object-cover duration-300 transition-all ease-out flex flex-col items-center`}
-        >
-          <Image
-            src={Logo}
-            alt="logo"
-            className="w-[300px] h-auto object-cover"
-          />
-        </div>
+    <>
+      <div
+        className={`${
+          expanded ? "w-[300px] pl-5" : "w-[70px] px-3"
+        } h-[100vh] z-10 pt-5 duration-300 transition-all ease-in flex flex-col gap-8 items-center shadow-custom-black bg-white`}
+      >
+        <div className="relative w-full flex justify-center pt-10">
+          <div
+            className={`${
+              expanded ? "scale-100" : "scale-0"
+            } w-fit object-cover duration-300 transition-all ease-out flex flex-col items-center`}
+          >
+            <Image
+              src={Logo}
+              alt="logo"
+              className="w-[300px] h-auto object-cover"
+            />
+          </div>
 
-        <div
-          onClick={() => {
-            useDashboardData.setState({ expanded: !expanded });
-          }}
-          className={`cursor-pointer absolute ${
-            expanded ? "left-[80%]" : "left-3"
-          } -top-3 duration-300 transition-all ease-out`}
-        >
-          {expanded ? (
-            <BiCollapse size={"26px"} className="text-monokai" />
-          ) : (
-            <BiExpand size={"26px"} className="text-monokai" />
-          )}
+          <div
+            onClick={() => {
+              useDashboardData.setState({ expanded: !expanded });
+            }}
+            className={`cursor-pointer absolute ${
+              expanded ? "left-[80%]" : "left-3"
+            } -top-3 duration-300 transition-all ease-out`}
+          >
+            {expanded ? (
+              <BiCollapse size={"26px"} className="text-monokai" />
+            ) : (
+              <BiExpand size={"26px"} className="text-monokai" />
+            )}
+          </div>
         </div>
-      </div>
-      <div className={`flex flex-col w-full gap-2`}>
-        {navs.map((navItem: iNavigationItem, i: number) => {
-          return (
-            <div
-              key={i}
-              onClick={() => {
-                if (i !== navs.length - 1) {
-                  window.location.assign(navItem.link);
-                } else {
-                  logout();
-                }
-              }}
-              className="flex w-full gap-[6px] items-center"
-            >
+        <div className={`flex flex-col w-full gap-2`}>
+          {navs.map((navItem: iNavigationItem, i: number) => {
+            return (
               <div
-                onMouseEnter={() => {
-                  if (hoveredItem !== i) {
-                    setHoveredItem(i);
+                key={i}
+                onClick={() => {
+                  if (i !== navs.length - 1) {
+                    window.location.assign(navItem.link);
+                  } else {
+                    shouldLogout(true);
                   }
                 }}
-                onMouseLeave={() => setHoveredItem(-1)}
-                className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer font-medium ${
-                  page === i &&
-                  "bg-secondary text-white shadow-custom-black font-bold"
-                } text-monokai hover:scale-105 scale-100 transition-all ease-out duration-200 relative`}
+                className="flex w-full gap-[6px] items-center"
               >
-                <div style={{ fontSize: "26px" }}>
-                  {page === i && navItem.active}
-                  {page !== i && navItem.inactive}
-                </div>
-                <h2
-                  style={{
-                    transitionDelay: `${i + 3}00ms`,
+                <div
+                  onMouseEnter={() => {
+                    if (hoveredItem !== i) {
+                      setHoveredItem(i);
+                    }
                   }}
-                  className={`whitespace-pre  duration-500 ${
-                    !expanded && "opacity-0 translate-x-28 overflow-hidden "
-                  }`}
+                  onMouseLeave={() => setHoveredItem(-1)}
+                  className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer font-medium ${
+                    page === i &&
+                    "bg-secondary text-white shadow-custom-black font-bold"
+                  } text-monokai hover:scale-105 scale-100 transition-all ease-out duration-200 relative`}
                 >
-                  {navItem.name}
-                </h2>
-                <Tooltip
-                  text={navItem.name}
-                  visible={!expanded && hoveredItem === i}
+                  <div style={{ fontSize: "26px" }}>
+                    {page === i && navItem.active}
+                    {page !== i && navItem.inactive}
+                  </div>
+                  <h2
+                    style={{
+                      transitionDelay: `${i + 3}00ms`,
+                    }}
+                    className={`whitespace-pre  duration-500 ${
+                      !expanded && "opacity-0 translate-x-28 overflow-hidden "
+                    }`}
+                  >
+                    {navItem.name}
+                  </h2>
+                  <Tooltip
+                    text={navItem.name}
+                    visible={!expanded && hoveredItem === i}
+                  />
+                </div>
+
+                <div
+                  className={`w-[6px] h-8 rounded-bl-[4px] rounded-tl-[4px] ${
+                    page === i && "bg-secondary"
+                  }`}
                 />
               </div>
-
-              <div
-                className={`w-[6px] h-8 rounded-bl-[4px] rounded-tl-[4px] ${
-                  page === i && "bg-secondary"
-                }`}
-              />
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+      {logout && <Logout onClose={() => shouldLogout(false)} />}
+    </>
   );
 };
 

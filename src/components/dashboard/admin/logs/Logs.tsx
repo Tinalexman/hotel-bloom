@@ -3,20 +3,43 @@
 import { useGetAllLogs } from "@/src/hooks/logHooks";
 
 import { Loader } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 
 import { MdRefresh } from "react-icons/md";
 
 import Image from "next/image";
 import Void from "@/public/Void.png";
 import { useDashboardData } from "@/src/stores/dashboardStore";
-import {
-  convertDate,
-  convertDateWithSlashesAndTime,
-} from "@/src/functions/dateFunctions";
+import { convertDateWithSlashesAndTime } from "@/src/functions/dateFunctions";
+
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import toast from "react-hot-toast";
 
 const Logs = () => {
-  const { loading, data } = useGetAllLogs();
+  const { loading, data, get } = useGetAllLogs();
+  const [page, setPage] = useState<string>("1");
+
+  const onPrev = () => {
+    if (page === "1") {
+      toast.error("This is the first page");
+      return;
+    }
+
+    const newPage = (parseInt(page) - 1).toString();
+    setPage(newPage);
+    get(newPage);
+  };
+
+  const onNext = () => {
+    if (page === Math.ceil(data.total / 10).toString()) {
+      toast.error("This is the last page");
+      return;
+    }
+
+    const newPage = (parseInt(page) + 1).toString();
+    setPage(newPage);
+    get(newPage);
+  };
 
   return (
     <div className="w-full h-full pt-5 flex flex-col">
@@ -29,9 +52,46 @@ const Logs = () => {
             Read what your staff members are doing
           </p>
         </div>
-        <div className="w-fit gap-3 flex items-center">
+        <div className="w-fit gap-5 flex items-center">
+          <div className="w-fit flex items-center gap-2">
+            <button
+              onClick={onPrev}
+              className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
+            >
+              <IoIosArrowBack size={"26px"} />
+            </button>
+
+            <input
+              type="text"
+              value={page}
+              placeholder="Page"
+              className="w-[50px] rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
+              onChange={(e) => {
+                const res = e.target.value.trim();
+                let n = Number(res);
+                if (!isNaN(n)) {
+                  if (n < 0) {
+                    toast.error("Invalid Page Number");
+                    setPage("1");
+                    return;
+                  } else {
+                    n > Math.ceil(data.total / 10)
+                      ? setPage("1")
+                      : setPage(n.toString());
+                  }
+                }
+              }}
+            />
+
+            <button
+              onClick={onNext}
+              className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
+            >
+              <IoIosArrowForward size={"26px"} />
+            </button>
+          </div>
           <button
-            onClick={() => useDashboardData.getState().refresh()}
+            onClick={() => get(page)}
             className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
           >
             <MdRefresh size={"26px"} />
