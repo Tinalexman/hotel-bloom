@@ -66,7 +66,7 @@ export default function AuthProvider({
       }
     }
 
-    if (home !== "") {
+    if (home !== "" && currentPath === undefined) {
       router.replace(`/dashboard/${home}`);
     }
   }, [currentStaff]);
