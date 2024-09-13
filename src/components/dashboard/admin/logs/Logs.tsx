@@ -61,27 +61,30 @@ const Logs = () => {
               <IoIosArrowBack size={"26px"} />
             </button>
 
-            <input
-              type="text"
-              value={page}
-              placeholder="Page"
-              className="w-[50px] rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
-              onChange={(e) => {
-                const res = e.target.value.trim();
-                let n = Number(res);
-                if (!isNaN(n)) {
-                  if (n < 0) {
-                    toast.error("Invalid Page Number");
-                    setPage("1");
-                    return;
-                  } else {
-                    n > Math.ceil(data.total / 10)
-                      ? setPage("1")
-                      : setPage(n.toString());
+            <div className="flex w-fit gap-1 items-center">
+              <input
+                type="text"
+                value={page}
+                placeholder="Page"
+                className="w-[40px] rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
+                onChange={(e) => {
+                  const res = e.target.value.trim();
+                  let n = Number(res);
+                  if (!isNaN(n)) {
+                    if (n < 0) {
+                      toast.error("Invalid Page Number");
+                      setPage("1");
+                      return;
+                    } else {
+                      n > Math.ceil(data.total / 10)
+                        ? setPage("1")
+                        : setPage(n.toString());
+                    }
                   }
-                }
-              }}
-            />
+                }}
+              />
+              <p className="text-monokai">of {Math.ceil(data.total / 10)}</p>
+            </div>
 
             <button
               onClick={onNext}
@@ -99,7 +102,7 @@ const Logs = () => {
         </div>
       </div>
       {!loading && (
-        <div className="w-full max-h-[calc(100vh-245px)] overflow-y-scroll scrollbar-thin">
+        <div className="w-full max-h-[calc(100vh-245px)] overflow-y-scroll scrollbar-custom">
           {data.total > 0 && (
             <div className="flex flex-col gap-5 ">
               {data.logs.map((lg, i) => (
