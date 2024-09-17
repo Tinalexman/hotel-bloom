@@ -16,7 +16,7 @@ export interface iUpdateStaffPayload {
 }
 
 export interface iAddPermissionPayload {
-  permission: string;
+  permission: string[];
   user: string;
   section?: string;
   update_access?: boolean;
@@ -158,7 +158,7 @@ export const useAddStaffPermission = () => {
     setLoading(true);
 
     const { status } = await requestApi(
-      "/org/staffs/permissions",
+      `/org/staffs/permissions`,
       "POST",
       payload
     );
@@ -166,8 +166,7 @@ export const useAddStaffPermission = () => {
     setSuccess(status);
 
     if (status) {
-      toast.success("Permissions Added");
-      useDashboardData.getState().refresh();
+      toast.success("Permission Added");
     } else {
       toast.error("Something went wrong. Please try again");
     }
@@ -177,5 +176,40 @@ export const useAddStaffPermission = () => {
     loading,
     success,
     add,
+  };
+};
+
+export const useRemoveStaffPermission = (staff_id: string) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const { requestApi } = useAxios();
+
+  let remove = async (permission: string, sectionID?: string) => {
+    if (loading) return;
+    setLoading(true);
+
+    let query = "";
+    if (sectionID && sectionID) {
+      query = `&section=${sectionID}`;
+    }
+
+    const { status } = await requestApi(
+      `/org/staffs/permissions/${staff_id}?permission=${permission}${query}`,
+      "DELETE"
+    );
+    setLoading(false);
+    setSuccess(status);
+
+    if (status) {
+      toast.success("Permission Removed");
+    } else {
+      toast.error("Something went wrong. Please try again");
+    }
+  };
+
+  return {
+    loading,
+    success,
+    remove,
   };
 };

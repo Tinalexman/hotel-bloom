@@ -9,8 +9,7 @@ import { MdRefresh } from "react-icons/md";
 
 import Image from "next/image";
 import Void from "@/public/Void.png";
-import { useDashboardData } from "@/src/stores/dashboardStore";
-import { convertDateWithSlashesAndTime } from "@/src/functions/dateFunctions";
+import { convertTime, convertDate } from "@/src/functions/dateFunctions";
 
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import toast from "react-hot-toast";
@@ -41,6 +40,12 @@ const Logs = () => {
     get(newPage);
   };
 
+  const onEnterPressed = (event: any) => {
+    if (event.key === "Enter") {
+      get(page);
+    }
+  };
+
   return (
     <div className="w-full h-full pt-5 flex flex-col">
       <div className="flex h-[100px] justify-between items-center">
@@ -66,6 +71,7 @@ const Logs = () => {
                 type="text"
                 value={page}
                 placeholder="Page"
+                onKeyDown={onEnterPressed}
                 className="w-[40px] rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
                 onChange={(e) => {
                   const res = e.target.value.trim();
@@ -116,8 +122,12 @@ const Logs = () => {
                   <h2 className="font-semibold">{lg.action}</h2>
                   <h3 className="font-medium text-sm">
                     Timestamp:{" "}
-                    <span className="font-medium">
-                      {convertDateWithSlashesAndTime(new Date(lg.created_at))}
+                    <span className="font-semibold">
+                      {convertTime(new Date(lg.created_at))}
+                    </span>
+                    <span className="font-normal">{" on "}</span>
+                    <span className="font-semibold">
+                      {convertDate(new Date(lg.created_at))}
                     </span>
                   </h3>
                 </div>

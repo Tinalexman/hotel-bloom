@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 
 import { Loader, Modal } from "@mantine/core";
 
@@ -9,36 +9,143 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { iStaff } from "@/src/stores/userStore";
 
 import CustomCheckBox from "@/src/components/reusable/CustomCheckbox";
-import { useAddStaffPermission } from "@/src/hooks/staffHooks";
+import {
+  useAddStaffPermission,
+  useRemoveStaffPermission,
+} from "@/src/hooks/staffHooks";
+import { useGetAllSections } from "@/src/hooks/sectionHooks";
 
 interface iSectionValue {
+  id: string;
   name: string;
-  view: boolean;
   update: boolean;
 }
+
+const allPermissions: string[] = [
+  "View Log",
+  "Create Section",
+  "Manage Inventory",
+  // "Manage Staff",
+  "Manage Section Inventory",
+];
+
+const allPermissionsLower: string[] = [
+  "view_log",
+  "create_section",
+  "manage_inventory",
+  // "manage_staff",
+  "manage_section_inventory",
+];
 
 const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
   staff,
   onClose,
 }) => {
+  const [hasSections, setHasSections] = useState<boolean>(
+    staff.permissions.managed_sections.length > 0
+  );
+
   const [initialPermissions, setInitialPermissions] = useState<boolean[]>([
     staff.permissions.view_log,
     staff.permissions.create_section,
     staff.permissions.manage_inventory,
-    staff.permissions.manage_staff,
+    // staff.permissions.manage_staff,
+    hasSections,
   ]);
 
   const [sectionPermissions, setSectionPermissions] = useState<iSectionValue[]>(
-    Array(staff.permissions.managed_sections.length).map((s) => ({
-      name: staff.permissions.managed_sections[s].section_name,
-      view: staff.permissions.managed_sections[s].view_access,
-      update: staff.permissions.managed_sections[s].update_access,
-    }))
+    []
   );
 
-  const [index, setIndex] = useState<string>("");
+  const [modifiedPermissionIndex, setModifiedPermissionIndex] =
+    useState<number>(-1);
+  const [modifiedSectionIndex, setModifiedSectionIndex] = useState<number>(-1);
 
-  const { loading, success, add } = useAddStaffPermission();
+  const {
+    loading: loadingAddPermission,
+    success: addPermissionSuccess,
+    add,
+  } = useAddStaffPermission();
+  const {
+    loading: loadingRemovePermission,
+    success: removePermissionSuccess,
+    remove,
+  } = useRemoveStaffPermission(staff.id);
+  const {
+    data: sections,
+    success: getSectionsSuccess,
+    loading: loadingSections,
+  } = useGetAllSections();
+
+  useEffect(() => {
+    const newPermissions = [...initialPermissions];
+    if (
+      !loadingAddPermission &&
+      addPermissionSuccess &&
+      modifiedPermissionIndex !== -1
+    ) {
+      console.log("Adding permission");
+      newPermissions[modifiedPermissionIndex] = true;
+      setModifiedPermissionIndex(-1);
+      setInitialPermissions(newPermissions);
+    } else if (
+      !loadingRemovePermission &&
+      removePermissionSuccess &&
+      modifiedPermissionIndex !== -1
+    ) {
+      console.log("Removing permission");
+      newPermissions[modifiedPermissionIndex] = false;
+      setModifiedPermissionIndex(-1);
+      setInitialPermissions(newPermissions);
+    }
+  }, [addPermissionSuccess, removePermissionSuccess, modifiedPermissionIndex]);
+
+  // useEffect(() => {
+  //   const newSections = [...sectionPermissions];
+  //   if (addPermissionSuccess && modifiedSectionIndex !== -1) {
+  //     sectionPermissions[modifiedSectionIndex] = {
+  //       ...sectionPermissions[modifiedSectionIndex],
+  //       update: true,
+  //     };
+  //     setModifiedSectionIndex(-1);
+  //     setSectionPermissions(newSections);
+  //   } else if (removePermissionSuccess && modifiedSectionIndex !== -1) {
+  //     sectionPermissions[modifiedSectionIndex] = {
+  //       ...sectionPermissions[modifiedSectionIndex],
+  //       update: false,
+  //     };
+  //     setModifiedSectionIndex(-1);
+  //     setSectionPermissions(newSections);
+  //   } else if (
+  //     (!addPermissionSuccess || !removePermissionSuccess) &&
+  //     modifiedSectionIndex !== -1
+  //   ) {
+  //     const initialUpdate = sectionPermissions[modifiedSectionIndex].update;
+  //     sectionPermissions[modifiedSectionIndex] = {
+  //       ...sectionPermissions[modifiedSectionIndex],
+  //       update: !initialUpdate,
+  //     };
+  //     setModifiedSectionIndex(-1);
+  //     setSectionPermissions(newSections);
+  //   }
+  // }, [addPermissionSuccess, removePermissionSuccess, modifiedSectionIndex]);
+
+  useEffect(() => {
+    if (getSectionsSuccess) {
+      const newSections: iSectionValue[] = [];
+      for (let i = 0; i < sections.length; i++) {
+        const sectionIndex = staff.permissions.managed_sections.findIndex(
+          (s) => s.section_name === sections[i].name
+        );
+        newSections.push({
+          id: sections[i].id,
+          name: sections[i].name,
+          update: sectionIndex !== -1,
+        });
+      }
+      setSectionPermissions(newSections);
+    }
+  }, [getSectionsSuccess]);
 
   return (
     <Modal.Root
@@ -54,12 +161,17 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
       <Modal.Body>
         <Modal.Content>
           <div className="w-full h-full p-10 bg-white text-monokai flex flex-col gap-5 items-center overflow-y-auto scrollbar-custom">
-            <div className="w-full">
-              <h2 className="font-bold big-2">Staff Permissions</h2>
-              <p className="text-neutral-dark text-lg">
-                View and update the permissions of{" "}
-                <span className="font-semibold">{staff.username}</span>
-              </p>
+            <div className="w-full flex justify-between items-center">
+              <div className="w-fit flex flex-col ">
+                <h2 className="font-bold big-2">Staff Permissions</h2>
+                <p className="text-neutral-dark text-lg">
+                  View and update the permissions of{" "}
+                  <span className="font-semibold">{staff.username}</span>
+                </p>
+              </div>
+              {(loadingAddPermission ||
+                loadingRemovePermission ||
+                loadingSections) && <Loader color="myColor.6" />}
             </div>
             <div className="w-full flex flex-col gap-5">
               <table>
@@ -70,22 +182,29 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                   </tr>
                 </thead>
                 <tbody className="w-full">
-                  {[
-                    "View Log",
-                    "Create Section",
-                    "Manage Inventory",
-                    "Manage Section Inventory",
-                  ].map((p, i) => (
+                  {allPermissions.map((p, i) => (
                     <tr key={i} className="w-full">
                       <td className="w-full">{p}</td>
                       <td>
                         <CustomCheckBox
                           value={initialPermissions[i]}
                           onChange={() => {
-                            const newPermissions = [...initialPermissions];
-                            newPermissions[i] = !newPermissions[i];
-                            setInitialPermissions(newPermissions);
-                            setIndex(p);
+                            if (loadingAddPermission || loadingRemovePermission)
+                              return;
+
+                            setModifiedPermissionIndex(i);
+                            if (i !== initialPermissions.length - 1) {
+                              if (initialPermissions[i]) {
+                                remove(allPermissionsLower[i]);
+                              } else {
+                                add({
+                                  user: staff.id,
+                                  permission: [allPermissions[i]],
+                                });
+                              }
+                            } else {
+                              setHasSections(!hasSections);
+                            }
                           }}
                         />
                       </td>
@@ -93,42 +212,40 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                   ))}
                 </tbody>
               </table>
-              {sectionPermissions.length > 0 && (
+              {hasSections && sectionPermissions.length > 0 && (
                 <table>
                   <thead className="w-full">
                     <tr className="w-full">
                       <th>SECTIONS</th>
-                      <th className="px-5">View</th>
-                      <th className="px-5">Update</th>
+                      <th>UPDATE</th>
                     </tr>
                   </thead>
                   <tbody className="w-full">
-                    {sectionPermissions.map((s, i) => (
+                    {sections.map((s, i) => (
                       <tr key={i} className="w-full">
                         <td className="w-full">{s.name}</td>
-                        <td className="px-5">
-                          <input
-                            type="checkbox"
-                            name=""
-                            id=""
-                            checked={sectionPermissions[i].view}
-                            onChange={(e) => {
-                              // const newPermissions = [...initialPermissions];
-                              // newPermissions[i] = e.target.checked;
-                              // setInitialPermissions(newPermissions);
-                            }}
-                          />
-                        </td>
-                        <td className="px-5">
-                          <input
-                            type="checkbox"
-                            name=""
-                            id=""
-                            checked={sectionPermissions[i].update}
-                            onChange={(e) => {
-                              // const newPermissions = [...initialPermissions];
-                              // newPermissions[i] = e.target.checked;
-                              // setInitialPermissions(newPermissions);
+                        <td>
+                          <CustomCheckBox
+                            value={sectionPermissions[i].update}
+                            onChange={() => {
+                              setModifiedSectionIndex(i);
+                              if (sectionPermissions[i].update) {
+                                remove(
+                                  allPermissionsLower[
+                                    allPermissionsLower.length - 1
+                                  ],
+                                  s.id
+                                );
+                              } else {
+                                add({
+                                  user: staff.id,
+                                  permission: [
+                                    allPermissions[allPermissions.length - 1],
+                                  ],
+                                  section: s.id,
+                                  update_access: true,
+                                });
+                              }
                             }}
                           />
                         </td>
@@ -138,16 +255,6 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                 </table>
               )}
             </div>
-            <button
-              type="submit"
-              onClick={() => {
-                if (index === "") return;
-                add({ permission: index, user: staff.id });
-              }}
-              className={` bg-secondary rounded mt-2 w-[50%] h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
-            >
-              {loading ? <Loader color="white.6" /> : "Update Permissions"}
-            </button>
           </div>
         </Modal.Content>
       </Modal.Body>

@@ -4,6 +4,10 @@ import { iStaff } from "@/src/stores/userStore";
 import Permissions from "./Permissions";
 import UpdateStaff from "./UpdateStaff";
 import DeleteStaff from "./DeleteStaff";
+import { useDashboardData } from "@/src/stores/dashboardStore";
+
+import { RiEdit2Fill } from "react-icons/ri";
+import { TiCancel } from "react-icons/ti";
 
 interface iStaffDetail {
   staff: iStaff | null;
@@ -39,8 +43,9 @@ const Table: FC<{
             let count = 0;
             if (st.permissions.create_section) count += 1;
             if (st.permissions.manage_inventory) count += 1;
-            if (st.permissions.manage_staff) count += 1;
+            // if (st.permissions.manage_staff) count += 1;
             if (st.permissions.view_log) count += 1;
+            if (st.permissions.managed_sections.length > 0) count += 1;
 
             return (
               <tr key={st.id}>
@@ -61,23 +66,23 @@ const Table: FC<{
                     {count} permission{count !== 1 ? "s" : ""}
                   </button>
                 </td>
-                <td className="flex w-fit gap-5">
-                  <button
+                <td className="flex gap-5  w-fit">
+                  <div
                     onClick={() =>
                       setDetail({ ...detail, staff: st, edit: true })
                     }
-                    className="flex gap-2 items-center text-monokai font-bold "
+                    className="cursor-pointer bg-[#E4ECF7] rounded size-7 grid place-content-center text-[#292D32]"
                   >
-                    <h6>Update</h6>
-                  </button>
-                  <button
+                    <RiEdit2Fill size={20} />
+                  </div>
+                  <div
                     onClick={() =>
                       setDetail({ ...detail, staff: st, del: true })
                     }
-                    className="flex gap-2 items-center text-error font-bold "
+                    className="cursor-pointer bg-[#FDC6C6] rounded size-7 grid place-content-center text-[#D50000]"
                   >
-                    <h6>Delete</h6>
-                  </button>
+                    <TiCancel size={20} />
+                  </div>
                 </td>
               </tr>
             );
@@ -87,9 +92,10 @@ const Table: FC<{
       {detail.staff !== null && detail.permission && (
         <Permissions
           staff={detail.staff}
-          onClose={() =>
-            setDetail({ ...detail, staff: null, permission: false })
-          }
+          onClose={() => {
+            useDashboardData.getState().refresh();
+            setDetail({ ...detail, staff: null, permission: false });
+          }}
         />
       )}
       {detail.staff !== null && detail.edit && (
@@ -101,7 +107,7 @@ const Table: FC<{
       {detail.staff !== null && detail.del && (
         <DeleteStaff
           staff={detail.staff}
-          onClose={() => setDetail({ ...detail, staff: null, edit: false })}
+          onClose={() => setDetail({ ...detail, staff: null, del: false })}
         />
       )}
     </>
