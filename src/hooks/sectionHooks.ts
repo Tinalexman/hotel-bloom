@@ -4,6 +4,13 @@ import toast from "react-hot-toast";
 import { useDashboardData } from "../stores/dashboardStore";
 import { tSection } from "../stores/sectionStore";
 
+export interface iCreateSectionInventory {
+  section: string;
+  inventory: string;
+  quantity: number;
+  price: number;
+}
+
 export const useCreateSection = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -96,5 +103,37 @@ export const useGetAllSections = () => {
     success,
     data,
     get,
+  };
+};
+
+export const useCreateSectionInventory = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const { requestApi } = useAxios();
+
+  let create = async (payload: iCreateSectionInventory) => {
+    if (loading) return;
+    setLoading(true);
+
+    const { status } = await requestApi(
+      "/org/sections/inventories",
+      "POST",
+      payload
+    );
+    setLoading(false);
+    setSuccess(status);
+
+    if (status) {
+      toast.success("New Section Inventory Created");
+      useDashboardData.getState().refresh();
+    } else {
+      toast.error("Something went wrong. Please try again");
+    }
+  };
+
+  return {
+    loading,
+    success,
+    create,
   };
 };

@@ -11,14 +11,25 @@ import { useDashboardData } from "@/src/stores/dashboardStore";
 import AddSection from "./AddSection";
 import { useGetAllSections } from "@/src/hooks/sectionHooks";
 import { MdLocalOffer } from "react-icons/md";
+import { tSection } from "@/src/stores/sectionStore";
+import ViewSection from "./ViewSection";
 
 const Sections = () => {
   const [addSection, shouldAddSection] = useState<boolean>(false);
   const { data: sections, loading } = useGetAllSections();
 
+  const [currentSection, setCurrentSection] = useState<tSection | null>(null);
+
   return (
     <>
       {addSection && <AddSection onClose={() => shouldAddSection(false)} />}
+      {currentSection !== null && (
+        <ViewSection
+          section={currentSection}
+          opened={currentSection !== null}
+          close={() => setCurrentSection(null)}
+        />
+      )}
       <div className="w-full h-full pt-5 flex flex-col">
         <div className="w-full h-[100px] flex justify-between items-center">
           <div className="flex flex-col">
@@ -50,7 +61,8 @@ const Sections = () => {
             {sections.map((sc, i) => (
               <div
                 key={i}
-                className="w-full cursor-pointer overflow-hidden h-40 bg-neutral-light rounded-lg shadow-custom flex flex-col p-2 relative"
+                onClick={() => setCurrentSection(sc)}
+                className="w-full hover:scale-105 scale-100 duration-300 ease-out transition-all cursor-pointer overflow-hidden h-40 bg-neutral-light rounded-lg shadow-custom flex flex-col p-2 relative"
               >
                 <h2 className="text-xl font-bold text-monokai">{sc.name}</h2>
                 <p className="text-lg underline text-monokai">
