@@ -48,7 +48,7 @@ export const useUpdateInventory = (inventory_id: string) => {
 
     const { data, status } = await requestApi(
       `/org/inventories/${inventory_id}`,
-      "POST",
+      "PUT",
       { quantity }
     );
     setLoading(false);

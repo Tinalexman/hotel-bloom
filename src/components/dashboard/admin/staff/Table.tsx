@@ -35,7 +35,7 @@ const Table: FC<{
             <th>USERNAME</th>
             <th>ORGANIZATION</th>
             <th>PERMISSIONS</th>
-            <th>DETAILS</th>
+            <th>ACTIONS</th>
           </tr>
         </thead>
         <tbody>

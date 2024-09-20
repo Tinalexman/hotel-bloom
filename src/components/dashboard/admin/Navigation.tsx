@@ -44,7 +44,6 @@ const DashboardNavigation = () => {
   const [paths, setPaths] = useState<string[]>([]);
 
   const [hoveredItem, setHoveredItem] = useState<number>(0);
-  const router = useRouter();
   const pathName = usePathname();
 
   const determineIndex = () => {

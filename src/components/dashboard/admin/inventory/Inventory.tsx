@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { IoAdd } from "react-icons/io5";
 import Image from "next/image";
@@ -8,19 +8,45 @@ import Void from "@/public/Void.png";
 import { Loader } from "@mantine/core";
 import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
+import AddItem from "./AddItem";
+import { useGetAllInventory } from "@/src/hooks/inventoryHooks";
+
+import * as TbIcons from "react-icons/tb";
+import { IconType } from "react-icons";
+import ItemContainer from "./ItemContainer";
+import { getRandomInt } from "@/src/functions/base";
+import { tInventory } from "@/src/stores/inventoryStore";
+import ItemDetails from "./ItemDetails";
 
 const Inventory = () => {
-  const [items, setItems] = useState<any[]>([]);
+  const [addStock, shouldAddStock] = useState<boolean>(false);
+  const { data: items, loading } = useGetAllInventory();
+  const [iconLibrary, setIconLibrary] = useState<IconType[]>([]);
+  const [currentItem, setCurrentItem] = useState<tInventory | null>(null);
 
-  const loading = false;
+  useEffect(() => {
+    const loadLibraries = async (): Promise<void> => {
+      setIconLibrary(Object.values(TbIcons));
+    };
+    loadLibraries();
+  }, []);
 
   return (
     <>
+      {addStock && <AddItem onClose={() => shouldAddStock(false)} />}
+      {currentItem !== null && (
+        <ItemDetails
+          item={currentItem}
+          close={() => setCurrentItem(null)}
+          opened={currentItem !== null}
+        />
+      )}
       <div className="w-full h-full pt-5 flex flex-col">
         <div className="w-full h-[100px] flex justify-between items-center">
           <div className="flex flex-col">
             <h2 className="big-4 font-medium text-monokai">
-              Inventory <span className="big-3 font-bold">(0)</span>
+              Inventory{" "}
+              <span className="big-3 font-bold">({items.length})</span>
             </h2>
             <p className="text-lg text-neutral-dark">
               Manage all your section inventories
@@ -33,13 +59,30 @@ const Inventory = () => {
             >
               <MdRefresh size={"26px"} />
             </button>
-            <button className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black">
+            <button
+              onClick={() => shouldAddStock(true)}
+              className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
+            >
               <IoAdd size={"26px"} />
             </button>
           </div>
         </div>
         {!loading && items.length > 0 && (
-          <div className="w-full grid grid-cols-4 gap-6 px-4 py-[5px]">{}</div>
+          <div className="w-full grid grid-cols-4 gap-6 px-4 py-[5px]">
+            {items.map((item, i) => {
+              const icon = iconLibrary[getRandomInt(0, iconLibrary.length)];
+              return (
+                <ItemContainer
+                  key={i}
+                  item={item}
+                  icon={icon}
+                  onClick={() => {
+                    setCurrentItem(item);
+                  }}
+                />
+              );
+            })}
+          </div>
         )}
         {!loading && items.length === 0 && (
           <div className="w-full h-[calc(100vh-100px)] flex flex-col justify-center gap-5 items-center">

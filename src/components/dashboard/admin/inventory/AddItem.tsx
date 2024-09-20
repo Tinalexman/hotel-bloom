@@ -3,13 +3,14 @@ import React, { FC, useEffect } from "react";
 import { Loader, Modal } from "@mantine/core";
 
 import { Formik, Form } from "formik";
-import { MdLocalOffer } from "react-icons/md";
+import { GoNumber } from "react-icons/go";
 
-import { useCreateSection } from "@/src/hooks/sectionHooks";
+import { useCreateInventory } from "@/src/hooks/inventoryHooks";
 import { IoMdClose } from "react-icons/io";
+import { HiGift } from "react-icons/hi2";
 
-const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { loading, success, register } = useCreateSection();
+const AddItem: FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { loading, success, create } = useCreateInventory();
 
   useEffect(() => {
     if (success) {
@@ -26,7 +27,7 @@ const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
           <div className="w-full p-10 bg-white text-monokai flex flex-col gap-10 items-center">
             <div className="w-full">
               <div className=" justify-between items-center flex w-full">
-                <h2 className="font-bold big-2">Create New Section</h2>
+                <h2 className="font-bold big-2">Add New Items</h2>
                 <IoMdClose
                   className="cursor-pointer"
                   size={"26px"}
@@ -41,6 +42,7 @@ const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
             <Formik
               initialValues={{
                 name: "",
+                quantity: "",
               }}
               validate={(values) => {
                 const errors: any = {};
@@ -49,11 +51,19 @@ const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
                   errors.name = "Required";
                 }
 
+                let v = Number(values.quantity);
+                if (isNaN(v) || v <= 0) {
+                  errors.quantity = "Invalid amount";
+                }
+
                 return errors;
               }}
               onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(false);
-                register(values.name);
+                create({
+                  name: values.name,
+                  total_quantity: Number(values.quantity),
+                });
               }}
               validateOnMount={true}
             >
@@ -67,11 +77,12 @@ const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
                 isSubmitting,
                 isInitialValid,
                 isValid,
+                setFieldValue,
               }) => (
                 <Form className="w-full flex flex-col gap-2" method="POST">
                   <div className=" mb-4 flex flex-col gap-1 w-full">
                     <p className="text-neutral-dark text-sm">
-                      Section Name <span className="text-error">*</span>
+                      Item Name <span className="text-error">*</span>
                     </p>
                     <div className="relative w-full">
                       <input
@@ -82,7 +93,7 @@ const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
                         onBlur={handleBlur}
                         className="px-10 w-full"
                       />
-                      <MdLocalOffer
+                      <HiGift
                         className="text-contrast-base absolute top-2.5 left-2"
                         size={"22px"}
                       />
@@ -91,10 +102,35 @@ const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
                       {errors.name && touched.name && errors.name}
                     </p>
                   </div>
+                  <div className="mb-4 flex flex-col gap-1 w-full relative">
+                    <p className="text-neutral-dark text-sm">
+                      Quantity <span className="text-error">*</span>
+                    </p>
+                    <input
+                      type="text"
+                      value={values.quantity}
+                      name="quantity"
+                      onChange={(e) => {
+                        const res = e.target.value.trim();
+                        if (!isNaN(Number(res))) {
+                          setFieldValue("quantity", res);
+                        }
+                      }}
+                      onBlur={handleBlur}
+                      className="px-10 w-full"
+                    />
+                    <GoNumber
+                      className="text-contrast-base absolute top-7 left-2"
+                      size={"26px"}
+                    />
+                    <p className="text-error">
+                      {errors.quantity && touched.quantity && errors.quantity}
+                    </p>
+                  </div>
 
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={loading}
                     className={` ${
                       isInitialValid
                         ? "bg-secondary"
@@ -103,7 +139,7 @@ const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
                         : "bg-neutral-light"
                     } rounded mt-2 w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
                   >
-                    {isSubmitting ? <Loader color="white" /> : "Create"}
+                    {loading ? <Loader color="white" /> : "Add"}
                   </button>
                 </Form>
               )}
@@ -115,4 +151,4 @@ const AddSection: FC<{ onClose: () => void }> = ({ onClose }) => {
   );
 };
 
-export default AddSection;
+export default AddItem;

@@ -14,6 +14,7 @@ import {
   useRemoveStaffPermission,
 } from "@/src/hooks/staffHooks";
 import { useGetAllSections } from "@/src/hooks/sectionHooks";
+import { IoMdClose } from "react-icons/io";
 
 interface iSectionValue {
   id: string;
@@ -169,9 +170,17 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                   <span className="font-semibold">{staff.username}</span>
                 </p>
               </div>
-              {(loadingAddPermission ||
-                loadingRemovePermission ||
-                loadingSections) && <Loader color="myColor.6" />}
+              {loadingAddPermission ||
+              loadingRemovePermission ||
+              loadingSections ? (
+                <Loader color="myColor.6" />
+              ) : (
+                <IoMdClose
+                  className="cursor-pointer"
+                  size={"26px"}
+                  onClick={onClose}
+                />
+              )}
             </div>
             <div className="w-full flex flex-col gap-5">
               <table>

@@ -9,6 +9,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 
 import { useUpdateStaff } from "@/src/hooks/staffHooks";
 import { iStaff } from "@/src/stores/userStore";
+import { IoMdClose } from "react-icons/io";
 
 interface iEditStaff {
   username?: string;
@@ -36,7 +37,15 @@ const UpdateStaff: FC<{ staff: iStaff; onClose: () => void }> = ({
         <Modal.Content>
           <div className="w-full p-10 bg-white text-monokai flex flex-col gap-10 items-center">
             <div className="w-full">
-              <h2 className="font-bold big-2">Update Staff</h2>
+              <div className=" justify-between items-center flex w-full">
+                <h2 className="font-bold big-2">Update Staff</h2>
+                <IoMdClose
+                  className="cursor-pointer"
+                  size={"26px"}
+                  onClick={onClose}
+                />
+              </div>
+
               <p className="text-neutral-dark text-lg">
                 Update the details for{" "}
                 <span className="font-semibold">{staff.username}</span>

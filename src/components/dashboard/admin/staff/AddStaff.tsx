@@ -8,6 +8,7 @@ import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 
 import { useCreateStaff } from "@/src/hooks/staffHooks";
+import { IoMdClose } from "react-icons/io";
 
 interface iAddStaff {
   username?: string;
@@ -32,7 +33,14 @@ const AddStaff: FC<{ onClose: () => void }> = ({ onClose }) => {
         <Modal.Content>
           <div className="w-full p-10 bg-white text-monokai flex flex-col gap-10 items-center">
             <div className="w-full">
-              <h2 className="font-bold big-2">Create New Staff</h2>
+              <div className=" justify-between items-center flex w-full">
+                <h2 className="font-bold big-2">Create New Staff</h2>
+                <IoMdClose
+                  className="cursor-pointer"
+                  size={"26px"}
+                  onClick={onClose}
+                />
+              </div>
               <p className="text-neutral-dark text-lg">
                 Fields marked with <span className="text-error">*</span> are
                 required
