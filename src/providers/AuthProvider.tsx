@@ -27,7 +27,7 @@ export default function AuthProvider({
     const token = getToken();
     if (token === undefined && page !== -1) {
       toast.error("Please login to continue");
-      router.replace("/auth/login");
+      router.push("/auth/login?redirect=true");
     }
   }, [router]);
 

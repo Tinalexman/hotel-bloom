@@ -24,50 +24,30 @@ export default function AuthProvider({
   const manageStaff = useCurrentStaffStore(
     (state) => state.permissions.manage_staff
   );
+  const manageSection = useCurrentStaffStore(
+    (state) => state.permissions.managed_sections.length > 0
+  );
 
   useEffect(() => {
     if (isEmptyStaff(currentStaff)) return;
 
-    let home = "";
     const currentPath = pathName.split("/")[2];
 
-    if (currentPath === undefined) {
-      if (createSection && home === "") {
-        home = "sections";
-      }
-
-      if (manageInventory && home === "") {
-        home = "inventory";
-      }
-
-      if (manageStaff && home === "") {
-        home = "staff";
-      }
-
-      if (viewLog && home === "") {
-        home = "logs";
-      }
-    } else {
-      let invalidPath: boolean = false;
-      if (!createSection && currentPath === "sections") {
-        invalidPath = true;
-      } else if (!manageInventory && currentPath === "inventory") {
-        invalidPath = true;
-      } else if (!manageStaff && currentPath === "staff") {
-        invalidPath = true;
-      } else if (!viewLog && currentPath === "logs") {
-        invalidPath = true;
-      }
-
-      if (invalidPath) {
-        toast.error("You do not have permissions to view this page");
-        router.back();
-        return;
-      }
+    let invalidPath: boolean = false;
+    if (!(createSection || manageSection) && currentPath === "sections") {
+      invalidPath = true;
+    } else if (!manageInventory && currentPath === "inventory") {
+      invalidPath = true;
+    } else if (!manageStaff && currentPath === "staff") {
+      invalidPath = true;
+    } else if (!viewLog && currentPath === "logs") {
+      invalidPath = true;
     }
 
-    if (home !== "" && currentPath === undefined) {
-      router.replace(`/dashboard/${home}`);
+    if (invalidPath) {
+      toast.error("You do not have permissions to view this page");
+      router.back();
+      return;
     }
   }, [currentStaff]);
 

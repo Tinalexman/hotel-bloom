@@ -33,6 +33,9 @@ const DashboardNavigation = () => {
   const createSection = useCurrentStaffStore(
     (state) => state.permissions.create_section
   );
+  const manageSection = useCurrentStaffStore(
+    (state) => state.permissions.managed_sections.length > 0
+  );
   const manageInventory = useCurrentStaffStore(
     (state) => state.permissions.manage_inventory
   );
@@ -67,7 +70,7 @@ const DashboardNavigation = () => {
     let newNavs: iNavigationItem[] = [];
     let newPaths: string[] = [];
 
-    if (createSection) {
+    if (createSection || manageSection) {
       newNavs.push({
         name: "Sections",
         active: <MdLocalOffer size={"26px"} />,
@@ -117,6 +120,12 @@ const DashboardNavigation = () => {
     setNavs(newNavs);
     setPaths(newPaths);
   }, [currentStaff]);
+
+  useEffect(() => {
+    if (!expanded) {
+      setHoveredItem(-1);
+    }
+  }, [expanded]);
 
   return (
     <>

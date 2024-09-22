@@ -6,10 +6,12 @@ import DashboardNavigation from "@/src/components/dashboard/admin/Navigation";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import { convertDate, getTimeOfDay } from "@/src/functions/dateFunctions";
 import { FiSearch } from "react-icons/fi";
+import { useCurrentStaffStore } from "@/src/stores/userStore";
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   let currentDate: Date = new Date();
   const search = useDashboardData((state) => state.searchFilter);
+  const username = useCurrentStaffStore((state) => state.username);
 
   return (
     <div className="w-[100vw] h-[100vh] flex ">
@@ -23,7 +25,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         >
           <div className="flex flex-col gap-1 ">
             <h1 className="big-3 font-bold text-monokai">
-              {getTimeOfDay(currentDate)} 🥳
+              {getTimeOfDay(currentDate)}, {username} 🥳
             </h1>
             <p className="text-md font-medium text-neutral-dark">
               {convertDate(currentDate)}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { IoAdd } from "react-icons/io5";
 import Image from "next/image";
@@ -10,15 +10,59 @@ import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import AddSection from "./AddSection";
 import { useGetAllSections } from "@/src/hooks/sectionHooks";
-import { MdLocalOffer } from "react-icons/md";
 import { tSection } from "@/src/stores/sectionStore";
 import ViewSection from "./ViewSection";
+import { useCurrentStaffStore } from "@/src/stores/userStore";
+import SectionContainer from "./SectionContainer";
 
 const Sections = () => {
   const [addSection, shouldAddSection] = useState<boolean>(false);
-  const { data: sections, loading } = useGetAllSections();
-
+  const { data: sections, loading, success } = useGetAllSections();
+  const [sectionsBeingManaged, setSectionsBeingManaged] = useState<tSection[]>(
+    []
+  );
   const [currentSection, setCurrentSection] = useState<tSection | null>(null);
+  const hasCreateSectionPermission = useCurrentStaffStore(
+    (state) => state.permissions.create_section
+  );
+  const managedSections = useCurrentStaffStore(
+    (state) => state.permissions.managed_sections
+  );
+
+  useEffect(() => {
+    if (!loading && success && sections.length > 0) {
+      if (isCurrentUserAnAdmin()) {
+        setSectionsManagedForAdmin();
+      } else {
+        setSectionsManagedForOtherStaff();
+      }
+    }
+  }, [loading, success, sections]);
+
+  const canViewCurrentSection = (section: tSection) => {
+    return (
+      managedSections.find((s) => s.section_name === section.name) !== undefined
+    );
+  };
+
+  const isCurrentUserAnAdmin = () => {
+    return useCurrentStaffStore.getState().permissions.manage_staff;
+  };
+
+  const setSectionsManagedForOtherStaff = () => {
+    setSectionsBeingManaged([]);
+    let sectionsToBeAdded: tSection[] = [];
+    for (let i = 0; i < sections.length; i++) {
+      if (canViewCurrentSection(sections[i])) {
+        sectionsToBeAdded.push(sections[i]);
+      }
+    }
+    setSectionsBeingManaged(sectionsToBeAdded);
+  };
+
+  const setSectionsManagedForAdmin = () => {
+    setSectionsBeingManaged(sections);
+  };
 
   return (
     <>
@@ -35,7 +79,9 @@ const Sections = () => {
           <div className="flex flex-col">
             <h2 className="big-4 font-medium text-monokai">
               Sections{" "}
-              <span className="big-3 font-bold">({sections.length})</span>
+              <span className="big-3 font-bold">
+                ({sectionsBeingManaged.length})
+              </span>
             </h2>
             <p className="text-lg text-neutral-dark">
               Manage all your sections
@@ -48,35 +94,28 @@ const Sections = () => {
             >
               <MdRefresh size={"26px"} />
             </button>
-            <button
-              onClick={() => shouldAddSection(true)}
-              className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
-            >
-              <IoAdd size={"26px"} />
-            </button>
+            {hasCreateSectionPermission && (
+              <button
+                onClick={() => shouldAddSection(true)}
+                className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
+              >
+                <IoAdd size={"26px"} />
+              </button>
+            )}
           </div>
         </div>
-        {!loading && sections.length > 0 && (
+        {!loading && sectionsBeingManaged.length > 0 && (
           <div className="w-full grid grid-cols-5 gap-6">
-            {sections.map((sc, i) => (
-              <div
+            {sectionsBeingManaged.map((sc, i) => (
+              <SectionContainer
                 key={i}
-                onClick={() => setCurrentSection(sc)}
-                className="w-full hover:scale-105 scale-100 duration-300 ease-out transition-all cursor-pointer overflow-hidden h-40 bg-neutral-light rounded-lg shadow-custom flex flex-col p-2 relative"
-              >
-                <h2 className="text-xl font-bold text-monokai">{sc.name}</h2>
-                <p className="text-lg underline text-monokai">
-                  {sc.inventories.length} items
-                </p>
-                <MdLocalOffer
-                  className="text-secondary absolute bottom-0 -left-0 -rotate-90"
-                  size={64}
-                />
-              </div>
+                section={sc}
+                onSelect={() => setCurrentSection(sc)}
+              />
             ))}
           </div>
         )}
-        {!loading && sections.length === 0 && (
+        {!loading && sectionsBeingManaged.length === 0 && (
           <div className="w-full h-[calc(100vh-100px)] flex flex-col justify-center gap-5 items-center">
             <Image
               src={Void}

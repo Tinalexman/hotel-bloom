@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 
 import { useLogin } from "@/src/hooks/authHooks";
 
@@ -10,23 +10,66 @@ import { FaPerson } from "react-icons/fa6";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCurrentStaffStore } from "@/src/stores/userStore";
 
 interface iManualLoginPayload {
   username: string;
   password: string;
 }
 
+const Login = () => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <LoginForm />
+    </Suspense>
+  );
+};
+
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { loading, data, login, success } = useLogin();
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
     if (success && data) {
-      router.push(`/dashboard`);
+      if (shouldRedirectToPreviousPage()) {
+        router.back();
+      } else {
+        const route = determineRoute();
+        router.push(`/dashboard${route}`);
+      }
     }
   }, [success, data]);
+
+  const shouldRedirectToPreviousPage = () => {
+    const redirect = searchParams.get("redirect");
+    return redirect !== null && redirect === "true";
+  };
+
+  const determineRoute = () => {
+    const currentStaff = useCurrentStaffStore.getState();
+    const viewLogPermission = currentStaff.permissions.view_log;
+    const createSectionPermission = currentStaff.permissions.create_section;
+    const manageInventoryPermission = currentStaff.permissions.manage_inventory;
+    const manageStaffPermission = currentStaff.permissions.manage_staff;
+    const manageSectionPermission =
+      currentStaff.permissions.managed_sections.length > 0;
+
+    let route = "";
+    if (manageSectionPermission || createSectionPermission) {
+      route = "/sections";
+    } else if (manageInventoryPermission) {
+      route = "/inventory";
+    } else if (manageStaffPermission) {
+      route = "/staff";
+    } else if (viewLogPermission) {
+      route = "/logs";
+    }
+
+    return route;
+  };
 
   return (
     <Formik
