@@ -2,10 +2,6 @@ import React, { FC, useState, useEffect } from "react";
 
 import { Loader, Modal } from "@mantine/core";
 
-import { Formik, Form } from "formik";
-import { FaPerson } from "react-icons/fa6";
-import { MdVisibilityOff, MdVisibility } from "react-icons/md";
-import { RiLockPasswordFill } from "react-icons/ri";
 import { iStaff } from "@/src/stores/userStore";
 
 import CustomCheckBox from "@/src/components/reusable/CustomCheckbox";
@@ -30,7 +26,7 @@ const allPermissions: string[] = [
   "Manage Section Inventory",
 ];
 
-const allPermissionsLower: string[] = [
+const allPermissionsInLowerCase: string[] = [
   "view_log",
   "create_section",
   "manage_inventory",
@@ -63,6 +59,29 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
   const [modifiedSectionIndex, setModifiedSectionIndex] = useState<number>(-1);
 
   const {
+    data: sections,
+    success: getSectionsSuccess,
+    loading: loadingSections,
+  } = useGetAllSections();
+
+  useEffect(() => {
+    if (getSectionsSuccess) {
+      const newSections: iSectionValue[] = [];
+      for (let i = 0; i < sections.length; i++) {
+        const sectionIndex = staff.permissions.managed_sections.findIndex(
+          (s) => s.section_name === sections[i].name
+        );
+        newSections.push({
+          id: sections[i].id,
+          name: sections[i].name,
+          update: sectionIndex !== -1,
+        });
+      }
+      setSectionPermissions(newSections);
+    }
+  }, [getSectionsSuccess]);
+
+  const {
     loading: loadingAddPermission,
     success: addPermissionSuccess,
     add,
@@ -72,34 +91,39 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
     success: removePermissionSuccess,
     remove,
   } = useRemoveStaffPermission(staff.id);
-  const {
-    data: sections,
-    success: getSectionsSuccess,
-    loading: loadingSections,
-  } = useGetAllSections();
 
   useEffect(() => {
     const newPermissions = [...initialPermissions];
+    if (
+      !loadingRemovePermission &&
+      removePermissionSuccess &&
+      modifiedPermissionIndex !== -1
+    ) {
+      updatePermissionsArray(false);
+      setModifiedPermissionIndex(-1);
+    }
+  }, [loadingRemovePermission, removePermissionSuccess]);
+
+  useEffect(() => {
     if (
       !loadingAddPermission &&
       addPermissionSuccess &&
       modifiedPermissionIndex !== -1
     ) {
-      console.log("Adding permission");
-      newPermissions[modifiedPermissionIndex] = true;
+      updatePermissionsArray(true);
       setModifiedPermissionIndex(-1);
-      setInitialPermissions(newPermissions);
-    } else if (
-      !loadingRemovePermission &&
-      removePermissionSuccess &&
-      modifiedPermissionIndex !== -1
-    ) {
-      console.log("Removing permission");
-      newPermissions[modifiedPermissionIndex] = false;
-      setModifiedPermissionIndex(-1);
-      setInitialPermissions(newPermissions);
     }
-  }, [addPermissionSuccess, removePermissionSuccess, modifiedPermissionIndex]);
+  }, [loadingAddPermission, addPermissionSuccess]);
+
+  const updatePermissionsArray = (value: boolean) => {
+    const newPermissions = [...initialPermissions];
+    newPermissions[modifiedPermissionIndex] = value;
+    setInitialPermissions(newPermissions);
+  };
+
+  const toggleManagedSectionsVisibility = () => {
+    setHasSections(!hasSections);
+  };
 
   // useEffect(() => {
   //   const newSections = [...sectionPermissions];
@@ -130,23 +154,6 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
   //     setSectionPermissions(newSections);
   //   }
   // }, [addPermissionSuccess, removePermissionSuccess, modifiedSectionIndex]);
-
-  useEffect(() => {
-    if (getSectionsSuccess) {
-      const newSections: iSectionValue[] = [];
-      for (let i = 0; i < sections.length; i++) {
-        const sectionIndex = staff.permissions.managed_sections.findIndex(
-          (s) => s.section_name === sections[i].name
-        );
-        newSections.push({
-          id: sections[i].id,
-          name: sections[i].name,
-          update: sectionIndex !== -1,
-        });
-      }
-      setSectionPermissions(newSections);
-    }
-  }, [getSectionsSuccess]);
 
   return (
     <Modal.Root
@@ -201,18 +208,19 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                             if (loadingAddPermission || loadingRemovePermission)
                               return;
 
+                            if (i === initialPermissions.length - 1) {
+                              toggleManagedSectionsVisibility();
+                              return;
+                            }
+
                             setModifiedPermissionIndex(i);
-                            if (i !== initialPermissions.length - 1) {
-                              if (initialPermissions[i]) {
-                                remove(allPermissionsLower[i]);
-                              } else {
-                                add({
-                                  user: staff.id,
-                                  permission: [allPermissions[i]],
-                                });
-                              }
+                            if (initialPermissions[i]) {
+                              remove(allPermissionsInLowerCase[i]);
                             } else {
-                              setHasSections(!hasSections);
+                              add({
+                                user: staff.id,
+                                permission: [allPermissions[i]],
+                              });
                             }
                           }}
                         />
@@ -240,8 +248,8 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                               setModifiedSectionIndex(i);
                               if (sectionPermissions[i].update) {
                                 remove(
-                                  allPermissionsLower[
-                                    allPermissionsLower.length - 1
+                                  allPermissionsInLowerCase[
+                                    allPermissionsInLowerCase.length - 1
                                   ],
                                   s.id
                                 );

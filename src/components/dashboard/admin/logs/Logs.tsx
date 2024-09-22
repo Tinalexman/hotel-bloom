@@ -54,7 +54,7 @@ const Logs = () => {
             Logs <span className="big-3 font-bold">({data.total})</span>
           </h2>
           <p className="text-lg text-neutral-dark">
-            Read what your staff members are doing
+            View the activities of your organization
           </p>
         </div>
         <div className="w-fit gap-5 flex items-center">

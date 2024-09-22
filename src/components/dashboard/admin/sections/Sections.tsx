@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { IoAdd } from "react-icons/io5";
 import Image from "next/image";
@@ -17,10 +17,8 @@ import SectionContainer from "./SectionContainer";
 
 const Sections = () => {
   const [addSection, shouldAddSection] = useState<boolean>(false);
-  const { data: sections, loading, success } = useGetAllSections();
-  const [sectionsBeingManaged, setSectionsBeingManaged] = useState<tSection[]>(
-    []
-  );
+  const { data: sections, loading } = useGetAllSections();
+
   const [currentSection, setCurrentSection] = useState<tSection | null>(null);
   const hasCreateSectionPermission = useCurrentStaffStore(
     (state) => state.permissions.create_section
@@ -28,41 +26,6 @@ const Sections = () => {
   const managedSections = useCurrentStaffStore(
     (state) => state.permissions.managed_sections
   );
-
-  useEffect(() => {
-    if (!loading && success && sections.length > 0) {
-      if (isCurrentUserAnAdmin()) {
-        setSectionsManagedForAdmin();
-      } else {
-        setSectionsManagedForOtherStaff();
-      }
-    }
-  }, [loading, success, sections]);
-
-  const canViewCurrentSection = (section: tSection) => {
-    return (
-      managedSections.find((s) => s.section_name === section.name) !== undefined
-    );
-  };
-
-  const isCurrentUserAnAdmin = () => {
-    return useCurrentStaffStore.getState().permissions.manage_staff;
-  };
-
-  const setSectionsManagedForOtherStaff = () => {
-    setSectionsBeingManaged([]);
-    let sectionsToBeAdded: tSection[] = [];
-    for (let i = 0; i < sections.length; i++) {
-      if (canViewCurrentSection(sections[i])) {
-        sectionsToBeAdded.push(sections[i]);
-      }
-    }
-    setSectionsBeingManaged(sectionsToBeAdded);
-  };
-
-  const setSectionsManagedForAdmin = () => {
-    setSectionsBeingManaged(sections);
-  };
 
   return (
     <>
@@ -79,9 +42,7 @@ const Sections = () => {
           <div className="flex flex-col">
             <h2 className="big-4 font-medium text-monokai">
               Sections{" "}
-              <span className="big-3 font-bold">
-                ({sectionsBeingManaged.length})
-              </span>
+              <span className="big-3 font-bold">({sections.length})</span>
             </h2>
             <p className="text-lg text-neutral-dark">
               Manage all your sections
@@ -104,9 +65,9 @@ const Sections = () => {
             )}
           </div>
         </div>
-        {!loading && sectionsBeingManaged.length > 0 && (
+        {!loading && sections.length > 0 && (
           <div className="w-full grid grid-cols-5 gap-6">
-            {sectionsBeingManaged.map((sc, i) => (
+            {sections.map((sc, i) => (
               <SectionContainer
                 key={i}
                 section={sc}
@@ -115,7 +76,7 @@ const Sections = () => {
             ))}
           </div>
         )}
-        {!loading && sectionsBeingManaged.length === 0 && (
+        {!loading && sections.length === 0 && (
           <div className="w-full h-[calc(100vh-100px)] flex flex-col justify-center gap-5 items-center">
             <Image
               src={Void}

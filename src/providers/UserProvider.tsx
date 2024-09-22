@@ -34,7 +34,10 @@ export default function AuthProvider({
     const currentPath = pathName.split("/")[2];
 
     let invalidPath: boolean = false;
-    if (!(createSection || manageSection) && currentPath === "sections") {
+    if (
+      !(createSection || manageSection || manageInventory) &&
+      currentPath === "sections"
+    ) {
       invalidPath = true;
     } else if (!manageInventory && currentPath === "inventory") {
       invalidPath = true;
