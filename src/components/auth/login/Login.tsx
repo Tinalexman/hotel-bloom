@@ -12,6 +12,11 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCurrentStaffStore } from "@/src/stores/userStore";
+import {
+  iValidationResponse,
+  validatePassword,
+  validateUsername,
+} from "@/src/functions/validationFunctions";
 
 interface iManualLoginPayload {
   username: string;
@@ -79,24 +84,16 @@ const LoginForm = () => {
       }}
       validate={(values) => {
         const errors: Partial<iManualLoginPayload> = {};
-        if (!values.username) {
-          errors.username = "Required";
+        const usernameValidationResponse: iValidationResponse =
+          validateUsername(values.username);
+        if (!usernameValidationResponse.valid) {
+          errors.username = usernameValidationResponse.message;
         }
 
-        if (!values.password) {
-          errors.password = "Required";
-        } else if (values.password.length < 8) {
-          errors.password = "Password must be at least 8 characters long";
-        } else if (!/[A-Z]/.test(values.password)) {
-          errors.password =
-            "Password must contain at least one uppercase letter";
-        } else if (!/[a-z]/.test(values.password)) {
-          errors.password =
-            "Password must contain at least one lowercase letter";
-        } else if (!/[0-9]/.test(values.password)) {
-          errors.password = "Password must contain at least one number";
-        } else if (!/[!@#$%^&*()_+\-=\[\]{}|;':"\\/?]/.test(values.password)) {
-          errors.password = "Password must contain at least one symbol";
+        const passwordValidationResponse: iValidationResponse =
+          validatePassword(values.password);
+        if (!passwordValidationResponse.valid) {
+          errors.password = passwordValidationResponse.message;
         }
 
         return errors;
@@ -178,6 +175,17 @@ const LoginForm = () => {
               {errors.password && touched.password && errors.password}
             </p>
           </div>
+          <p className="text-neutral-dark text-end">
+            Forgot Password?{" "}
+            <span>
+              <Link
+                href="/auth/forgot-password"
+                className="text-secondary font-bold underline"
+              >
+                Click Here
+              </Link>
+            </span>
+          </p>
 
           <div className="pb-2 mt-10 w-full">
             <button
@@ -193,14 +201,16 @@ const LoginForm = () => {
             >
               {loading ? <Loader color="white.6" /> : "Login"}
             </button>
-            <p className="text-neutral-dark text-center mt-2">
+            <p className="text-neutral-dark text-center mt-10">
               Don&apos;t have an account?{" "}
-              <Link
-                href="/auth/register"
-                className="text-secondary font-bold underline"
-              >
-                Register
-              </Link>
+              <span>
+                <Link
+                  href="/auth/register"
+                  className="text-secondary font-bold underline"
+                >
+                  Register
+                </Link>
+              </span>
             </p>
           </div>
         </Form>

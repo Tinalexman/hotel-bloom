@@ -9,6 +9,11 @@ import { RiLockPasswordFill } from "react-icons/ri";
 
 import { useCreateStaff } from "@/src/hooks/staffHooks";
 import { IoMdClose } from "react-icons/io";
+import {
+  iValidationResponse,
+  validatePassword,
+  validateUsername,
+} from "@/src/functions/validationFunctions";
 
 interface iAddStaff {
   username?: string;
@@ -54,23 +59,18 @@ const AddStaff: FC<{ onClose: () => void }> = ({ onClose }) => {
               validate={(values) => {
                 const errors: Partial<iAddStaff> = {};
 
-                if (!values.password) {
-                  errors.password = "Required";
-                } else if (values.password.length < 8) {
-                  errors.password =
-                    "Password must be at least 8 characters long";
-                } else if (!/[A-Z]/.test(values.password)) {
-                  errors.password =
-                    "Password must contain at least one uppercase letter";
-                } else if (!/[a-z]/.test(values.password)) {
-                  errors.password =
-                    "Password must contain at least one lowercase letter";
-                } else if (!/[0-9]/.test(values.password)) {
-                  errors.password = "Password must contain at least one number";
-                } else if (
-                  !/[!@#$%^&*()_+\-=\[\]{}|;':"\\/?]/.test(values.password)
-                ) {
-                  errors.password = "Password must contain at least one symbol";
+                if (values.username) {
+                  const usernameValidationResponse: iValidationResponse =
+                    validateUsername(values.username);
+                  if (!usernameValidationResponse.valid) {
+                    errors.username = usernameValidationResponse.message;
+                  }
+                }
+
+                const passwordValidationResponse: iValidationResponse =
+                  validatePassword(values.password);
+                if (!passwordValidationResponse.valid) {
+                  errors.password = passwordValidationResponse.message;
                 }
 
                 return errors;

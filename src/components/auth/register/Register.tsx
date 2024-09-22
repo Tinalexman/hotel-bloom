@@ -234,14 +234,16 @@ const Register = () => {
             </button>
           </div>
 
-          <p className="text-neutral-dark text-center mt-2">
+          <p className="text-neutral-dark text-center mt-10">
             Already have an account?{" "}
-            <Link
-              href="/auth/login"
-              className="text-secondary font-bold underline"
-            >
-              Login
-            </Link>
+            <span>
+              <Link
+                href="/auth/login"
+                className="text-secondary font-bold underline"
+              >
+                Login
+              </Link>
+            </span>
           </p>
         </Form>
       )}

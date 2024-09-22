@@ -205,8 +205,8 @@ export const useRequestPasswordReset = () => {
     if (loading) return;
     setLoading(true);
 
-    const { data, status } = await requestApi(
-      "/org/reset-password",
+    const { status } = await requestApi(
+      "/org/token/reset-token",
       "PUT",
       payload
     );
