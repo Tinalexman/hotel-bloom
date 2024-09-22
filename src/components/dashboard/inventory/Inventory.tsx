@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { IoAdd } from "react-icons/io5";
 import Image from "next/image";
@@ -11,36 +11,21 @@ import { useDashboardData } from "@/src/stores/dashboardStore";
 import AddItem from "./AddItem";
 import { useGetAllInventory } from "@/src/hooks/inventoryHooks";
 
-import * as TbIcons from "react-icons/tb";
-import { IconType } from "react-icons";
 import ItemContainer from "./ItemContainer";
-import { getRandomInt } from "@/src/functions/base";
-import { tInventory } from "@/src/stores/inventoryStore";
-import ItemDetails from "./ItemDetails";
+
+import { useRouter } from "next/navigation";
+import { SERVEXI_INVENTORY_ITEM } from "@/src/constants/constants";
+import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
 
 const Inventory = () => {
   const [addStock, shouldAddStock] = useState<boolean>(false);
   const { data: items, loading } = useGetAllInventory();
-  const [iconLibrary, setIconLibrary] = useState<IconType[]>([]);
-  const [currentItem, setCurrentItem] = useState<tInventory | null>(null);
-
-  useEffect(() => {
-    const loadLibraries = async (): Promise<void> => {
-      setIconLibrary(Object.values(TbIcons));
-    };
-    loadLibraries();
-  }, []);
+  const { getIconForId } = useGetUniqueIcon();
+  const router = useRouter();
 
   return (
     <>
       {addStock && <AddItem onClose={() => shouldAddStock(false)} />}
-      {currentItem !== null && (
-        <ItemDetails
-          item={currentItem}
-          close={() => setCurrentItem(null)}
-          opened={currentItem !== null}
-        />
-      )}
       <div className="w-full h-full pt-5 flex flex-col">
         <div className="w-full h-[100px] flex justify-between items-center">
           <div className="flex flex-col">
@@ -49,7 +34,7 @@ const Inventory = () => {
               <span className="big-3 font-bold">({items.length})</span>
             </h2>
             <p className="text-lg text-neutral-dark">
-              Manage all your section inventories
+              Manage the inventory of your organization
             </p>
           </div>
           <div className="w-fit gap-3 flex items-center">
@@ -70,14 +55,17 @@ const Inventory = () => {
         {!loading && items.length > 0 && (
           <div className="w-full grid grid-cols-4 gap-6 px-4 py-[5px]">
             {items.map((item, i) => {
-              const icon = iconLibrary[getRandomInt(0, iconLibrary.length)];
               return (
                 <ItemContainer
                   key={i}
                   item={item}
-                  icon={icon}
+                  icon={getIconForId(item.id)}
                   onClick={() => {
-                    setCurrentItem(item);
+                    window.localStorage.setItem(
+                      SERVEXI_INVENTORY_ITEM,
+                      item.id
+                    );
+                    router.push("/dashboard/inventory/view");
                   }}
                 />
               );

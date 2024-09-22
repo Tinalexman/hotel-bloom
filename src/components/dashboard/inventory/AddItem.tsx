@@ -27,7 +27,7 @@ const AddItem: FC<{ onClose: () => void }> = ({ onClose }) => {
           <div className="w-full p-10 bg-white text-monokai flex flex-col gap-10 items-center">
             <div className="w-full">
               <div className=" justify-between items-center flex w-full">
-                <h2 className="font-bold big-2">Add New Items</h2>
+                <h2 className="font-bold big-2">Add New Item</h2>
                 <IoMdClose
                   className="cursor-pointer"
                   size={"26px"}

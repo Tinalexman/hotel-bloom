@@ -1,4 +1,4 @@
-import Inventory from "@/src/components/dashboard/admin/inventory/Inventory";
+import Inventory from "@/src/components/dashboard/inventory/Inventory";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

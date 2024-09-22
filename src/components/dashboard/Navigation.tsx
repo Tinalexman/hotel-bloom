@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import Logo from "@/public/Logo.png";
 
 import { TbLogout2 } from "react-icons/tb";
 
-import { BsClipboard2Pulse, BsClipboard2PulseFill } from "react-icons/bs";
+import { BsClipboardData, BsClipboardDataFill } from "react-icons/bs";
 import { BiExpand, BiCollapse } from "react-icons/bi";
 
 import { HiUserGroup, HiOutlineUserGroup } from "react-icons/hi2";
@@ -16,7 +16,6 @@ import { MdLocalOffer, MdOutlineLocalOffer } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import Tooltip from "@/src/components/reusable/Tooltip";
 
-import { useLogout } from "@/src/hooks/authHooks";
 import { isEmptyStaff, useCurrentStaffStore } from "@/src/stores/userStore";
 import Logout from "./Logout";
 
@@ -103,8 +102,8 @@ const DashboardNavigation = () => {
     if (viewLog) {
       newNavs.push({
         name: "Logs",
-        active: <BsClipboard2PulseFill size={"26px"} />,
-        inactive: <BsClipboard2Pulse size={"26px"} />,
+        active: <BsClipboardDataFill size={"26px"} />,
+        inactive: <BsClipboardData size={"26px"} />,
         link: "/dashboard/logs",
       });
       newPaths.push("logs");

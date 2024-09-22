@@ -1,4 +1,4 @@
-import Managers from "@/src/components/dashboard/admin/staff/Staff";
+import Managers from "@/src/components/dashboard/staff/Staff";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

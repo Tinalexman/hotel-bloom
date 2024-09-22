@@ -1,8 +1,8 @@
 "use client";
 
-import React, { FC, ReactNode, useEffect } from "react";
+import React, { FC, ReactNode } from "react";
 
-import DashboardNavigation from "@/src/components/dashboard/admin/Navigation";
+import DashboardNavigation from "@/src/components/dashboard/Navigation";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import { convertDate, getTimeOfDay } from "@/src/functions/dateFunctions";
 import { FiSearch } from "react-icons/fi";

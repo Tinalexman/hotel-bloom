@@ -1,4 +1,4 @@
-import Sections from "@/src/components/dashboard/admin/sections/Sections";
+import Sections from "@/src/components/dashboard/sections/Sections";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
