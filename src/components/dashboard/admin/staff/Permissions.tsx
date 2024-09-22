@@ -93,24 +93,24 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
   } = useRemoveStaffPermission(staff.id);
 
   useEffect(() => {
-    const newPermissions = [...initialPermissions];
-    if (
-      !loadingRemovePermission &&
-      removePermissionSuccess &&
-      modifiedPermissionIndex !== -1
-    ) {
-      updatePermissionsArray(false);
+    if (!loadingRemovePermission && removePermissionSuccess) {
+      if (modifiedPermissionIndex !== -1) {
+        updatePermissionsArray(false);
+      } else if (modifiedSectionIndex !== -1) {
+        updateManagedSectionsArray(false);
+      }
       setModifiedPermissionIndex(-1);
     }
   }, [loadingRemovePermission, removePermissionSuccess]);
 
   useEffect(() => {
-    if (
-      !loadingAddPermission &&
-      addPermissionSuccess &&
-      modifiedPermissionIndex !== -1
-    ) {
-      updatePermissionsArray(true);
+    if (!loadingAddPermission && addPermissionSuccess) {
+      if (modifiedPermissionIndex !== -1) {
+        updatePermissionsArray(true);
+      } else if (modifiedSectionIndex !== -1) {
+        updateManagedSectionsArray(true);
+      }
+
       setModifiedPermissionIndex(-1);
     }
   }, [loadingAddPermission, addPermissionSuccess]);
@@ -121,39 +121,23 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
     setInitialPermissions(newPermissions);
   };
 
-  const toggleManagedSectionsVisibility = () => {
-    setHasSections(!hasSections);
+  const updateManagedSectionsArray = (value: boolean) => {
+    const newManagedSections = [...sectionPermissions];
+    const sectionPermissionToBeUpdated =
+      newManagedSections[modifiedSectionIndex];
+    newManagedSections[modifiedSectionIndex] = {
+      ...sectionPermissionToBeUpdated,
+      update: value,
+    };
+    setSectionPermissions(newManagedSections);
   };
 
-  // useEffect(() => {
-  //   const newSections = [...sectionPermissions];
-  //   if (addPermissionSuccess && modifiedSectionIndex !== -1) {
-  //     sectionPermissions[modifiedSectionIndex] = {
-  //       ...sectionPermissions[modifiedSectionIndex],
-  //       update: true,
-  //     };
-  //     setModifiedSectionIndex(-1);
-  //     setSectionPermissions(newSections);
-  //   } else if (removePermissionSuccess && modifiedSectionIndex !== -1) {
-  //     sectionPermissions[modifiedSectionIndex] = {
-  //       ...sectionPermissions[modifiedSectionIndex],
-  //       update: false,
-  //     };
-  //     setModifiedSectionIndex(-1);
-  //     setSectionPermissions(newSections);
-  //   } else if (
-  //     (!addPermissionSuccess || !removePermissionSuccess) &&
-  //     modifiedSectionIndex !== -1
-  //   ) {
-  //     const initialUpdate = sectionPermissions[modifiedSectionIndex].update;
-  //     sectionPermissions[modifiedSectionIndex] = {
-  //       ...sectionPermissions[modifiedSectionIndex],
-  //       update: !initialUpdate,
-  //     };
-  //     setModifiedSectionIndex(-1);
-  //     setSectionPermissions(newSections);
-  //   }
-  // }, [addPermissionSuccess, removePermissionSuccess, modifiedSectionIndex]);
+  const toggleManagedSectionsVisibility = () => {
+    const newPermissions = [...initialPermissions];
+    newPermissions[initialPermissions.length - 1] = !hasSections;
+    setInitialPermissions(newPermissions);
+    setHasSections(!hasSections);
+  };
 
   return (
     <Modal.Root
