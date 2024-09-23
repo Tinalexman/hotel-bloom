@@ -9,18 +9,22 @@ import { Loader } from "@mantine/core";
 import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import { useGetAllInventory } from "@/src/hooks/inventoryHooks";
-
+import { MdEdit } from "react-icons/md";
 import { tInventory } from "@/src/stores/inventoryStore";
 
 import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
 import { useRouter } from "next/navigation";
 import { SERVEXI_INVENTORY_ITEM } from "@/src/constants/constants";
 import toast from "react-hot-toast";
+import EditItem from "./EditItem";
 
 const ViewItem = () => {
   const [inventoryItem, setInventoryItem] = useState<tInventory | null>(null);
   const { data, loading, success } = useGetAllInventory();
   const { getIconForId } = useGetUniqueIcon();
+  const [updateInventoryItem, setUpdateInventoryItem] =
+    useState<boolean>(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -73,39 +77,57 @@ const ViewItem = () => {
   const Icon = getIconForId(inventoryItem!.id);
 
   return (
-    <div className="w-full h-full pt-5 flex flex-col">
-      <div className="w-full flex justify-between items-center">
-        <div className="w-fit gap-2 items-center flex">
-          <h2 className="big-4 font-semibold text-monokai">
-            {inventoryItem?.name}
-          </h2>
-          <Icon size={"36px"} className="text-secondary" />
+    <>
+      {updateInventoryItem && (
+        <EditItem
+          item={inventoryItem!}
+          onClose={() => setUpdateInventoryItem(false)}
+        />
+      )}
+      <div className="w-full h-full pt-5 flex flex-col">
+        <div className="w-full flex justify-between items-center">
+          <div className="w-fit gap-2 items-center flex">
+            <h2 className="big-4 font-semibold text-monokai">
+              {inventoryItem?.name}
+            </h2>
+            <Icon size={"36px"} className="text-secondary" />
+          </div>
+          <div className="w-fit gap-3 flex items-center">
+            <button
+              onClick={() => useDashboardData.getState().refresh()}
+              className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
+            >
+              <MdRefresh size={"26px"} />
+            </button>
+            <button
+              onClick={() => setUpdateInventoryItem(true)}
+              className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
+            >
+              <MdEdit size={"26px"} />
+            </button>
+          </div>
         </div>
-        <div className="w-fit gap-3 flex items-center">
-          <button
-            onClick={() => useDashboardData.getState().refresh()}
-            className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
-          >
-            <MdRefresh size={"26px"} />
-          </button>
-          <button className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black">
-            <IoAdd size={"26px"} />
-          </button>
-        </div>
-      </div>
-      <div className="w-full flex flex-col mt-5">
-        <p className="text-lg text-neutral-dark">
-          Store Quantity:{" "}
-          <span className="font-medium">{inventoryItem?.store_quantity}</span>
-        </p>
-        <p className="text-lg text-neutral-dark">
-          Total quantity:{" "}
-          <span className="font-medium">{inventoryItem?.total_quantity}</span>
-        </p>
+        <div className="w-full flex flex-col mt-5">
+          <p className="text-lg text-neutral-dark">
+            Store Quantity:{" "}
+            <span className="font-medium">{inventoryItem?.store_quantity}</span>
+          </p>
+          <p className="text-lg text-neutral-dark">
+            Total quantity:{" "}
+            <span className="font-medium">{inventoryItem?.total_quantity}</span>
+          </p>
 
-        <h2 className="big-1 font-semibold text-monokai mt-5">SECTIONS</h2>
+          <div className="w-full justify-between items-center flex mt-5">
+            <h2 className="big-1 font-semibold text-monokai mt-5">
+              SECTION INVENTORY
+            </h2>
+            <button className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black">
+              <IoAdd size={"26px"} />
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

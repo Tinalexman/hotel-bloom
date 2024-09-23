@@ -65,7 +65,7 @@ const Inventory = () => {
                       SERVEXI_INVENTORY_ITEM,
                       item.id
                     );
-                    router.push("/dashboard/inventory/view");
+                    router.push("/dashboard/inventory/view-item");
                   }}
                 />
               );

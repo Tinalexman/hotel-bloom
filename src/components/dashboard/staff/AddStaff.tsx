@@ -36,12 +36,12 @@ const AddStaff: FC<{ onClose: () => void }> = ({ onClose }) => {
 
       <Modal.Body>
         <Modal.Content>
-          <div className="w-full p-10 bg-white text-monokai flex flex-col gap-10 items-center">
+          <div className="w-full p-6 bg-white text-monokai flex flex-col gap-10 items-center">
             <div className="w-full">
               <div className=" justify-between items-center flex w-full">
                 <h2 className="font-bold big-2">Create New Staff</h2>
                 <IoMdClose
-                  className="cursor-pointer"
+                  className="cursor-pointer text-monokai"
                   size={"26px"}
                   onClick={onClose}
                 />

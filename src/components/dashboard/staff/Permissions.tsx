@@ -152,7 +152,7 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
 
       <Modal.Body>
         <Modal.Content>
-          <div className="w-full h-full p-10 bg-white text-monokai flex flex-col gap-5 items-center overflow-y-auto scrollbar-custom">
+          <div className="w-full h-full p-6 bg-white text-monokai flex flex-col gap-5 items-center overflow-y-auto scrollbar-custom">
             <div className="w-full flex justify-between items-center">
               <div className="w-fit flex flex-col ">
                 <h2 className="font-bold big-2">Staff Permissions</h2>
@@ -167,7 +167,7 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
                 <Loader color="myColor.6" />
               ) : (
                 <IoMdClose
-                  className="cursor-pointer"
+                  className="cursor-pointer text-monokai"
                   size={"26px"}
                   onClick={onClose}
                 />

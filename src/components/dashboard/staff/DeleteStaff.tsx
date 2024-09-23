@@ -23,7 +23,7 @@ const DeleteStaff: FC<{ staff: iStaff; onClose: () => void }> = ({
 
       <Modal.Body>
         <Modal.Content>
-          <div className="w-full p-10 bg-white text-monokai flex flex-col gap-10 items-center">
+          <div className="w-full p-6 bg-white text-monokai flex flex-col gap-10 items-center">
             <div className="w-full">
               <h2 className="font-bold big-2">Delete {staff.username}?</h2>
               <p className="text-neutral-dark text-lg">
