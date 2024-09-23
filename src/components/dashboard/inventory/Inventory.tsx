@@ -8,24 +8,26 @@ import Void from "@/public/Void.png";
 import { Loader } from "@mantine/core";
 import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
-import AddItem from "./AddItem";
+import AddInventoryItem from "./AddInventoryItem";
 import { useGetAllInventory } from "@/src/hooks/inventoryHooks";
 
-import ItemContainer from "./ItemContainer";
+import InventoryItemContainer from "./InventoryItemContainer";
 
 import { useRouter } from "next/navigation";
 import { SERVEXI_INVENTORY_ITEM } from "@/src/constants/constants";
 import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
 
 const Inventory = () => {
-  const [addStock, shouldAddStock] = useState<boolean>(false);
+  const [addInventoryItem, shouldAddInventoryItem] = useState<boolean>(false);
   const { data: items, loading } = useGetAllInventory();
   const { getIconForId } = useGetUniqueIcon();
   const router = useRouter();
 
   return (
     <>
-      {addStock && <AddItem onClose={() => shouldAddStock(false)} />}
+      {addInventoryItem && (
+        <AddInventoryItem onClose={() => shouldAddInventoryItem(false)} />
+      )}
       <div className="w-full h-full pt-5 flex flex-col">
         <div className="w-full h-[100px] flex justify-between items-center">
           <div className="flex flex-col">
@@ -45,7 +47,7 @@ const Inventory = () => {
               <MdRefresh size={"26px"} />
             </button>
             <button
-              onClick={() => shouldAddStock(true)}
+              onClick={() => shouldAddInventoryItem(true)}
               className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
             >
               <IoAdd size={"26px"} />
@@ -56,7 +58,7 @@ const Inventory = () => {
           <div className="w-full grid grid-cols-4 gap-6 px-4 py-[5px]">
             {items.map((item, i) => {
               return (
-                <ItemContainer
+                <InventoryItemContainer
                   key={i}
                   item={item}
                   icon={getIconForId(item.id)}

@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { tInventory } from "@/src/stores/inventoryStore";
 import { IconType } from "react-icons";
 
-const ItemContainer: FC<{
+const InventoryItemContainer: FC<{
   item: tInventory;
   icon: IconType;
   onClick: () => void;
@@ -21,4 +21,4 @@ const ItemContainer: FC<{
   );
 };
 
-export default ItemContainer;
+export default InventoryItemContainer;

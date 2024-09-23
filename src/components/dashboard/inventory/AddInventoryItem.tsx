@@ -1,20 +1,16 @@
 import React, { FC, useEffect } from "react";
 
-import { Modal, Loader } from "@mantine/core";
+import { Loader, Modal } from "@mantine/core";
 
 import { Formik, Form } from "formik";
 import { GoNumber } from "react-icons/go";
-import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
-import { useUpdateInventory } from "@/src/hooks/inventoryHooks";
-import { tInventory } from "@/src/stores/inventoryStore";
-import { IoMdClose } from "react-icons/io";
 
-const EditItem: FC<{ item: tInventory; onClose: () => void }> = ({
-  item,
-  onClose,
-}) => {
-  const { loading, success, update } = useUpdateInventory(item.id);
-  const { getIconForId } = useGetUniqueIcon();
+import { useCreateInventory } from "@/src/hooks/inventoryHooks";
+import { IoMdClose } from "react-icons/io";
+import { HiGift } from "react-icons/hi2";
+
+const AddInventoryItem: FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { loading, success, create } = useCreateInventory();
 
   useEffect(() => {
     if (success) {
@@ -22,33 +18,38 @@ const EditItem: FC<{ item: tInventory; onClose: () => void }> = ({
     }
   }, [success]);
 
-  const Icon = getIconForId(item.id);
-
   return (
     <Modal.Root opened={true} onClose={onClose} padding={0} top={0} centered>
       <Modal.Overlay />
+
       <Modal.Body>
         <Modal.Content>
-          <div className="w-full h-fit bg-white shadow-custom-black flex flex-col p-6 gap-4">
-            <div className="w-full flex items-center justify-between">
-              <div className="w-fit gap-2 items-center flex">
-                <h2 className="big-2 font-semibold text-monokai">
-                  {item.name}
-                </h2>
-                <Icon size={"26px"} className="text-secondary" />
+          <div className="w-full p-6 bg-white text-monokai flex flex-col gap-10 items-center">
+            <div className="w-full">
+              <div className=" justify-between items-center flex w-full">
+                <h2 className="font-bold big-2">Add New Item</h2>
+                <IoMdClose
+                  className="cursor-pointer text-monokai"
+                  size={"26px"}
+                  onClick={onClose}
+                />
               </div>
-              <IoMdClose
-                className="cursor-pointer text-monokai"
-                size={"26px"}
-                onClick={onClose}
-              />
+              <p className="text-neutral-dark text-lg">
+                Fields marked with <span className="text-error">*</span> are
+                required
+              </p>
             </div>
             <Formik
               initialValues={{
+                name: "",
                 quantity: "",
               }}
               validate={(values) => {
                 const errors: any = {};
+
+                if (!values.name) {
+                  errors.name = "Required";
+                }
 
                 let v = Number(values.quantity);
                 if (isNaN(v) || v <= 0) {
@@ -59,7 +60,10 @@ const EditItem: FC<{ item: tInventory; onClose: () => void }> = ({
               }}
               onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(false);
-                update(Number(values.quantity));
+                create({
+                  name: values.name,
+                  total_quantity: Number(values.quantity),
+                });
               }}
               validateOnMount={true}
             >
@@ -75,13 +79,32 @@ const EditItem: FC<{ item: tInventory; onClose: () => void }> = ({
                 isValid,
                 setFieldValue,
               }) => (
-                <Form
-                  className="w-full flex flex-col gap-2 bg-white"
-                  method="POST"
-                >
+                <Form className="w-full flex flex-col gap-2" method="POST">
+                  <div className=" mb-4 flex flex-col gap-1 w-full">
+                    <p className="text-neutral-dark text-sm">
+                      Item Name <span className="text-error">*</span>
+                    </p>
+                    <div className="relative w-full">
+                      <input
+                        type="text"
+                        value={values.name}
+                        name="name"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        className="px-10 w-full"
+                      />
+                      <HiGift
+                        className="text-contrast-base absolute top-2.5 left-2"
+                        size={"22px"}
+                      />
+                    </div>
+                    <p className="text-error">
+                      {errors.name && touched.name && errors.name}
+                    </p>
+                  </div>
                   <div className="mb-4 flex flex-col gap-1 w-full relative">
                     <p className="text-neutral-dark text-sm">
-                      Topup Quantity <span className="text-error">*</span>
+                      Quantity <span className="text-error">*</span>
                     </p>
                     <input
                       type="text"
@@ -97,7 +120,7 @@ const EditItem: FC<{ item: tInventory; onClose: () => void }> = ({
                       className="px-10 w-full"
                     />
                     <GoNumber
-                      className="text-contrast-base absolute top-[1.85rem] left-2"
+                      className="text-contrast-base absolute top-7 left-2"
                       size={"26px"}
                     />
                     <p className="text-error">
@@ -116,7 +139,7 @@ const EditItem: FC<{ item: tInventory; onClose: () => void }> = ({
                         : "bg-neutral-light"
                     } rounded mt-2 w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
                   >
-                    {loading ? <Loader color="white" /> : "Top up"}
+                    {loading ? <Loader color="white" /> : "Add"}
                   </button>
                 </Form>
               )}
@@ -128,4 +151,4 @@ const EditItem: FC<{ item: tInventory; onClose: () => void }> = ({
   );
 };
 
-export default EditItem;
+export default AddInventoryItem;

@@ -1,16 +1,18 @@
 import React, { FC, useEffect } from "react";
 
 import { Modal, Loader } from "@mantine/core";
-
+import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
 import { useDeleteInventory } from "@/src/hooks/inventoryHooks";
 import { tInventory } from "@/src/stores/inventoryStore";
+import { IoMdClose } from "react-icons/io";
 
-const DeleteItem: FC<{
+const DeleteInventoryItem: FC<{
   item: tInventory;
   onCancel: () => void;
   onClose: () => void;
 }> = ({ item, onCancel, onClose }) => {
   const { loading, success, del } = useDeleteInventory(item.id);
+  const { getIconForId } = useGetUniqueIcon();
 
   useEffect(() => {
     if (success) {
@@ -18,14 +20,30 @@ const DeleteItem: FC<{
     }
   }, [success]);
 
+  const Icon = getIconForId(item.id);
+
   return (
     <Modal.Root opened={true} onClose={onClose} padding={0} top={0} centered>
       <Modal.Overlay />
       <Modal.Body>
         <Modal.Content>
-          <div className="w-full flex flex-col gap-4 bg-white">
+          <div className="w-full h-fit bg-white shadow-custom-black flex flex-col p-6 gap-4">
+            <div className="w-full flex items-center justify-between">
+              <div className="w-fit gap-2 items-center flex">
+                <h2 className="big-2 font-semibold text-monokai">
+                  {item.name}
+                </h2>
+                <Icon size={"26px"} className="text-secondary" />
+              </div>
+              <IoMdClose
+                className="cursor-pointer text-monokai"
+                size={"26px"}
+                onClick={onCancel}
+              />
+            </div>
             <p className="text-neutral-dark text-lg">
-              Are you sure you want to delete this item?
+              Are you sure you want to delete this item? This process cannot be
+              reversed.
             </p>
             <div className="flex w-full items-center justify-between">
               <button
@@ -48,4 +66,4 @@ const DeleteItem: FC<{
   );
 };
 
-export default DeleteItem;
+export default DeleteInventoryItem;

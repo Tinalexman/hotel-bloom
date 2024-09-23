@@ -30,8 +30,8 @@ const Table: FC<{
     <>
       <table className="w-full">
         <thead>
-          <tr>
-            <th>S/N</th>
+          <tr className="bg-neutral-light">
+            <th className="pl-4">S/N</th>
             <th>USERNAME</th>
             <th>ORGANIZATION</th>
             <th>PERMISSIONS</th>
@@ -49,7 +49,7 @@ const Table: FC<{
 
             return (
               <tr key={st.id}>
-                <td>
+                <td className="pl-4">
                   <h2 className="text-monokai font-medium">{i + 1}.</h2>
                 </td>
                 <td>
