@@ -69,7 +69,7 @@ const DashboardNavigation = () => {
     let newNavs: iNavigationItem[] = [];
     let newPaths: string[] = [];
 
-    if (createSection || manageSection || manageInventory) {
+    if (createSection || manageSection) {
       newNavs.push({
         name: "Sections",
         active: <MdLocalOffer size={"26px"} />,

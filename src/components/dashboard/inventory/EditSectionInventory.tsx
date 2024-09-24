@@ -52,7 +52,7 @@ const EditSectionInventory: FC<{
             </div>
             <Formik
               initialValues={{
-                quantity: formatAmountWithCommas(section.quantity),
+                quantity: "",
                 price: formatAmountWithCommas(
                   Number.parseInt(section.price.toString())
                 ),
