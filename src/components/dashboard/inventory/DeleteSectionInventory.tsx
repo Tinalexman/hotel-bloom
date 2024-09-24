@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 
 import { Modal, Loader } from "@mantine/core";
 import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
-import { useDeleteInventory } from "@/src/hooks/inventoryHooks";
+import { useDeleteSectionInventory } from "@/src/hooks/sectionHooks";
 import { IoMdClose } from "react-icons/io";
 
 const DeleteSectionInventory: FC<{
@@ -11,8 +11,7 @@ const DeleteSectionInventory: FC<{
   onCancel: () => void;
   onClose: () => void;
 }> = ({ id, name, onCancel, onClose }) => {
-  const { loading, success, del } = useDeleteInventory(id);
-  const { getIconForId } = useGetUniqueIcon();
+  const { loading, success, del } = useDeleteSectionInventory(id);
 
   useEffect(() => {
     if (success) {

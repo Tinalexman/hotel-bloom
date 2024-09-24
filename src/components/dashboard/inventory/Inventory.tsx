@@ -12,13 +12,12 @@ import AddInventoryItem from "./AddInventoryItem";
 import { useGetAllInventory } from "@/src/hooks/inventoryHooks";
 
 import { useRouter } from "next/navigation";
-import { SERVEXI_INVENTORY_ITEM } from "@/src/constants/constants";
-import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
+import { SERVEXI_ITEM_ID } from "@/src/constants/constants";
 
 const Inventory = () => {
   const [addInventoryItem, shouldAddInventoryItem] = useState<boolean>(false);
   const { data: items, loading } = useGetAllInventory();
-  const { getIconForId } = useGetUniqueIcon();
+
   const router = useRouter();
 
   return (
@@ -85,10 +84,7 @@ const Inventory = () => {
                     <td>
                       <h2
                         onClick={() => {
-                          window.localStorage.setItem(
-                            SERVEXI_INVENTORY_ITEM,
-                            item.id
-                          );
+                          window.localStorage.setItem(SERVEXI_ITEM_ID, item.id);
                           router.push("/dashboard/inventory/view-item");
                         }}
                         className="text-secondary underline font-semibold cursor-pointer"

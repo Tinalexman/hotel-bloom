@@ -11,6 +11,11 @@ export interface iCreateSectionInventory {
   price: number;
 }
 
+export interface iUpdateSectionInventory {
+  quantity: number;
+  price: number;
+}
+
 export interface iSectionNameAndID {
   id: string;
   name: string;
@@ -132,7 +137,7 @@ export const useCreateSectionInventory = () => {
       toast.success("New Section Inventory Created");
       useDashboardData.getState().refresh();
     } else {
-      let msg: any = data.response.data.non_field_errors[0];
+      let msg: any = data?.response?.data?.non_field_errors?.[0];
       toast.error(msg ?? "Something went wrong. Please try again");
     }
   };
@@ -144,10 +149,71 @@ export const useCreateSectionInventory = () => {
   };
 };
 
-export const useGetAllSectionsExcludingUserOrInventory = (
-  id: string,
-  query: "user" | "inventory"
-) => {
+export const useUpdateSectionInventory = (id: string) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const { requestApi } = useAxios();
+
+  let update = async (payload: iUpdateSectionInventory) => {
+    if (loading) return;
+    setLoading(true);
+
+    const { data, status } = await requestApi(
+      `/org/sections/inventories/${id}`,
+      "PUT",
+      payload
+    );
+    setLoading(false);
+    setSuccess(status);
+
+    if (status) {
+      toast.success("Section Inventory Updated");
+      useDashboardData.getState().refresh();
+    } else {
+      let msg: any = data?.response?.data?.non_field_errors?.[0];
+      toast.error(msg ?? "Something went wrong. Please try again");
+    }
+  };
+
+  return {
+    loading,
+    success,
+    update,
+  };
+};
+
+export const useDeleteSectionInventory = (id: string) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const { requestApi } = useAxios();
+
+  let del = async () => {
+    if (loading) return;
+    setLoading(true);
+
+    const { status } = await requestApi(
+      `/org/sections/inventories/${id}`,
+      "DELETE"
+    );
+    setLoading(false);
+    setSuccess(status);
+
+    if (status) {
+      toast.success("Section Inventory Deleted");
+      useDashboardData.getState().refresh();
+    } else {
+      toast.error("Something went wrong. Please try again");
+    }
+  };
+
+  return {
+    loading,
+    success,
+    del,
+  };
+};
+
+export const useGetAllSectionsForInventory = (id: string) => {
   const [data, setData] = useState<iSectionNameAndID[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -158,7 +224,7 @@ export const useGetAllSectionsExcludingUserOrInventory = (
     setLoading(true);
 
     const { data, status } = await requestApi(
-      `/org/sections/exclude?${query}=${id}`,
+      `/org/sections/exclude?inventory=${id}`,
       "GET"
     );
     setLoading(false);
@@ -175,6 +241,39 @@ export const useGetAllSectionsExcludingUserOrInventory = (
   useEffect(() => {
     get();
   }, []);
+
+  return {
+    loading,
+    success,
+    data,
+    get,
+  };
+};
+
+export const useGetAllSectionsForUser = () => {
+  const [data, setData] = useState<iSectionNameAndID[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const { requestApi } = useAxios();
+
+  let get = async (id: string) => {
+    if (loading) return;
+    setLoading(true);
+
+    const { data, status } = await requestApi(
+      `/org/sections/exclude?user=${id}`,
+      "GET"
+    );
+    setLoading(false);
+    setSuccess(status);
+
+    if (status) {
+      toast.success("Sections Retrieved");
+      setData(data as iSectionNameAndID[]);
+    } else {
+      toast.error("Something went wrong. Please try again");
+    }
+  };
 
   return {
     loading,

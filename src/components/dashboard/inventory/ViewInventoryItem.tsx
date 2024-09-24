@@ -7,18 +7,17 @@ import { Loader } from "@mantine/core";
 import { MdRefresh } from "react-icons/md";
 import { useGetInventoryById } from "@/src/hooks/inventoryHooks";
 import { MdEdit } from "react-icons/md";
-import { tSectionInventory } from "@/src/stores/inventoryStore";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
 import { useRouter } from "next/navigation";
-import { SERVEXI_INVENTORY_ITEM } from "@/src/constants/constants";
+import { SERVEXI_ITEM_ID } from "@/src/constants/constants";
 import toast from "react-hot-toast";
 import TopupInventoryItem from "./TopupInventoryItem";
 import DeleteInventoryItem from "./DeleteInventoryItem";
 import { IoAdd } from "react-icons/io5";
 import AddSectionInventory from "./AddSectionInventory";
 import DeleteSectionInventory from "./DeleteSectionInventory";
-import EditSectionInventory from "./EditSectionIventory";
+import EditSectionInventory from "./EditSectionInventory";
 
 const ViewInventoryItem = () => {
   const {
@@ -52,11 +51,11 @@ const ViewInventoryItem = () => {
       return;
     }
 
-    getInventory(window.localStorage.getItem(SERVEXI_INVENTORY_ITEM)!);
+    getInventory(window.localStorage.getItem(SERVEXI_ITEM_ID)!);
   }, []);
 
   const checkItemIDExistsInLocalStorage = () => {
-    return window.localStorage.getItem(SERVEXI_INVENTORY_ITEM) !== null;
+    return window.localStorage.getItem(SERVEXI_ITEM_ID) !== null;
   };
 
   const routeToPreviousPageAndShowToast = () => {
@@ -112,7 +111,6 @@ const ViewInventoryItem = () => {
       {addSectionInventory && (
         <AddSectionInventory
           id={inventory!.id}
-          query="inventory"
           onCancel={() => setAddSectionInventory(false)}
           onClose={() => {
             setAddSectionInventory(false);
@@ -202,7 +200,9 @@ const ViewInventoryItem = () => {
                 alt="no sections"
                 className="size-[200px] object-cover"
               />
-              <p className="large-1 text-neutral-dark ">No Sections Created</p>
+              <p className="large-1 text-neutral-dark ">
+                No Section Inventory Created
+              </p>
             </div>
           )}
           {inventory!.sections.length > 0 && (
@@ -228,7 +228,9 @@ const ViewInventoryItem = () => {
                       </td>
                       <td className="pl-2">
                         <h2 className="text-monokai font-medium">
-                          {sc!.price.toLocaleString("en-US")}
+                          {Number.parseInt(sc!.price.toString()).toLocaleString(
+                            "en-US"
+                          )}
                         </h2>
                       </td>
                       <td className="pl-6">
@@ -239,14 +241,20 @@ const ViewInventoryItem = () => {
                       <td className="flex gap-4 items-center w-fit">
                         <h2
                           onClick={() => {
-                            setEditSelectedInventoryItem(false);
+                            setEditSelectedInventoryItem(true);
                             setSelectedInventoryItem(sc);
                           }}
                           className="text-secondary cursor-pointer underline font-semibold"
                         >
                           Edit
                         </h2>
-                        <h2 className="text-error cursor-pointer underline font-semibold">
+                        <h2
+                          onClick={() => {
+                            setDeleteSelectedInventoryItem(true);
+                            setSelectedInventoryItem(sc);
+                          }}
+                          className="text-error cursor-pointer underline font-semibold"
+                        >
                           Delete
                         </h2>
                       </td>

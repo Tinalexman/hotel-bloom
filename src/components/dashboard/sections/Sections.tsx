@@ -10,33 +10,27 @@ import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import AddSection from "./AddSection";
 import { useGetAllSections } from "@/src/hooks/sectionHooks";
-import { tSection } from "@/src/stores/sectionStore";
-import ViewSection from "./ViewSection";
 import { useCurrentStaffStore } from "@/src/stores/userStore";
 import SectionContainer from "./SectionContainer";
+import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
+import { SERVEXI_ITEM_ID } from "@/src/constants/constants";
+import { useRouter } from "next/navigation";
 
 const Sections = () => {
   const [addSection, shouldAddSection] = useState<boolean>(false);
   const { data: sections, loading } = useGetAllSections();
+  const { getIconForId } = useGetUniqueIcon();
 
-  const [currentSection, setCurrentSection] = useState<tSection | null>(null);
   const hasCreateSectionPermission = useCurrentStaffStore(
     (state) => state.permissions.create_section
   );
-  const managedSections = useCurrentStaffStore(
-    (state) => state.permissions.managed_sections
-  );
+
+  const router = useRouter();
 
   return (
     <>
       {addSection && <AddSection onClose={() => shouldAddSection(false)} />}
-      {currentSection !== null && (
-        <ViewSection
-          section={currentSection}
-          opened={currentSection !== null}
-          close={() => setCurrentSection(null)}
-        />
-      )}
+
       <div className="w-full h-full pt-5 flex flex-col">
         <div className="w-full h-[100px] flex justify-between items-center">
           <div className="flex flex-col">
@@ -50,7 +44,7 @@ const Sections = () => {
           </div>
           <div className="w-fit gap-3 flex items-center">
             <button
-            title="Refresh the page"
+              title="Refresh the page"
               onClick={() => useDashboardData.getState().refresh()}
               className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
             >
@@ -73,7 +67,11 @@ const Sections = () => {
               <SectionContainer
                 key={i}
                 section={sc}
-                onSelect={() => setCurrentSection(sc)}
+                icon={getIconForId(sc.id)}
+                onSelect={() => {
+                  window.localStorage.setItem(SERVEXI_ITEM_ID, sc.id);
+                  router.push("/dashboard/inventory/view-section");
+                }}
               />
             ))}
           </div>

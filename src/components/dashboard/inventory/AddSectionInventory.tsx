@@ -7,7 +7,7 @@ import { GoNumber } from "react-icons/go";
 import CustomCheckBox from "@/src/components/reusable/CustomCheckbox";
 
 import {
-  useGetAllSectionsExcludingUserOrInventory,
+  useGetAllSectionsForInventory,
   useCreateSectionInventory,
 } from "@/src/hooks/sectionHooks";
 
@@ -15,13 +15,12 @@ import { IoMdClose } from "react-icons/io";
 import { formatAmountWithCommas } from "@/src/functions/numberFunctions";
 
 const AddSectionInventory: FC<{
-  query: "user" | "inventory";
   id: string;
   onClose: () => void;
   onCancel: () => void;
-}> = ({ query, id, onClose, onCancel }) => {
+}> = ({ id, onClose, onCancel }) => {
   const { loading: loadingAllSections, data: allSections } =
-    useGetAllSectionsExcludingUserOrInventory(id, query);
+    useGetAllSectionsForInventory(id);
 
   const {
     loading: loadingCreatingSectionInventory,
