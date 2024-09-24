@@ -18,11 +18,6 @@ export interface iUpdateSectionInventory {
 
 export type iSectionNameAndID = Omit<tSection, "inventories">;
 
-export interface iSellItem {
-  quantity: number;
-  section_inventory: string;
-}
-
 export const useCreateSection = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -285,19 +280,19 @@ export const useGetSectionByID = () => {
   };
 };
 
-export const useSellSectionInventory = () => {
+export const useSellSectionInventory = (section_inventory: string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const { requestApi } = useAxios();
 
-  let sell = async (payload: iSellItem) => {
+  let sell = async (quantity: number) => {
     if (loading) return;
     setLoading(true);
 
     const { status } = await requestApi(
       "/org/sections/inventories/sell",
       "PUT",
-      { payload }
+      { section_inventory, quantity }
     );
     setLoading(false);
     setSuccess(status);
