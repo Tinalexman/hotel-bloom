@@ -6,7 +6,7 @@ import Void from "@/public/Void.png";
 import { Loader } from "@mantine/core";
 import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
-import { useGetAllInventory } from "@/src/hooks/inventoryHooks";
+import { useGetInventoryById } from "@/src/hooks/inventoryHooks";
 import { useGetAllSections } from "@/src/hooks/sectionHooks";
 import { MdEdit } from "react-icons/md";
 import { tInventory } from "@/src/stores/inventoryStore";
@@ -19,18 +19,11 @@ import TopupInventoryItem from "./TopupInventoryItem";
 import DeleteInventoryItem from "./DeleteInventoryItem";
 
 const ViewInventoryItem = () => {
-  const [inventoryItem, setInventoryItem] = useState<tInventory | null>(null);
   const {
-    data: inventories,
-    loading: loadingInventories,
-    success: fetchedInventoriesSuccess,
-  } = useGetAllInventory();
-
-  const {
-    data: sections,
-    loading: loadingSections,
-    success: fetchedSectionsSuccess,
-  } = useGetAllSections();
+    data: inventory,
+    loading: loadingInventory,
+    get: getInventory,
+  } = useGetInventoryById();
 
   const { getIconForId } = useGetUniqueIcon();
   const [topUpInventoryItem, setTopUpInventoryItem] = useState<boolean>(false);
@@ -45,16 +38,8 @@ const ViewInventoryItem = () => {
       return;
     }
 
-    if (!loadingInventories && fetchedInventoriesSuccess) {
-      const itemID = window.localStorage.getItem(SERVEXI_INVENTORY_ITEM);
-      const item = inventories.find((item) => {
-        return item.id === itemID;
-      });
-      if (item !== undefined) {
-        setInventoryItem(item);
-      }
-    }
-  }, [loadingInventories, fetchedInventoriesSuccess]);
+    getInventory(window.localStorage.getItem(SERVEXI_INVENTORY_ITEM)!);
+  }, []);
 
   const checkItemIDExistsInLocalStorage = () => {
     return window.localStorage.getItem(SERVEXI_INVENTORY_ITEM) !== null;
@@ -65,7 +50,7 @@ const ViewInventoryItem = () => {
     router.back();
   };
 
-  if (loadingInventories || loadingSections) {
+  if (loadingInventory) {
     return (
       <div className="w-full h-[calc(100vh-100px)] flex justify-center items-center">
         <Loader color="myColor.9" />
@@ -73,10 +58,7 @@ const ViewInventoryItem = () => {
     );
   }
 
-  if (
-    (!loadingInventories && inventoryItem === null) ||
-    (!loadingSections && !fetchedSectionsSuccess)
-  ) {
+  if (!loadingInventory && inventory === null) {
     return (
       <div className="w-full h-[calc(100vh-100px)] flex flex-col justify-center gap-5 items-center">
         <Image
@@ -89,19 +71,19 @@ const ViewInventoryItem = () => {
     );
   }
 
-  const Icon = getIconForId(inventoryItem!.id);
+  const Icon = getIconForId(inventory!.id);
 
   return (
     <>
       {topUpInventoryItem && (
         <TopupInventoryItem
-          item={inventoryItem!}
+          item={inventory!}
           onClose={() => setTopUpInventoryItem(false)}
         />
       )}
       {deleteInventoryItem && (
         <DeleteInventoryItem
-          item={inventoryItem!}
+          item={inventory!}
           onClose={() => {
             setDeleteInventoryItem(false);
             router.back();
@@ -113,7 +95,7 @@ const ViewInventoryItem = () => {
         <div className="w-full flex justify-between items-center">
           <div className="w-fit gap-2 items-center flex">
             <h2 className="big-4 font-semibold text-monokai">
-              {inventoryItem?.name}
+              {inventory?.name}
             </h2>
             <Icon size={"36px"} className="text-secondary" />
           </div>
@@ -141,16 +123,16 @@ const ViewInventoryItem = () => {
         <div className="w-full flex flex-col mt-5">
           <p className="text-lg text-neutral-dark">
             Store Quantity:{" "}
-            <span className="font-medium">{inventoryItem?.store_quantity}</span>
+            <span className="font-medium">{inventory?.store_quantity}</span>
           </p>
           <p className="text-lg text-neutral-dark">
             Total quantity:{" "}
-            <span className="font-medium">{inventoryItem?.total_quantity}</span>
+            <span className="font-medium">{inventory?.total_quantity}</span>
           </p>
 
           <h2 className="big-1 font-semibold text-monokai mt-5">SECTIONS</h2>
 
-          {sections.length === 0 && (
+          {/* {sections.length === 0 && (
             <div className="w-full h-[calc(100vh-100px)] flex flex-col justify-center gap-5 items-center ">
               <Image
                 src={Void}
@@ -159,9 +141,9 @@ const ViewInventoryItem = () => {
               />
               <p className="large-1 text-neutral-dark ">No Sections Created</p>
             </div>
-          )}
+          )} */}
 
-          <table className="w-full mt-2">
+          {/* <table className="w-full mt-2">
             <thead>
               <tr className="bg-neutral-light">
                 <th className="pl-4">S/N</th>
@@ -204,7 +186,7 @@ const ViewInventoryItem = () => {
                 );
               })}
             </tbody>
-          </table>
+          </table> */}
         </div>
       </div>
     </>

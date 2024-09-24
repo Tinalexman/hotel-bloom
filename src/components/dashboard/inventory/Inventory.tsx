@@ -11,8 +11,6 @@ import { useDashboardData } from "@/src/stores/dashboardStore";
 import AddInventoryItem from "./AddInventoryItem";
 import { useGetAllInventory } from "@/src/hooks/inventoryHooks";
 
-import InventoryItemContainer from "./InventoryItemContainer";
-
 import { useRouter } from "next/navigation";
 import { SERVEXI_INVENTORY_ITEM } from "@/src/constants/constants";
 import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
@@ -55,24 +53,52 @@ const Inventory = () => {
           </div>
         </div>
         {!loading && items.length > 0 && (
-          <div className="w-full grid grid-cols-4 gap-6 px-4 py-[5px]">
-            {items.map((item, i) => {
-              return (
-                <InventoryItemContainer
-                  key={i}
-                  item={item}
-                  icon={getIconForId(item.id)}
-                  onClick={() => {
-                    window.localStorage.setItem(
-                      SERVEXI_INVENTORY_ITEM,
-                      item.id
-                    );
-                    router.push("/dashboard/inventory/view-item");
-                  }}
-                />
-              );
-            })}
-          </div>
+          <table className="w-full mt-2">
+            <thead>
+              <tr className="bg-neutral-light">
+                <th className="pl-4">S/N</th>
+                <th>NAME</th>
+                <th>TOTAL QUANTITY</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item, i) => {
+                return (
+                  <tr key={i}>
+                    <td className="pl-4">
+                      <h2 className="text-monokai font-medium">{i + 1}.</h2>
+                    </td>
+                    <td>
+                      <h2 className="text-monokai font-semibold">
+                        {item.name}
+                      </h2>
+                    </td>
+                    <td>
+                      <h2 className="text-monokai font-medium">
+                        {item.total_quantity}
+                      </h2>
+                    </td>
+
+                    <td>
+                      <h2
+                        onClick={() => {
+                          window.localStorage.setItem(
+                            SERVEXI_INVENTORY_ITEM,
+                            item.id
+                          );
+                          router.push("/dashboard/inventory/view-item");
+                        }}
+                        className="text-secondary underline font-semibold cursor-pointer"
+                      >
+                        View
+                      </h2>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         )}
         {!loading && items.length === 0 && (
           <div className="w-full h-[calc(100vh-100px)] flex flex-col justify-center gap-5 items-center">

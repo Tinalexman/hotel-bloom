@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAxios } from "../services/base";
 import toast from "react-hot-toast";
 import { useDashboardData } from "../stores/dashboardStore";
-import { tInventory } from "../stores/inventoryStore";
+import { tInventory, tSectionInventory } from "../stores/inventoryStore";
 
 export interface iCreateInventoryPayload {
   name: string;
@@ -129,6 +129,36 @@ export const useGetAllInventory = () => {
   useEffect(() => {
     get();
   }, [refresh]);
+
+  return {
+    loading,
+    success,
+    data,
+    get,
+  };
+};
+
+export const useGetInventoryById = () => {
+  const [data, setData] = useState<tSectionInventory | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const { requestApi } = useAxios();
+
+  let get = async (id: string) => {
+    if (loading) return;
+    setLoading(true);
+
+    const { data, status } = await requestApi(`/org/inventories/${id}`, "GET");
+    setLoading(false);
+    setSuccess(status);
+
+    if (status) {
+      toast.success("Inventory Retrieved");
+      setData(data as tSectionInventory);
+    } else {
+      toast.error("Something went wrong. Please try again");
+    }
+  };
 
   return {
     loading,
