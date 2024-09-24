@@ -14,7 +14,7 @@ import {
 import { IoMdClose } from "react-icons/io";
 import { formatAmountWithCommas } from "@/src/functions/numberFunctions";
 
-const AddSectionInventory: FC<{
+const EditSectionInventory: FC<{
   query: "user" | "inventory";
   id: string;
   onClose: () => void;
@@ -258,4 +258,4 @@ const AddSectionInventory: FC<{
   );
 };
 
-export default AddSectionInventory;
+export default EditSectionInventory;

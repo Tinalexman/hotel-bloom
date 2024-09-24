@@ -8,6 +8,7 @@ import { GoNumber } from "react-icons/go";
 import { useCreateInventory } from "@/src/hooks/inventoryHooks";
 import { IoMdClose } from "react-icons/io";
 import { HiGift } from "react-icons/hi2";
+import { formatAmountWithCommas } from "@/src/functions/numberFunctions";
 
 const AddInventoryItem: FC<{ onClose: () => void }> = ({ onClose }) => {
   const { loading, success, create } = useCreateInventory();
@@ -51,9 +52,11 @@ const AddInventoryItem: FC<{ onClose: () => void }> = ({ onClose }) => {
                   errors.name = "Required";
                 }
 
-                let v = Number(values.quantity);
-                if (isNaN(v) || v <= 0) {
-                  errors.quantity = "Invalid amount";
+                let v = Number(values.quantity.replace(/,/g, ""));
+                if (isNaN(v)) {
+                  errors.quantity = "Invalid quantity";
+                } else if (v <= 0) {
+                  errors.quantity = "Quantity must be greater than 0";
                 }
 
                 return errors;
@@ -62,7 +65,9 @@ const AddInventoryItem: FC<{ onClose: () => void }> = ({ onClose }) => {
                 setSubmitting(false);
                 create({
                   name: values.name,
-                  total_quantity: Number(values.quantity),
+                  total_quantity: Number.parseInt(
+                    values.quantity.toString().replace(/,/g, "")
+                  ),
                 });
               }}
               validateOnMount={true}
@@ -111,9 +116,12 @@ const AddInventoryItem: FC<{ onClose: () => void }> = ({ onClose }) => {
                       value={values.quantity}
                       name="quantity"
                       onChange={(e) => {
-                        const res = e.target.value.trim();
+                        const res = e.target.value.trim().replace(/,/g, "");
                         if (!isNaN(Number(res))) {
-                          setFieldValue("quantity", res);
+                          setFieldValue(
+                            "quantity",
+                            formatAmountWithCommas(res)
+                          );
                         }
                       }}
                       onBlur={handleBlur}

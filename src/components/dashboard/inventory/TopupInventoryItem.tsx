@@ -9,10 +9,11 @@ import { useUpdateInventory } from "@/src/hooks/inventoryHooks";
 import { tInventory } from "@/src/stores/inventoryStore";
 import { IoMdClose } from "react-icons/io";
 
-const TopupInventoryItem: FC<{ item: tInventory; onClose: () => void }> = ({
-  item,
-  onClose,
-}) => {
+const TopupInventoryItem: FC<{
+  item: tInventory;
+  onClose: () => void;
+  onCancel: () => void;
+}> = ({ item, onClose, onCancel }) => {
   const { loading, success, update } = useUpdateInventory(item.id);
   const { getIconForId } = useGetUniqueIcon();
 
@@ -25,7 +26,7 @@ const TopupInventoryItem: FC<{ item: tInventory; onClose: () => void }> = ({
   const Icon = getIconForId(item.id);
 
   return (
-    <Modal.Root opened={true} onClose={onClose} padding={0} top={0} centered>
+    <Modal.Root opened={true} onClose={onCancel} padding={0} top={0} centered>
       <Modal.Overlay />
       <Modal.Body>
         <Modal.Content>
@@ -40,7 +41,7 @@ const TopupInventoryItem: FC<{ item: tInventory; onClose: () => void }> = ({
               <IoMdClose
                 className="cursor-pointer text-monokai"
                 size={"26px"}
-                onClick={onClose}
+                onClick={onCancel}
               />
             </div>
             <Formik

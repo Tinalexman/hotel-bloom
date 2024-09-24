@@ -50,6 +50,7 @@ const Sections = () => {
           </div>
           <div className="w-fit gap-3 flex items-center">
             <button
+            title="Refresh the page"
               onClick={() => useDashboardData.getState().refresh()}
               className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
             >
@@ -57,6 +58,7 @@ const Sections = () => {
             </button>
             {hasCreateSectionPermission && (
               <button
+                title="Add new section"
                 onClick={() => shouldAddSection(true)}
                 className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
               >

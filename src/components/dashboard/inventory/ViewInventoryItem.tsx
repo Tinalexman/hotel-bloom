@@ -8,7 +8,7 @@ import { MdRefresh } from "react-icons/md";
 import { useDashboardData } from "@/src/stores/dashboardStore";
 import { useGetInventoryById } from "@/src/hooks/inventoryHooks";
 import { MdEdit } from "react-icons/md";
-import { tInventory } from "@/src/stores/inventoryStore";
+import { tInventory, tSectionInventory } from "@/src/stores/inventoryStore";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
 import { useRouter } from "next/navigation";
@@ -18,6 +18,7 @@ import TopupInventoryItem from "./TopupInventoryItem";
 import DeleteInventoryItem from "./DeleteInventoryItem";
 import { IoAdd } from "react-icons/io5";
 import AddSectionInventory from "./AddSectionInventory";
+import { get } from "http";
 
 const ViewInventoryItem = () => {
   const {
@@ -32,6 +33,9 @@ const ViewInventoryItem = () => {
     useState<boolean>(false);
   const [addSectionInventory, setAddSectionInventory] =
     useState<boolean>(false);
+
+  const [selectedInventoryItem, setSelectedInventoryItem] =
+    useState<tSectionInventory | null>(null);
 
   const router = useRouter();
 
@@ -81,7 +85,11 @@ const ViewInventoryItem = () => {
       {topUpInventoryItem && (
         <TopupInventoryItem
           item={inventory!}
-          onClose={() => setTopUpInventoryItem(false)}
+          onCancel={() => setTopUpInventoryItem(false)}
+          onClose={() => {
+            setTopUpInventoryItem(false);
+            getInventory(inventory!.id);
+          }}
         />
       )}
       {deleteInventoryItem && (
@@ -98,7 +106,11 @@ const ViewInventoryItem = () => {
         <AddSectionInventory
           id={inventory!.id}
           query="inventory"
-          onClose={() => setAddSectionInventory(false)}
+          onCancel={() => setAddSectionInventory(false)}
+          onClose={() => {
+            setAddSectionInventory(false);
+            getInventory(inventory!.id);
+          }}
         />
       )}
       <div className="w-full h-full pt-5 flex flex-col">
@@ -111,18 +123,21 @@ const ViewInventoryItem = () => {
           </div>
           <div className="w-fit gap-3 flex items-center">
             <button
+              title="Refresh the page"
               onClick={() => getInventory(inventory!.id)}
               className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
             >
               <MdRefresh size={"26px"} />
             </button>
             <button
+              title="Top up this inventory item"
               onClick={() => setTopUpInventoryItem(true)}
               className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
             >
               <MdEdit size={"26px"} />
             </button>
             <button
+              title="Delete this inventory item"
               onClick={() => setDeleteInventoryItem(true)}
               className="rounded-[10px] bg-error text-white p-2 shadow-custom-black"
             >
@@ -143,6 +158,7 @@ const ViewInventoryItem = () => {
           <div className="w-full items-center justify-between flex">
             <h2 className="big-1 font-semibold text-monokai mt-5">SECTIONS</h2>
             <button
+              title="Add new section inventory"
               onClick={() => setAddSectionInventory(true)}
               className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
             >
@@ -181,7 +197,7 @@ const ViewInventoryItem = () => {
                       <td>
                         <h2 className="text-monokai font-medium">{sc.name}</h2>
                       </td>
-                      <td className="pl-4">
+                      <td className="pl-2">
                         <h2 className="text-monokai font-medium">
                           {sc!.price.toLocaleString("en-US")}
                         </h2>
@@ -191,9 +207,12 @@ const ViewInventoryItem = () => {
                           {sc!.quantity}
                         </h2>
                       </td>
-                      <td>
-                        <h2 className="text-secondary underline font-semibold">
-                          Add Items
+                      <td className="flex gap-4 items-center w-fit">
+                        <h2 className="text-secondary cursor-pointer underline font-semibold">
+                          Edit
+                        </h2>
+                        <h2 className="text-error cursor-pointer underline font-semibold">
+                          Delete
                         </h2>
                       </td>
                     </tr>

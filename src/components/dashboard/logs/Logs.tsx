@@ -60,6 +60,7 @@ const Logs = () => {
         <div className="w-fit gap-5 flex items-center">
           <div className="w-fit flex items-center gap-2">
             <button
+              title="Previous Page"
               onClick={onPrev}
               className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
             >
@@ -93,6 +94,7 @@ const Logs = () => {
             </div>
 
             <button
+              title="Next Page"
               onClick={onNext}
               className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
             >
@@ -100,8 +102,9 @@ const Logs = () => {
             </button>
           </div>
           <button
+            title="Refresh the page"
             onClick={() => get(page)}
-            className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
+            className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
           >
             <MdRefresh size={"26px"} />
           </button>
@@ -121,7 +124,6 @@ const Logs = () => {
                   </h2>
                   <h2 className="font-semibold">{lg.action}</h2>
                   <h3 className="font-medium text-sm">
-                    Timestamp:{" "}
                     <span className="font-semibold">
                       {convertTime(new Date(lg.created_at))}
                     </span>

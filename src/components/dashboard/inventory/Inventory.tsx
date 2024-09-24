@@ -39,12 +39,14 @@ const Inventory = () => {
           </div>
           <div className="w-fit gap-3 flex items-center">
             <button
+              title="Refresh the page"
               onClick={() => useDashboardData.getState().refresh()}
               className="rounded-[10px] bg-neutral-light text-monokai p-2 shadow-custom-black"
             >
               <MdRefresh size={"26px"} />
             </button>
             <button
+              title="Add new inventory item"
               onClick={() => shouldAddInventoryItem(true)}
               className="rounded-[10px] bg-secondary text-white p-2 shadow-custom-black"
             >

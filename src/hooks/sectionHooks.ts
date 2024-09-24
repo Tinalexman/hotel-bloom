@@ -120,7 +120,7 @@ export const useCreateSectionInventory = () => {
     if (loading) return;
     setLoading(true);
 
-    const { status } = await requestApi(
+    const { data, status } = await requestApi(
       "/org/sections/inventories",
       "POST",
       payload
@@ -132,7 +132,8 @@ export const useCreateSectionInventory = () => {
       toast.success("New Section Inventory Created");
       useDashboardData.getState().refresh();
     } else {
-      toast.error("Something went wrong. Please try again");
+      let msg: any = data.response.data.non_field_errors[0];
+      toast.error(msg ?? "Something went wrong. Please try again");
     }
   };
 
