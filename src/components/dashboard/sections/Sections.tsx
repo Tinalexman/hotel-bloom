@@ -70,7 +70,7 @@ const Sections = () => {
                 icon={getIconForId(sc.id)}
                 onSelect={() => {
                   window.localStorage.setItem(SERVEXI_ITEM_ID, sc.id);
-                  router.push("/dashboard/inventory/view-section");
+                  router.push("/dashboard/sections/view-section");
                 }}
               />
             ))}

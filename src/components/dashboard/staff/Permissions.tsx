@@ -9,7 +9,7 @@ import {
   useAddStaffPermission,
   useRemoveStaffPermission,
 } from "@/src/hooks/staffHooks";
-import { useGetAllSections } from "@/src/hooks/sectionHooks";
+import { useGetAllSectionsForInventoryOrStaffPermission } from "@/src/hooks/sectionHooks";
 import { IoMdClose } from "react-icons/io";
 
 interface iSectionValue {
@@ -62,7 +62,7 @@ const Permissions: FC<{ staff: iStaff; onClose: () => void }> = ({
     data: sections,
     success: getSectionsSuccess,
     loading: loadingSections,
-  } = useGetAllSections();
+  } = useGetAllSectionsForInventoryOrStaffPermission("user", staff.id);
 
   useEffect(() => {
     if (getSectionsSuccess) {

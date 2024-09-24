@@ -1,6 +1,7 @@
 export type tSection = {
   id: string;
   name: string;
+  inventories: tSectionInventory[];
 };
 
 export type tSectionAccess = {

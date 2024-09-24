@@ -7,7 +7,7 @@ import { GoNumber } from "react-icons/go";
 import CustomCheckBox from "@/src/components/reusable/CustomCheckbox";
 
 import {
-  useGetAllSectionsForInventory,
+  useGetAllSectionsForInventoryOrStaffPermission,
   useCreateSectionInventory,
 } from "@/src/hooks/sectionHooks";
 
@@ -20,7 +20,7 @@ const AddSectionInventory: FC<{
   onCancel: () => void;
 }> = ({ id, onClose, onCancel }) => {
   const { loading: loadingAllSections, data: allSections } =
-    useGetAllSectionsForInventory(id);
+    useGetAllSectionsForInventoryOrStaffPermission("inventory", id);
 
   const {
     loading: loadingCreatingSectionInventory,

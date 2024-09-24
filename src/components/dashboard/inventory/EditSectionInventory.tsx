@@ -60,18 +60,22 @@ const EditSectionInventory: FC<{
               validate={(values) => {
                 const errors: any = {};
 
-                let v = Number(values.quantity.replace(/,/g, ""));
-                if (isNaN(v)) {
-                  errors.quantity = "Invalid quantity";
-                } else if (v <= 0) {
-                  errors.quantity = "Quantity must be greater than 0";
+                if (values.quantity) {
+                  let v = Number(values.quantity.replace(/,/g, ""));
+                  if (isNaN(v)) {
+                    errors.quantity = "Invalid quantity";
+                  } else if (v <= 0) {
+                    errors.quantity = "Quantity must be greater than 0";
+                  }
                 }
 
-                v = Number(values.price.replace(/,/g, ""));
-                if (isNaN(v)) {
-                  errors.price = "Invalid price";
-                } else if (v <= 0) {
-                  errors.price = "Price must be greater than 0";
+                if (values.price) {
+                  let v = Number(values.price.replace(/,/g, ""));
+                  if (isNaN(v)) {
+                    errors.price = "Invalid price";
+                  } else if (v <= 0) {
+                    errors.price = "Price must be greater than 0";
+                  }
                 }
 
                 return errors;
@@ -104,7 +108,7 @@ const EditSectionInventory: FC<{
                 <Form className="w-full flex flex-col gap-2" method="POST">
                   <div className="mb-4 flex flex-col gap-1 w-full relative">
                     <p className="text-neutral-dark text-sm">
-                      Price <span className="text-error">*</span>
+                      New Price <span className="text-error">*</span>
                     </p>
                     <input
                       type="text"
@@ -130,7 +134,7 @@ const EditSectionInventory: FC<{
 
                   <div className="mb-4 flex flex-col gap-1 w-full relative">
                     <p className="text-neutral-dark text-sm">
-                      Quantity <span className="text-error">*</span>
+                      Topup Quantity <span className="text-error">*</span>
                     </p>
                     <input
                       type="text"

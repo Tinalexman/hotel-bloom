@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { tSection } from "@/src/stores/sectionStore";
 import { IconType } from "react-icons";
 const SectionContainer: FC<{
-  section: tSection;
+  section: Omit<tSection, "inventories">;
   icon: IconType;
   onSelect: () => void;
 }> = ({ section, onSelect, icon }) => {

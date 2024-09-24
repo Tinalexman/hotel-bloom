@@ -16,9 +16,11 @@ export interface iUpdateSectionInventory {
   price: number;
 }
 
-export interface iSectionNameAndID {
-  id: string;
-  name: string;
+export type iSectionNameAndID = Omit<tSection, "inventories">;
+
+export interface iSellItem {
+  quantity: number;
+  section_inventory: string;
 }
 
 export const useCreateSection = () => {
@@ -81,7 +83,7 @@ export const useDeleteSection = (section_id: string) => {
 };
 
 export const useGetAllSections = () => {
-  const [data, setData] = useState<tSection[]>([]);
+  const [data, setData] = useState<Omit<tSection, "inventories">[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const { requestApi } = useAxios();
@@ -213,7 +215,10 @@ export const useDeleteSectionInventory = (id: string) => {
   };
 };
 
-export const useGetAllSectionsForInventory = (id: string) => {
+export const useGetAllSectionsForInventoryOrStaffPermission = (
+  query: "inventory" | "user",
+  id: string
+) => {
   const [data, setData] = useState<iSectionNameAndID[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -224,7 +229,7 @@ export const useGetAllSectionsForInventory = (id: string) => {
     setLoading(true);
 
     const { data, status } = await requestApi(
-      `/org/sections/exclude?inventory=${id}`,
+      `/org/sections/exclude?${query}=${id}`,
       "GET"
     );
     setLoading(false);
@@ -250,8 +255,8 @@ export const useGetAllSectionsForInventory = (id: string) => {
   };
 };
 
-export const useGetAllSectionsForUser = () => {
-  const [data, setData] = useState<iSectionNameAndID[]>([]);
+export const useGetSectionByID = () => {
+  const [data, setData] = useState<tSection | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const { requestApi } = useAxios();
@@ -260,16 +265,13 @@ export const useGetAllSectionsForUser = () => {
     if (loading) return;
     setLoading(true);
 
-    const { data, status } = await requestApi(
-      `/org/sections/exclude?user=${id}`,
-      "GET"
-    );
+    const { data, status } = await requestApi(`/org/sections/${id}`, "GET");
     setLoading(false);
     setSuccess(status);
 
     if (status) {
-      toast.success("Sections Retrieved");
-      setData(data as iSectionNameAndID[]);
+      toast.success("Section Retrieved");
+      setData(data as tSection);
     } else {
       toast.error("Something went wrong. Please try again");
     }
@@ -280,5 +282,37 @@ export const useGetAllSectionsForUser = () => {
     success,
     data,
     get,
+  };
+};
+
+export const useSellSectionInventory = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const { requestApi } = useAxios();
+
+  let sell = async (payload: iSellItem) => {
+    if (loading) return;
+    setLoading(true);
+
+    const { status } = await requestApi(
+      "/org/sections/inventories/sell",
+      "PUT",
+      { payload }
+    );
+    setLoading(false);
+    setSuccess(status);
+
+    if (status) {
+      toast.success("Section Inventory Item Sold");
+      useDashboardData.getState().refresh();
+    } else {
+      toast.error("Something went wrong. Please try again");
+    }
+  };
+
+  return {
+    loading,
+    success,
+    sell,
   };
 };
