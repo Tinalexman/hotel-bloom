@@ -10,4 +10,5 @@ export type tSectionInventory = {
   total_quantity: number;
   store_quantity: number;
   organization: string;
+  sections: { id: string; name: string; quantity: number; price: number }[];
 };

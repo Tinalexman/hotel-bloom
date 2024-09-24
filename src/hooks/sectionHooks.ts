@@ -11,6 +11,11 @@ export interface iCreateSectionInventory {
   price: number;
 }
 
+export interface iSectionNameAndID {
+  id: string;
+  name: string;
+}
+
 export const useCreateSection = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -135,5 +140,45 @@ export const useCreateSectionInventory = () => {
     loading,
     success,
     create,
+  };
+};
+
+export const useGetAllSectionsExcludingUserOrInventory = (
+  id: string,
+  query: "user" | "inventory"
+) => {
+  const [data, setData] = useState<iSectionNameAndID[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const { requestApi } = useAxios();
+
+  let get = async () => {
+    if (loading) return;
+    setLoading(true);
+
+    const { data, status } = await requestApi(
+      `/org/sections/exclude?${query}=${id}`,
+      "GET"
+    );
+    setLoading(false);
+    setSuccess(status);
+
+    if (status) {
+      toast.success("Sections Retrieved");
+      setData(data as iSectionNameAndID[]);
+    } else {
+      toast.error("Something went wrong. Please try again");
+    }
+  };
+
+  useEffect(() => {
+    get();
+  }, []);
+
+  return {
+    loading,
+    success,
+    data,
+    get,
   };
 };
