@@ -15,13 +15,17 @@ import { IoMdClose } from "react-icons/io";
 import { formatAmountWithCommas } from "@/src/functions/numberFunctions";
 
 const EditSectionInventory: FC<{
-  query: "user" | "inventory";
-  id: string;
+  section: {
+    id: string;
+    name: string;
+    quantity: number;
+    price: number;
+  };
   onClose: () => void;
   onCancel: () => void;
-}> = ({ query, id, onClose, onCancel }) => {
+}> = ({ section, onClose, onCancel }) => {
   const { loading: loadingAllSections, data: allSections } =
-    useGetAllSectionsExcludingUserOrInventory(id, query);
+    useGetAllSectionsExcludingUserOrInventory("", "user");
 
   const {
     loading: loadingCreatingSectionInventory,
@@ -96,7 +100,7 @@ const EditSectionInventory: FC<{
                 setSubmitting(false);
                 createSectionInventory({
                   section: currentSectionID,
-                  inventory: id,
+                  inventory: "",
                   price: Number.parseInt(
                     values.price.toString().replace(/,/g, "")
                   ),

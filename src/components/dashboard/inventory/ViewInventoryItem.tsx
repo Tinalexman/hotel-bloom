@@ -5,10 +5,9 @@ import Image from "next/image";
 import Void from "@/public/Void.png";
 import { Loader } from "@mantine/core";
 import { MdRefresh } from "react-icons/md";
-import { useDashboardData } from "@/src/stores/dashboardStore";
 import { useGetInventoryById } from "@/src/hooks/inventoryHooks";
 import { MdEdit } from "react-icons/md";
-import { tInventory, tSectionInventory } from "@/src/stores/inventoryStore";
+import { tSectionInventory } from "@/src/stores/inventoryStore";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { useGetUniqueIcon } from "@/src/hooks/iconHooks";
 import { useRouter } from "next/navigation";
@@ -18,7 +17,8 @@ import TopupInventoryItem from "./TopupInventoryItem";
 import DeleteInventoryItem from "./DeleteInventoryItem";
 import { IoAdd } from "react-icons/io5";
 import AddSectionInventory from "./AddSectionInventory";
-import { get } from "http";
+import DeleteSectionInventory from "./DeleteSectionInventory";
+import EditSectionInventory from "./EditSectionIventory";
 
 const ViewInventoryItem = () => {
   const {
@@ -33,9 +33,16 @@ const ViewInventoryItem = () => {
     useState<boolean>(false);
   const [addSectionInventory, setAddSectionInventory] =
     useState<boolean>(false);
-
-  const [selectedInventoryItem, setSelectedInventoryItem] =
-    useState<tSectionInventory | null>(null);
+  const [editSelectedInventoryItem, setEditSelectedInventoryItem] =
+    useState<boolean>(false);
+  const [deleteSelectedInventoryItem, setDeleteSelectedInventoryItem] =
+    useState<boolean>(false);
+  const [selectedInventoryItem, setSelectedInventoryItem] = useState<{
+    id: string;
+    name: string;
+    quantity: number;
+    price: number;
+  } | null>(null);
 
   const router = useRouter();
 
@@ -113,6 +120,28 @@ const ViewInventoryItem = () => {
           }}
         />
       )}
+      {editSelectedInventoryItem && selectedInventoryItem && (
+        <EditSectionInventory
+          section={{ ...selectedInventoryItem! }}
+          onCancel={() => setEditSelectedInventoryItem(false)}
+          onClose={() => {
+            setEditSelectedInventoryItem(false);
+            getInventory(inventory!.id);
+          }}
+        />
+      )}
+      {deleteSelectedInventoryItem && selectedInventoryItem && (
+        <DeleteSectionInventory
+          id={selectedInventoryItem!.id}
+          name={selectedInventoryItem!.name}
+          onCancel={() => setDeleteSelectedInventoryItem(false)}
+          onClose={() => {
+            setDeleteSelectedInventoryItem(false);
+            getInventory(inventory!.id);
+          }}
+        />
+      )}
+
       <div className="w-full h-full pt-5 flex flex-col">
         <div className="w-full flex justify-between items-center">
           <div className="w-fit gap-2 items-center flex">
@@ -208,7 +237,13 @@ const ViewInventoryItem = () => {
                         </h2>
                       </td>
                       <td className="flex gap-4 items-center w-fit">
-                        <h2 className="text-secondary cursor-pointer underline font-semibold">
+                        <h2
+                          onClick={() => {
+                            setEditSelectedInventoryItem(false);
+                            setSelectedInventoryItem(sc);
+                          }}
+                          className="text-secondary cursor-pointer underline font-semibold"
+                        >
                           Edit
                         </h2>
                         <h2 className="text-error cursor-pointer underline font-semibold">
