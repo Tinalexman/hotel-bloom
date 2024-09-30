@@ -58,7 +58,7 @@ const HotelSlider = () => {
       <AnimatePresence>
         <motion.div
           key={index}
-          initial={{ x: "-10%", opacity: 0 }}
+          initial={{ x: "10%", opacity: 0 }}
           animate={{
             x: "0%",
             opacity: 1,
@@ -68,7 +68,7 @@ const HotelSlider = () => {
             },
           }}
           exit={{
-            x: "10%",
+            x: "=10%",
             opacity: 0,
             transition: {
               ease: "linear",
