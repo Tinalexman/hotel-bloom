@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { isEmptyStaff, useCurrentStaffStore } from "@/src/stores/userStore";
 import toast from "react-hot-toast";
 import { useRouter, usePathname } from "next/navigation";
+import { connectToSocket } from "../hooks/socket";
 
 export default function AuthProvider({
   children,
@@ -49,6 +50,8 @@ export default function AuthProvider({
       router.back();
       return;
     }
+
+    connectToSocket();
   }, [currentStaff]);
 
   return <>{children}</>;

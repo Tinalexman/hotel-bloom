@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { useGetSectionByID } from "@/src/hooks/sectionHooks";
 import { tSectionInventory } from "@/src/stores/sectionStore";
 import SellInventoryItem from "./SellInventoryItem";
+import { useDashboardData } from "@/src/stores/dashboardStore";
 
 const ViewSection = () => {
   const { data, success, loading, get: getSection } = useGetSectionByID();
@@ -30,6 +31,11 @@ const ViewSection = () => {
     }
 
     getSection(window.localStorage.getItem(SERVEXI_ITEM_ID)!);
+    useDashboardData.setState({
+      socketCallback: () => {
+        getSection(window.localStorage.getItem(SERVEXI_ITEM_ID)!);
+      },
+    });
   }, []);
 
   const checkItemIDExistsInLocalStorage = () => {

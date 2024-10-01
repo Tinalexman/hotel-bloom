@@ -36,7 +36,7 @@ const Logout: FC<{ onClose: () => void }> = ({ onClose }) => {
                 Cancel
               </button>
               <button
-                onClick={logout}
+                onClick={() => logout()}
                 className="w-[45%] bg-error text-white rounded py-2 font-semibold grid place-content-center"
               >
                 {loading ? <Loader color="white.6" /> : "Yes, Logout"}

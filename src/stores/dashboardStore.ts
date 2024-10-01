@@ -5,6 +5,10 @@ export type tDashboardNavigationData = {
   searchFilter: string;
   shouldRefresh: boolean;
   refresh: () => void;
+
+  connectedToSocket: boolean;
+  webSocket: WebSocket | null;
+  socketCallback: () => void;
 };
 
 export const useDashboardData = create<tDashboardNavigationData>(
@@ -15,5 +19,8 @@ export const useDashboardData = create<tDashboardNavigationData>(
     refresh: () => {
       set({ shouldRefresh: !get().shouldRefresh });
     },
+    webSocket: null,
+    connectedToSocket: false,
+    socketCallback: () => {},
   })
 );

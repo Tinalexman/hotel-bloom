@@ -9,8 +9,10 @@ interface iResponse {
   data?: any;
 }
 
+export const BASE = "https://servexi.onrender.com";
+
 export const useAxios = () => {
-  const baseURL = "https://servexi.onrender.com/api";
+  const baseURL = `${BASE}/api`;
   const api = axios.create({
     baseURL,
   });

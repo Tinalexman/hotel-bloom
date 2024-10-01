@@ -50,6 +50,8 @@ export const useLogout = () => {
       clearStaffData();
       removeToken();
     }
+
+    return status;
   };
 
   return {
