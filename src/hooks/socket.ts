@@ -9,14 +9,14 @@ import {
 } from "../stores/userStore";
 
 export const useSocket = () => {
-  const { removeToken } = useToken();
+  const { getToken, removeToken } = useToken();
   const { requestApi } = useAxios();
 
   const refresh = useDashboardData((state) => state.refresh);
 
   const init = () => {
     let ws = useDashboardData.getState().webSocket;
-    const token = useToken().getToken();
+    const token = getToken();
 
     if (token === undefined) {
       return;
