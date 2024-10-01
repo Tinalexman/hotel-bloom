@@ -1,7 +1,7 @@
 import { useToken } from "../providers/AuthProvider";
 import { BASE } from "../services/base";
 import { useDashboardData } from "../stores/dashboardStore";
-import { iStaff } from "../stores/userStore";
+import { iStaff, useCurrentStaffStore } from "../stores/userStore";
 import { useGetCurrentUser, useLogout } from "./authHooks";
 
 export async function connectToSocket() {
@@ -69,5 +69,6 @@ const handleLogout = async (logout: () => Promise<boolean | undefined>) => {
 const handleGetUser = async (getUser: () => Promise<iStaff | undefined>) => {
   const result = await getUser();
   if (result) {
+    useCurrentStaffStore.setState({ ...result });
   }
 };
