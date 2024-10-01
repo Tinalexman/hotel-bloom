@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { isEmptyStaff, useCurrentStaffStore } from "@/src/stores/userStore";
 import toast from "react-hot-toast";
 import { useRouter, usePathname } from "next/navigation";
-import { connectToSocket } from "../hooks/socket";
+import { useSocket } from "../hooks/socket";
 
 export default function AuthProvider({
   children,
@@ -29,6 +29,8 @@ export default function AuthProvider({
     (state) => state.permissions.managed_sections.length > 0
   );
 
+  const { init } = useSocket();
+
   useEffect(() => {
     if (isEmptyStaff(currentStaff)) return;
 
@@ -51,7 +53,7 @@ export default function AuthProvider({
       return;
     }
 
-    connectToSocket();
+    init();
   }, [currentStaff]);
 
   return <>{children}</>;

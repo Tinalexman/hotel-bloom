@@ -50,8 +50,6 @@ export const useLogout = () => {
       clearStaffData();
       removeToken();
     }
-
-    return status;
   };
 
   return {
@@ -134,29 +132,6 @@ export const useRegister = () => {
     success,
     register,
     data,
-  };
-};
-
-export const useGetCurrentUser = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
-  const { requestApi } = useAxios();
-
-  let get = async () => {
-    if (loading) return;
-    setLoading(true);
-
-    const { data, status } = await requestApi("/org", "GET");
-    setLoading(false);
-    setSuccess(status);
-
-    return data;
-  };
-
-  return {
-    loading,
-    success,
-    get,
   };
 };
 

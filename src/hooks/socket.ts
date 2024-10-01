@@ -1,74 +1,87 @@
+import { useEffect } from "react";
 import { useToken } from "../providers/AuthProvider";
-import { BASE } from "../services/base";
+import { BASE, useAxios } from "../services/base";
 import { useDashboardData } from "../stores/dashboardStore";
-import { iStaff, useCurrentStaffStore } from "../stores/userStore";
-import { useGetCurrentUser, useLogout } from "./authHooks";
+import {
+  clearStaffData,
+  iStaff,
+  useCurrentStaffStore,
+} from "../stores/userStore";
 
-export async function connectToSocket() {
-  let ws = useDashboardData.getState().webSocket;
-  const token = useToken().getToken();
+export const useSocket = () => {
+  const { removeToken } = useToken();
+  const { requestApi } = useAxios();
 
-  if (token === undefined) {
-    return;
-  }
+  const refresh = useDashboardData((state) => state.refresh);
 
-  if (ws !== null) {
-    ws.close();
-  }
+  const init = () => {
+    let ws = useDashboardData.getState().webSocket;
+    const token = useToken().getToken();
 
-  ws = new WebSocket(`${BASE}/ws/notification?token=${token}`);
+    if (token === undefined) {
+      return;
+    }
 
-  ws.onopen = (ev: Event) => {
-    useDashboardData.setState({
-      connectedToSocket: true,
-      webSocket: ws,
-    });
+    if (ws !== null) {
+      ws.close();
+    }
+
+    ws = new WebSocket(`${BASE}/ws/notification?token=${token}`);
+
+    ws.onopen = (ev: Event) => {
+      useDashboardData.setState({
+        connectedToSocket: true,
+        webSocket: ws,
+      });
+    };
+    ws.onclose = (ev: Event) => {
+      useDashboardData.setState({
+        connectedToSocket: false,
+        webSocket: null,
+      });
+    };
+    ws.onerror = (ev: Event) => {
+      useDashboardData.setState({
+        connectedToSocket: false,
+        webSocket: null,
+      });
+    };
+
+    ws.onmessage = (ev: MessageEvent) => {
+      handleEvents(ev.data);
+    };
   };
-  ws.onclose = (ev: Event) => {
-    useDashboardData.setState({
-      connectedToSocket: false,
-      webSocket: null,
-    });
+
+  const handleEvents = (data: string) => {
+    const payload: { notification: string } = JSON.parse(data);
+    const message: string = payload.notification;
+    console.log("Socket Message", message);
+    if (message === "Get User") {
+      handleGetUser();
+    } else if (message === "Get Sections" || message === "Get Inventories") {
+      refresh();
+    } else if (message === "Log Out") {
+      handleLogout();
+    } else {
+      useDashboardData.getState().socketCallback();
+    }
   };
-  ws.onerror = (ev: Event) => {
-    useDashboardData.setState({
-      connectedToSocket: false,
-      webSocket: null,
-    });
+
+  const handleLogout = async () => {
+    const { status } = await requestApi("/log-out", "PUT");
+    if (status) {
+      window.location.replace("/auth/login");
+      removeToken();
+      clearStaffData();
+    }
   };
 
-  ws.onmessage = (ev: MessageEvent) => {
-    handleEvents(ev.data);
+  const handleGetUser = async () => {
+    const { status, data } = await requestApi("/", "GET");
+    if (status) {
+      useCurrentStaffStore.setState({ ...data });
+    }
   };
-}
 
-const handleEvents = (data: string) => {
-  const payload: { notification: string } = JSON.parse(data);
-  const message: string = payload.notification;
-  console.log("Socket Message", message);
-  if (message === "Get User") {
-    const { get: getUser } = useGetCurrentUser();
-    handleGetUser(getUser);
-  } else if (message === "Get Sections" || message === "Get Inventories") {
-    useDashboardData.getState().refresh();
-  } else if (message === "Log Out") {
-    const { logout } = useLogout();
-    handleLogout(logout);
-  } else {
-    useDashboardData.getState().socketCallback();
-  }
-};
-
-const handleLogout = async (logout: () => Promise<boolean | undefined>) => {
-  const result = await logout();
-  if (result) {
-    window.location.replace("/auth/login");
-  }
-};
-
-const handleGetUser = async (getUser: () => Promise<iStaff | undefined>) => {
-  const result = await getUser();
-  if (result) {
-    useCurrentStaffStore.setState({ ...result });
-  }
+  return { init };
 };
