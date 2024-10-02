@@ -62,7 +62,7 @@ const Sections = () => {
           </div>
         </div>
         {!loading && sections.length > 0 && (
-          <div className="w-full grid grid-cols-5 gap-6">
+          <div className="w-full grid grid-cols-5 gap-6 pb-10">
             {sections.map((sc, i) => (
               <SectionContainer
                 key={i}

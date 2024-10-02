@@ -55,7 +55,6 @@ export const useSocket = () => {
   const handleEvents = (data: string) => {
     const payload: { notification: string } = JSON.parse(data);
     const message: string = payload.notification;
-    console.log("Socket Message", message);
     if (message === "Get User") {
       handleGetUser();
     } else if (message === "Get Sections" || message === "Get Inventories") {
@@ -68,16 +67,14 @@ export const useSocket = () => {
   };
 
   const handleLogout = async () => {
-    const { status } = await requestApi("/log-out", "PUT");
-    if (status) {
-      window.location.replace("/auth/login");
-      removeToken();
-      clearStaffData();
-    }
+    await requestApi("/log-out", "PUT");
+    removeToken();
+    clearStaffData();
+    window.location.replace("/auth/login");
   };
 
   const handleGetUser = async () => {
-    const { status, data } = await requestApi("/", "GET");
+    const { status, data } = await requestApi("/org/user", "GET");
     if (status) {
       useCurrentStaffStore.setState({ ...data });
     }

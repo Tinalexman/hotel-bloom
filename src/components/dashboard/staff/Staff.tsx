@@ -49,7 +49,7 @@ const Staff = () => {
           </div>
         </div>
         {!loading && (
-          <div className="w-full max-h-[calc(100vh-245px)]">
+          <div className="w-full pb-10">
             {staff.length > 0 && <Table staff={staff} />}
 
             {staff.length === 0 && (

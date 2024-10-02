@@ -54,7 +54,7 @@ const Inventory = () => {
           </div>
         </div>
         {!loading && items.length > 0 && (
-          <table className="w-full mt-2">
+          <table className="w-full mt-2 pb-10">
             <thead>
               <tr className="bg-neutral-light">
                 <th className="pl-4">S/N</th>

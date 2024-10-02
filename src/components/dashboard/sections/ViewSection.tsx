@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import Image from "next/image";
 import Void from "@/public/Void.png";
 import { Loader } from "@mantine/core";
@@ -13,14 +13,19 @@ import { useGetSectionByID } from "@/src/hooks/sectionHooks";
 import { tSectionInventory } from "@/src/stores/sectionStore";
 import SellInventoryItem from "./SellInventoryItem";
 import { useDashboardData } from "@/src/stores/dashboardStore";
+import { RiDeleteBinFill } from "react-icons/ri";
+import DeleteSection from "./DeleteSection";
+import { useCurrentStaffStore } from "@/src/stores/userStore";
 
 const ViewSection = () => {
   const { data, success, loading, get: getSection } = useGetSectionByID();
-
   const [selectedInventory, setSelectedInventory] =
     useState<tSectionInventory | null>(null);
-
+  const [deleteSection, shouldDeleteSection] = useState<boolean>(false);
   const { getIconForId } = useGetUniqueIcon();
+  const canBeDeleted = useCurrentStaffStore(
+    (state) => state.permissions.create_section
+  );
 
   const router = useRouter();
 
@@ -82,6 +87,16 @@ const ViewSection = () => {
           }}
         />
       )}
+      {deleteSection && (
+        <DeleteSection
+          sectionId={data!.id}
+          onDelete={() => {
+            shouldDeleteSection(false);
+            router.back();
+          }}
+          onClose={() => shouldDeleteSection(false)}
+        />
+      )}
       <div className="w-full h-full pt-5 flex flex-col">
         <div className="w-full flex justify-between items-center">
           <div className="w-fit gap-2 items-center flex">
@@ -96,6 +111,15 @@ const ViewSection = () => {
             >
               <MdRefresh size={"26px"} />
             </button>
+            {canBeDeleted && (
+              <button
+                title="Delete this section"
+                onClick={() => shouldDeleteSection(true)}
+                className="rounded-[10px] bg-error text-white p-2 shadow-custom-black"
+              >
+                <RiDeleteBinFill size={"26px"} />
+              </button>
+            )}
           </div>
         </div>
         {data!.inventories.length === 0 && (

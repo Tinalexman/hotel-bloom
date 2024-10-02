@@ -111,9 +111,9 @@ const Logs = () => {
         </div>
       </div>
       {!loading && (
-        <div className="w-full max-h-[calc(100vh-245px)] overflow-y-scroll scrollbar-custom">
+        <div className="w-full">
           {data.total > 0 && (
-            <div className="flex flex-col gap-5 ">
+            <div className="flex flex-col gap-5 pb-10">
               {data.logs.map((lg, i) => (
                 <div
                   key={i}

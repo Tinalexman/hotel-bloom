@@ -1,17 +1,18 @@
 import React, { FC, useEffect } from "react";
 
 import { Loader, Modal } from "@mantine/core";
-import { useLogout } from "@/src/hooks/authHooks";
 import { useRouter } from "next/navigation";
+import { useDeleteSection } from "@/src/hooks/sectionHooks";
 
-const Logout: FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { loading, success, logout } = useLogout();
-  const router = useRouter();
-
+const DeleteSection: FC<{
+  sectionId: string;
+  onClose: () => void;
+  onDelete: () => void;
+}> = ({ sectionId, onClose, onDelete }) => {
+  const { loading, success, del } = useDeleteSection(sectionId);
   useEffect(() => {
-    if (success) {
-      router.replace("/auth/login");
-      onClose();
+    if (!loading && success) {
+      onDelete();
     }
   }, [success]);
 
@@ -23,9 +24,9 @@ const Logout: FC<{ onClose: () => void }> = ({ onClose }) => {
         <Modal.Content>
           <div className="w-full p-10 bg-white text-monokai flex flex-col gap-10 items-center">
             <div className="w-full">
-              <h2 className="font-bold big-2">Leaving So Soon 😭</h2>
+              <h2 className="font-bold big-2">Warning</h2>
               <p className="text-neutral-dark text-lg">
-                Are you sure you want to log out of your Servexi account?
+                Are you sure you want to delete this section?
               </p>
             </div>
             <div className="flex w-full items-center justify-between">
@@ -36,10 +37,10 @@ const Logout: FC<{ onClose: () => void }> = ({ onClose }) => {
                 Cancel
               </button>
               <button
-                onClick={logout}
+                onClick={del}
                 className="w-[45%] bg-error text-white rounded py-2 font-semibold grid place-content-center"
               >
-                {loading ? <Loader color="white.6" /> : "Yes, Logout"}
+                {loading ? <Loader color="white.6" /> : "Yes, Delete"}
               </button>
             </div>
           </div>
@@ -49,4 +50,4 @@ const Logout: FC<{ onClose: () => void }> = ({ onClose }) => {
   );
 };
 
-export default Logout;
+export default DeleteSection;

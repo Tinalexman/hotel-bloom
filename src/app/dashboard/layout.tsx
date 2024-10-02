@@ -21,7 +21,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
       >
         <div
           className={`h-[100px]  
-          w-full sticky top-0 z-50 py-5 px-8 shadow-custom-black flex items-center justify-between`}
+          w-full sticky top-0 z-50 py-5 px-8 bg-white shadow-custom-black flex items-center justify-between`}
         >
           <div className="flex flex-col gap-1 ">
             <h1 className="big-3 font-bold text-monokai">
