@@ -22,12 +22,9 @@ const Logout: FC<{ onClose: () => void }> = ({ onClose }) => {
       <Modal.Body>
         <Modal.Content>
           <div className="w-full p-10 bg-white text-monokai flex flex-col gap-10 items-center">
-            <div className="w-full">
-              <h2 className="font-bold big-2">Leaving So Soon 😭</h2>
-              <p className="text-neutral-dark text-lg">
+            <p className="text-neutral-dark text-lg">
                 Are you sure you want to log out of your Servexi account?
               </p>
-            </div>
             <div className="flex w-full items-center justify-between">
               <button
                 onClick={onClose}
