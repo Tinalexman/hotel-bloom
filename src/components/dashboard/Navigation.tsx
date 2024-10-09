@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-import Logo from "@/public/Logo.png";
+import Logo from "@/public/logo.png";
 
 import { TbLogout2 } from "react-icons/tb";
 
@@ -129,15 +129,13 @@ const DashboardNavigation = () => {
   return (
     <>
       <div
-        className={`${
-          expanded ? "w-[300px] pl-5" : "w-[70px] px-3"
-        } h-[100vh] z-10 pt-5 duration-300 transition-all ease-in flex flex-col gap-8 items-center shadow-custom-black bg-white`}
+        className={`${expanded ? "w-[300px] pl-5" : "w-[70px] px-3"
+          } h-[100vh] z-10 pt-5 duration-300 transition-all ease-in flex flex-col gap-8 items-center shadow-custom-black bg-white`}
       >
         <div className="relative w-full flex justify-center pt-10">
           <div
-            className={`${
-              expanded ? "scale-100" : "scale-0"
-            } w-fit object-cover duration-300 transition-all ease-out flex flex-col items-center`}
+            className={`${expanded ? "scale-100" : "scale-0"
+              } w-fit object-cover duration-300 transition-all ease-out flex flex-col items-center`}
           >
             <Image
               src={Logo}
@@ -150,9 +148,8 @@ const DashboardNavigation = () => {
             onClick={() => {
               useDashboardData.setState({ expanded: !expanded });
             }}
-            className={`cursor-pointer absolute ${
-              expanded ? "left-[80%]" : "left-3"
-            } -top-3 duration-300 transition-all ease-out`}
+            className={`cursor-pointer absolute ${expanded ? "left-[80%]" : "left-3"
+              } -top-3 duration-300 transition-all ease-out`}
           >
             {expanded ? (
               <BiCollapse size={"26px"} className="text-monokai" />
@@ -182,10 +179,9 @@ const DashboardNavigation = () => {
                     }
                   }}
                   onMouseLeave={() => setHoveredItem(-1)}
-                  className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer font-medium ${
-                    page === i &&
+                  className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer font-medium ${page === i &&
                     "bg-secondary text-white shadow-custom-black font-bold"
-                  } text-monokai hover:scale-105 scale-100 transition-all ease-out duration-200 relative`}
+                    } text-monokai hover:scale-105 scale-100 transition-all ease-out duration-200 relative`}
                 >
                   <div style={{ fontSize: "26px" }}>
                     {page === i && navItem.active}
@@ -195,9 +191,8 @@ const DashboardNavigation = () => {
                     style={{
                       transitionDelay: `${i + 3}00ms`,
                     }}
-                    className={`whitespace-pre  duration-500 ${
-                      !expanded && "opacity-0 translate-x-28 overflow-hidden "
-                    }`}
+                    className={`whitespace-pre  duration-500 ${!expanded && "opacity-0 translate-x-28 overflow-hidden "
+                      }`}
                   >
                     {navItem.name}
                   </h2>
@@ -208,9 +203,8 @@ const DashboardNavigation = () => {
                 </div>
 
                 <div
-                  className={`w-[6px] h-8 rounded-bl-[4px] rounded-tl-[4px] ${
-                    page === i && "bg-secondary"
-                  }`}
+                  className={`w-[6px] h-8 rounded-bl-[4px] rounded-tl-[4px] ${page === i && "bg-secondary"
+                    }`}
                 />
               </div>
             );
