@@ -38,10 +38,10 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`px-40 md:px-5 grid grid-cols-[3fr_1fr] bg-white ease-out duration-75 transition-all md:grid-cols-2 place-content-center md:place-content-center md:place-items-start w-full h-20 md:h-16`}
+        className={`lg:pr-24 lg:pl-10 xs:px-5 grid lg:grid-cols-[1fr_3fr_1fr] shadow-custom-black xs:grid-cols-2 lg:place-content-center xs:place-content-center xs:place-items-start w-full lg:h-20 xs:h-16`}
       >
         <Image src={Icon} alt="logo" className="w-[200px] h-auto" />
-        <div className="flex gap-8 items-center md:hidden">
+        <div className="lg:flex lg:justify-center gap-8 lg:items-center xs:hidden w-full h-full">
           {navs.map((navItem, i) => (
             <Link
               href={navItem.link}
@@ -52,7 +52,17 @@ const Navbar = () => {
             </Link>
           ))}
         </div>
-        <div className="w-full h-full md:flex justify-end items-center hidden">
+        <div className="lg:flex w-full h-full lg:items-center gap-4 xs:hidden">
+          <Link href={"/auth/login"} className="text-monokai flex items-center justify-center gap-2 rounded border border-monokai px-2 py-[0.4rem] w-32">
+            Log In
+          </Link>
+
+          <Link href={"/auth/register"} className="text-white flex items-center justify-center gap-2 rounded bg-secondary px-2 py-2 w-32">
+            Try for Free
+          </Link>
+
+        </div>
+        <div className="w-full h-full xs:flex justify-end items-center lg:hidden">
           <HiOutlineMenu
             onClick={open}
             className={`text-monokai`}

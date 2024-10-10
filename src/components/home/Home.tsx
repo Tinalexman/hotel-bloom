@@ -1,3 +1,5 @@
+"use client";
+
 import Banner from "./Banner";
 import Services from "./Services";
 import Reasons from "./Reasons";
@@ -7,10 +9,12 @@ import Testimonies from "./Testimonies";
 import GetStarted from "./GetStarted";
 import Contact from "./Contact";
 import Footer from "../reusable/Footer";
+import Navbar from "../reusable/Navbar";
 
 const Home = () => {
   return (
     <div className="bg-white w-[100vw] overflow-x-hidden">
+
       <Banner />
       <Services />
       <div className="h-10" />
@@ -18,11 +22,11 @@ const Home = () => {
       <div className="h-20" />
       <Reasons />
       <Plans /> */}
-      <Testimonies />
+      {/* <Testimonies />
       <div className="h-20" />
       <GetStarted />
       <Contact />
-      <Footer />
+      <Footer /> */}
     </div>
   );
 };

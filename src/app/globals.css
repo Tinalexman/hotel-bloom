@@ -98,6 +98,10 @@ td {
   @apply text-4xl text-monokai;
 }
 
+.big-5 {
+  @apply text-5xl text-monokai;
+}
+
 .big-6 {
   @apply text-6xl text-monokai;
 }

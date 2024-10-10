@@ -15,21 +15,14 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       screens: {
-        xs: {
-          max: "120px",
-        },
-        sm: {
-          max: "480px",
-        },
-        md: {
-          max: "768px",
-        },
-        lg: {
-          max: "976px",
-        },
-        xl: {
-          max: "1440px",
-        },
+        xs: "320px", // Small mobile devices
+        sm: "425px", // Slightly larger mobile devices
+        md: "768px", // Tablets and larger screens
+        lg: "976px", // Laptops and larger screens
+        xl: "1440px", // Desktops
+        "2xl": "1920px", // Large desktops
+        "3xl": "2560px", // Ultra-wide screens
+        "4xl": "3200px", // Extra-large screens
       },
       colors: {
         primary: "#A419A4",

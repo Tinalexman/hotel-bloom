@@ -7,6 +7,10 @@ import { IoArrowForward } from "react-icons/io5";
 
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import Navbar from "../reusable/Navbar";
+import Link from "next/link";
+
+import Image from "next/image";
+import DashboardImage from "@/public/servexi dashboard.png";
 
 const Banner = () => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -27,52 +31,63 @@ const Banner = () => {
   return (
     <div
       ref={targetRef}
-      className="w-full h-[100vh] bg-white relative"
+      className="w-full bg-white"
     >
-      <div className="fixed z-50">
+      <div className="fixed bg-white top-0 z-[100]">
         <Navbar />
       </div>
-      <div className="bg-gradient-to-r md:bg-gradient-to-b from-black-70 to-transparent w-full h-full flex justify-between items-center px-40 md:px-5 md:py-10">
-        <div className="flex flex-col w-[35rem] md:w-full md:h-full md:justify-between gap-8 md:pt-[20vh]">
-          <div className="w-full space-y-3">
-            <TypeAnimation
-              sequence={[
-                "Streamline Your Hospitality Business with Servexi.",
-                1500,
-                "Streamline Your Hospitality Business with the best tool.",
-                3000,
-              ]}
-              preRenderFirstString
-              wrapper="span"
-              speed={50}
-              repeat={Infinity}
-              className="text-monokai big-6 font-bold"
-            />
+      <div className="w-full flex flex-col items-center lg:px-28 xs:px-5 xs:py-10 lg:py-0">
+        <TypeAnimation
+          sequence={[
+            "Manage Your Hotel Effortlessly with Servexi.",
+            1500,
+            "Manage Your Hotel Effortlessly with our solution.",
+            3000,
+          ]}
+          preRenderFirstString
+          wrapper="span"
+          speed={50}
+          repeat={Infinity}
+          className="text-monokai big-5 font-bold lg:mt-48"
+        />
+        <h2 className="text-2xl mt-5 text-center font-medium text-neutral-dark w-[600px]">
+          A complete management solution for hotel owners—staff management, real-time updates, inventory tracking, and more.
+        </h2>
+        <Link href={"/auth/register"} className="text-white text-button shadow-custom-black flex items-center justify-center gap-2 rounded bg-secondary px-2 py-3 w-44 lg:mt-5">
+          Try for Free
+          <motion.div
+            initial={{
+              x: "0%",
+            }}
+            animate={{
+              x: "10%",
+              transition: {
+                duration: 0.5,
+                repeat: Infinity,
+                ease: "easeOut",
+                repeatType: "reverse",
+              },
+            }}
+          >
+            <IoArrowForward size={20} />
+          </motion.div>
+        </Link>
+        <motion.div
+          initial={{
+            y: "50%",
+          }}
+          animate={{
+            y: "0%",
+            transition: {
+              duration: 2,
+              type: "spring",
+              bounce: 0.5,
+            }
+          }}
 
-            <h2 className="text-subdisplay font-medium text-neutral-dark">
-              Effortlessly manage staff, inventory, and operations in one intuitive platform
-            </h2>
-          </div>
-          <button className="text-white text-button flex items-center justify-center gap-2 rounded bg-secondary px-2 py-3 w-44 md:w-full mt-2 md:mt-5">
-            Get Started
-            <motion.div
-              initial={{
-                x: "0%",
-              }}
-              animate={{
-                x: "10%",
-                transition: {
-                  duration: 0.5,
-                  repeat: Infinity,
-                  ease: "easeOut",
-                  repeatType: "reverse",
-                },
-              }}
-            >
-              <IoArrowForward size={20} />
-            </motion.div>
-          </button>
-        </div>
+        >
+          <Image src={DashboardImage} alt="dashboard image" className="w-full h-auto object-cover mt-20 rounded-2xl shadow-2xl" />
+        </motion.div>
       </div>
     </div>
   );
