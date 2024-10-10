@@ -38,10 +38,10 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`lg:pr-24 lg:pl-10 xs:px-5 grid lg:grid-cols-[1fr_3fr_1fr] shadow-custom-black xs:grid-cols-2 lg:place-content-center xs:place-content-center xs:place-items-start w-full lg:h-20 xs:h-16`}
+        className={`lg:pr-24 lg:pl-10 xs:px-5 flex justify-between items-center shadow-custom-black w-full lg:h-20 xs:h-16`}
       >
         <Image src={Icon} alt="logo" className="w-[200px] h-auto" />
-        <div className="lg:flex lg:justify-center gap-8 lg:items-center xs:hidden w-full h-full">
+        {/* <div className="lg:flex lg:justify-center gap-8 lg:items-center xs:hidden w-full h-full">
           {navs.map((navItem, i) => (
             <Link
               href={navItem.link}
@@ -51,8 +51,8 @@ const Navbar = () => {
               {navItem.name}
             </Link>
           ))}
-        </div>
-        <div className="lg:flex w-full h-full lg:items-center gap-4 xs:hidden">
+        </div> */}
+        <div className="lg:flex w-fit h-full items-center gap-4 xs:hidden">
           <Link href={"/auth/login"} className="text-monokai flex items-center justify-center gap-2 rounded border border-monokai px-2 py-[0.4rem] w-32">
             Log In
           </Link>
@@ -79,9 +79,9 @@ const Navbar = () => {
           top={0}
           radius={8}
         >
-          <div className="w-full h-full flex flex-col gap-10">
+          <div className="w-full h-full bg-white flex flex-col gap-10">
             <Image src={Icon} alt="logo" className="w-full h-auto" />
-            <div className="flex flex-col gap-3 w-full">
+            {/* <div className="flex flex-col gap-3 w-full">
               {navs.map((navItem, i) => (
                 <div
                   onClick={() => {
@@ -94,6 +94,15 @@ const Navbar = () => {
                   {navItem.name}
                 </div>
               ))}
+            </div> */}
+            <div className="w-full flex flex-col gap-3">
+              <Link href={"/auth/login"} className="text-monokai flex items-center justify-center gap-2 rounded border border-monokai px-2 py-[0.4rem] w-full">
+                Log In
+              </Link>
+
+              <Link href={"/auth/register"} className="text-white flex items-center justify-center gap-2 rounded bg-secondary px-2 py-2 w-full">
+                Try for Free
+              </Link>
             </div>
           </div>
         </Drawer>

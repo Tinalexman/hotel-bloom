@@ -11,31 +11,27 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="py-20 px-40 md:px-5 md:py-10 grid grid-cols-[1fr_1fr_1.5fr] md:grid-cols-1 gap-10 w-full">
+    <footer className="lg:py-20 lg:px-28 xs:px-5 xs:py-10 grid lg:grid-cols-[1fr_1.5fr] xs:grid-cols-1 gap-10 w-full overflow-hidden">
       <div className="w-full flex flex-col">
         <div className="flex flex-col gap-5 md:gap-2">
-          <h2 className="text-4xl md:text-2xl text-secondary font-bold">
-            Servexi
-          </h2>
-          <p className="font-medium text-body mt-5">
-            Empowering your digital journey with innovative, reliable solutions
-            for a brighter tomorrow.
+          <p className="font-medium text-body mt-5 text-monokai">
+            Revolutionizing hospitality management with intelligent systems and seamless operations
           </p>
-          <div className="flex gap-4">
+          <div className="flex gap-4 text-monokai">
             <p className="text-body">Follow us on:</p>
             <div className="flex gap-3 items-center w-fit">
-              <Link href={"https://x.com/Broadbasedcom"} target="__blank">
+              <Link href={"https://x.com/"} target="__blank">
                 <FaXTwitter size={20} className="text-secondary" />
               </Link>
               <Link
-                href={"https://www.instagram.com/broadbasedcom"}
+                href={"https://www.instagram.com/"}
                 target="__blank"
               >
                 <FaInstagram size={20} className="text-secondary" />
               </Link>
               <Link
                 href={
-                  "https://www.youtube.com/channel/UCKyYNHGvO7KPwkOq9WvGVeQ"
+                  "https://www.youtube.com/"
                 }
                 target="__blank"
               >
@@ -44,35 +40,16 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="mt-2 border-grey-18 text-neutral text-small md:hidden">
+          <div className="mt-2  text-neutral text-small">
             © Copyright {new Date().getFullYear()}, All Rights Reserved
           </div>
         </div>
       </div>
-      <div className="w-full flex md:flex-col justify-around pt-20 md:gap-3 md:pt-0">
-        <div className="flex flex-col gap-5 md:gap-3">
-          <Link href={"/"} className="text-body font-semibold ">
-            Home
-          </Link>
-          <Link href={"/"} className="text-body font-semibold ">
-            About
-          </Link>
-        </div>
-        <div className="flex flex-col gap-5 md:gap-3">
-          <Link href={"/"} className="text-body font-semibold ">
-            Services
-          </Link>
-          <Link href={"/"} className="text-body font-semibold ">
-            Contact Us
-          </Link>
-        </div>
+
+      <div className="lg:flex lg:flex-col xs:hidden relative">
+        <Image src={Icon} alt="logo" className="w-full h-auto absolute -right-[20%] -top-[70%]" />
       </div>
-      <div className="flex flex-col md:hidden">
-        <Image src={Icon} alt="logo" className="w-full h-auto" />
-      </div>
-      <div className="mt-2 border-grey-18 text-neutral text-small text-center md:block hidden">
-        © Copyright {new Date().getFullYear()}, All Rights Reserved
-      </div>
+
     </footer>
   );
 };

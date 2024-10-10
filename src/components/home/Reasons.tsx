@@ -3,32 +3,58 @@
 import React, { useRef } from "react";
 
 import Image from "next/image";
-import Man from "@/public/man_browsing.jpeg";
-
+import City from "@/public/bar_image.jpg";
 import { motion, useInView } from "framer-motion";
 
+interface iInfo {
+  header: string;
+  text: string;
+}
+
+
 const Reasons = () => {
+
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { amount: "some", once: true });
+
+  const info: iInfo[] = [
+    {
+      header: "Save Time",
+      text: "Automate repetitive tasks and free up your time for more important things.",
+    },
+    {
+      header: "Enhance Efficiency",
+      text: "Real-time updates and custom dashboards ensure smooth operations.",
+    },
+    {
+      header: "Boost Productivity",
+      text: "Staff can focus on what matters most with role-based dashboards.",
+    },
+    {
+      header: "Improve Accountability",
+      text: "Detailed logs help track and verify actions within the organization.",
+    },
+  ]
 
   return (
     <div
       ref={ref}
-      className="w-full grid grid-cols-2 md:grid-cols-1 place-items-center gap-10 px-40 md:px-5 relative"
+      className="w-full grid lg:grid-cols-2 xs:grid-cols-1 place-content-center place-items-center gap-10 lg:px-28 xs:px-5"
     >
+
       <motion.div
         animate={{
           opacity: isInView ? 1 : 0,
-          y: isInView ? 0 : -100,
+          y: isInView ? 0 : 100,
           transition: {
             duration: 1,
             ease: "easeOut",
           },
         }}
-        className="w-full h-[550px] rounded object-cover block md:hidden"
+        className="w-full h-[420px] rounded"
       >
         <Image
-          src={Man}
+          src={City}
           alt="man browsing"
           className="w-full h-full rounded object-cover"
         />
@@ -36,7 +62,7 @@ const Reasons = () => {
       <motion.div
         animate={{
           opacity: isInView ? 1 : 0,
-          x: isInView ? 0 : 100,
+          x: isInView ? 0 : -100,
           transition: {
             duration: 1,
             ease: "easeOut",
@@ -44,111 +70,28 @@ const Reasons = () => {
         }}
         className="w-full flex flex-col gap-5"
       >
-        <div className="flex flex-col gap-2">
-          <h2 className="text-title md:text-center text-dark">
-            Why Choose{" "}
-            <span className="text-primary">
-              Broad<span className="text-secondary">based</span>
-            </span>
-            ?
+        <div className="flex flex-col gap-2 lg:items-start xs:items-center">
+          <h2 className="text-title text-monokai">
+            Why Choose <span className="text-secondary">Servexi</span>?
           </h2>
-          <p className="text-body text-dark font-medium md:text-center">
-            At Broadbased, we believe in delivering more than just internet
-            service; we provide a gateway to endless possibilities. Our
-            commitment to reliability, coupled with our customer-centric
-            approach, ensures that you receive not just a service, but a
-            seamless experience tailored to your needs.
-          </p>
+          <h3 className="text-subbody text-neutral-dark">
+            The Ultimate Tool for Hotel Owners
+          </h3>
         </div>
-        <div className="flex flex-col gap-2">
-          <ul className="list-disc pl-5 text-body text-dark">
-            <li>
-              <strong>Unrivaled Reliability:</strong> Our robust infrastructure
-              guarantees uninterrupted connectivity, keeping you online when it
-              matters most.
-            </li>
-            <li>
-              <strong>Customer-Centric Service:</strong> We prioritize your
-              satisfaction with dedicated support and personalized solutions to
-              meet your unique requirements.
-            </li>
-            <li>
-              <strong>Innovative Solutions:</strong> Stay ahead with our
-              cutting-edge technology and innovative services designed to
-              empower your digital journey.
-            </li>
-            <li>
-              <strong>Community Engagement:</strong> As part of our commitment
-              to giving back, we actively participate in community development
-              initiatives across Nigeria.
-            </li>
-          </ul>
+        <div className="grid lg:grid-cols-2 xs:grid-cols-1 gap-4 z-10">
+          {
+            info.map((inf, i) => (
+              <div key={i} className="w-full flex justify-between pl-5 overflow-hidden bg-white shadow-custom-black rounded-lg">
+                <div className="flex flex-col gap-1 py-3 w-fit">
+                  <h3 className="text-body font-bold text-monokai">{inf.header}</h3>
+                  <p className="text-small font-medium text-monokai">{inf.text}</p>
+                </div>
+                <div className="w-2 h-full bg-secondary" />
+              </div>
+            ))
+          }
         </div>
       </motion.div>
-      <motion.div
-        animate={{
-          opacity: isInView ? 1 : 0,
-          y: isInView ? 0 : -100,
-          transition: {
-            duration: 1,
-            ease: "easeOut",
-          },
-        }}
-        className="w-full h-[550px] rounded object-cover md:block hidden"
-      >
-        <Image
-          src={Man}
-          alt="man browsing"
-          className="w-full h-full rounded object-cover"
-        />
-      </motion.div>
-      <motion.div
-        animate={{
-          scale: [1.0, 1.2, 1.0],
-          transition: {
-            duration: 3.5,
-            ease: "easeInOut",
-            repeat: Infinity,
-          },
-        }}
-        className="size-[150px] md:size-[120px] border-2 border-secondary border-opacity-30 rounded-full absolute md:-right-[80px] -right-[60px] bottom-0"
-      />
-      <motion.div
-        animate={{
-          scale: [1.0, 1.2, 1.0],
-          transition: {
-            duration: 3.5,
-            ease: "easeInOut",
-            repeat: Infinity,
-            delay: 0.5,
-          },
-        }}
-        className="size-[150px] md:size-[120px] border-2 border-secondary border-opacity-30 rounded-full absolute md:-right-[100px] -right-[20px] bottom-0"
-      />
-
-      <motion.div
-        animate={{
-          scale: [1.0, 1.2, 1.0],
-          transition: {
-            duration: 3.5,
-            ease: "easeInOut",
-            repeat: Infinity,
-          },
-        }}
-        className="size-[150px] md:size-[120px] border-2 border-secondary border-opacity-30 rounded-full absolute -left-[80px] md:-left-[100px] top-0"
-      />
-      <motion.div
-        animate={{
-          scale: [1.0, 1.2, 1.0],
-          transition: {
-            duration: 3.5,
-            ease: "easeInOut",
-            repeat: Infinity,
-            delay: 0.5,
-          },
-        }}
-        className="size-[150px] md:size-[120px] border-2 border-secondary border-opacity-30 rounded-full absolute -left-[40px] md:-left-[80px] top-0"
-      />
     </div>
   );
 };

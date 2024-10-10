@@ -4,12 +4,13 @@ import { FC, ReactNode } from "react";
 import Slider from "@/src/components/auth/Slider";
 
 const LoginPage: FC<{ children: ReactNode }> = ({ children }) => {
-  //<a target="_blank" href="https://icons8.com/icon/AVe9YeyAXTql/hotel">Hotel</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 
   return (
     <div className="w-[100vw] h-[100vh] overflow-hidden flex justify-between bg-white">
-      <Slider />
-      <div className="w-[50vw] h-full grid place-content-center overflow-y-scroll scrollbar-custom">
+      <div className="lg:block xs:hidden">
+        <Slider />
+      </div>
+      <div className="lg:w-[50vw] xs:w-full lg:h-full xs:h-auto lg:grid lg:place-content-center overflow-y-auto scrollbar-custom">
         {children}
       </div>
     </div>

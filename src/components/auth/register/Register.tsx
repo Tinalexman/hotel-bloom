@@ -99,11 +99,11 @@ const Register = () => {
       }) => (
         <Form
           onSubmit={handleSubmit}
-          className="w-[420px] px-2.5 flex flex-col overflow-y-scroll scrollbar-custom"
+          className="lg:w-[420px] xs:w-full lg:px-2.5 xs:px-5 flex flex-col overflow-y-scroll scrollbar-custom xs:pt-10 lg:pt-0"
           method="POST"
         >
-          <div className="flex flex-col w-full">
-            <h1 className="font-bold text-monokai text-[32px] leading-[42px]">
+          <div className="flex flex-col w-full lg:items-start xs:items-center ">
+            <h1 className="font-bold text-monokai text-title">
               Hello There!
             </h1>
             <p className="text-neutral-dark text-lg">
@@ -222,13 +222,12 @@ const Register = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={` ${
-                isInitialValid
-                  ? "bg-secondary"
-                  : isValid
+              className={` ${isInitialValid
+                ? "bg-secondary"
+                : isValid
                   ? "bg-secondary"
                   : "bg-neutral-light"
-              } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
+                } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
             >
               {loading ? <Loader color="white" /> : "Register"}
             </button>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { IoArrowForward } from "react-icons/io5";
 
@@ -15,19 +15,18 @@ const GetStarted = () => {
       className="w-full h-[30rem] text-white bg-secondary flex flex-col gap-6 justify-center items-center relative"
     >
       <div className="text-sm font-bold bg-white-20 px-3 py-1 rounded-full w-fit z-10">
-        BOOK SERVICE
+        JOIN US
       </div>
       <div className="flex flex-col items-center gap-3 z-10">
-        <h1 className="text-extra text-center px-[15%]">
-          Elevate Your Connectivity Today?
+        <h1 className="text-extra text-center">
+          Start Managing Your Hotel with Ease
         </h1>
         <p className="text-body px-[15%] text-center">
-          Schedule your telecom service with us now and enjoy superior internet,
-          network aggregation, and voice communication solutions!
+          Sign up for free and see how Servexi can transform your operations.
         </p>
       </div>
-      <button className="text-secondary text-button flex items-center justify-center z-10 gap-2 rounded bg-white px-2 py-3 w-44  mt-2">
-        Get Started
+      <Link href={"/auth/register"} className="text-secondary text-button flex items-center justify-center z-10 gap-2 rounded bg-white px-2 py-3 w-44  mt-2">
+        Try for Free
         <motion.div
           initial={{
             x: "0%",
@@ -44,7 +43,7 @@ const GetStarted = () => {
         >
           <IoArrowForward size={20} />
         </motion.div>
-      </button>
+      </Link>
       <motion.div
         animate={{
           width: isInView ? "40%" : "0%",

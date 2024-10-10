@@ -1,32 +1,30 @@
 "use client";
 
 import Banner from "./Banner";
-import Services from "./Services";
+import Features from "./Features";
 import Reasons from "./Reasons";
-import Location from "./Location";
+import HowItWorks from "./HowItWorks";
 import Plans from "./Plans";
 import Testimonies from "./Testimonies";
 import GetStarted from "./GetStarted";
 import Contact from "./Contact";
 import Footer from "../reusable/Footer";
-import Navbar from "../reusable/Navbar";
 
 const Home = () => {
   return (
-    <div className="bg-white w-[100vw] overflow-x-hidden">
+    <div className="bg-background h-auto w-[100vw] xs:overflow-x-hidden">
 
       <Banner />
-      <Services />
+      <div className="lg:h-10 xs:h-0" />
+      <Features />
       <div className="h-10" />
-      {/* <Location />
+      <HowItWorks />
       <div className="h-20" />
       <Reasons />
-      <Plans /> */}
-      {/* <Testimonies />
+      <Testimonies />
       <div className="h-20" />
       <GetStarted />
-      <Contact />
-      <Footer /> */}
+      <Footer />
     </div>
   );
 };

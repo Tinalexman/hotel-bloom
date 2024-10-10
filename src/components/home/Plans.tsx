@@ -62,19 +62,18 @@ const Plans = () => {
   const [index, setIndex] = useState<number>(-1);
 
   return (
-    <div className="flex flex-col w-full gap-8 items-center px-40 py-20 md:px-5 md:py-10 relative">
-      <div className="w-[40rem] md:w-full items-center space-y-2 md:space-y-3">
-        <h2 className="text-title text-center text-dark">
-          Our Best Value Internet Packages
+    <div className="flex flex-col w-full gap-8 items-center lg:px-28 lg:py-20 xs:px-5 xs:py-10 relative">
+      <div className="lg:w-[40rem] xs:w-full items-center lg:space-y-2 xs:space-y-3">
+        <h2 className="text-title text-center text-monokai">
+          Pricing
         </h2>
-        <h3 className="text-subbody text-center text-neutral">
-          Explore Our Tailored Packages Designed to Elevate Your Connectivity
-          Experience
+        <h3 className="text-subbody text-center text-neutral-dark">
+          Simple, Transparent Pricing
         </h3>
       </div>
       <div
         ref={targetRef}
-        className="w-full grid grid-cols-3 md:grid-cols-1 gap-8 place-items-center px-10 md:px-0"
+        className="w-full grid lg:grid-cols-3 xs:grid-cols-1 gap-8 place-items-center lg:px-10 xs:px-0"
       >
         {plans.map((plan, i) => {
           return (
@@ -106,17 +105,15 @@ const Plans = () => {
               onMouseLeave={() => {
                 setIndex(-1);
               }}
-              className={`${
-                index === i ? "bg-secondary text-white" : "text-dark bg-white"
-              } flex flex-col items-center gap-6 w-full h-[25rem] px-4 py-8 
+              className={`${index === i ? "bg-secondary text-white" : "text-dark bg-white"
+                } flex flex-col items-center gap-6 w-full h-[25rem] px-4 py-8 
                  shadow-custom md:rounded-2xl
-                 ${
-                   i === 0
-                     ? "rounded-l-2xl "
-                     : i === 2
-                     ? "rounded-r-2xl"
-                     : "rounded-none"
-                 }
+                 ${i === 0
+                  ? "rounded-l-2xl "
+                  : i === 2
+                    ? "rounded-r-2xl"
+                    : "rounded-none"
+                }
                  `}
             >
               <div className="flex flex-col gap-1 items-center">
@@ -124,9 +121,8 @@ const Plans = () => {
                 <p className="text-small font-medium">{plan.subtitle}</p>
               </div>
               <h2
-                className={`text-subtitle ${
-                  index === i ? "text-white" : "text-primary"
-                }`}
+                className={`text-subtitle ${index === i ? "text-white" : "text-primary"
+                  }`}
               >
                 ₦{plan.price.toLocaleString("en-US")}
                 <span className="text-small font-normal">/Month</span>
@@ -139,9 +135,8 @@ const Plans = () => {
                       className={`text-${index === i ? "white" : "primary"}`}
                     />
                     <h2
-                      className={`text-small font-semibold ${
-                        index === i ? "text-white" : "text-dark"
-                      }`}
+                      className={`text-small font-semibold ${index === i ? "text-white" : "text-dark"
+                        }`}
                     >
                       {feature}
                     </h2>
@@ -150,11 +145,10 @@ const Plans = () => {
               </div>
 
               <button
-                className={`w-[70%] h-10 text-primary rounded ${
-                  index === i
-                    ? "bg-white shadow-custom"
-                    : "border border-primary"
-                } font-semibold`}
+                className={`w-[70%] h-10 text-primary rounded ${index === i
+                  ? "bg-white shadow-custom"
+                  : "border border-primary"
+                  } font-semibold`}
               >
                 Join Now
               </button>

@@ -96,11 +96,11 @@ const ResetPasswordForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-[400px] flex flex-col"
+      className="lg:w-[400px] xs:w-full flex flex-col xs:px-5 lg:px-0 xs:pt-10 lg:pt-0"
       method="POST"
     >
-      <div className="flex flex-col w-full">
-        <h1 className="font-bold text-monokai text-[32px] leading-[42px]">
+      <div className="flex flex-col w-full lg:items-start xs:items-center ">
+        <h1 className="font-bold text-monokai text-title">
           Setup Password
         </h1>
         <p className="text-neutral-dark text-lg">
@@ -166,9 +166,8 @@ const ResetPasswordForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className={` ${
-            isValid ? "bg-secondary" : "bg-neutral-light"
-          } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
+          className={` ${isValid ? "bg-secondary" : "bg-neutral-light"
+            } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
         >
           {loading ? <Loader color="white.6" /> : "Reset"}
         </button>

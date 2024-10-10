@@ -107,31 +107,31 @@ td {
 }
 
 .text-display {
-  @apply text-[4rem] md:text-[2rem] leading-[4.5rem] md:leading-[2.5rem] font-semibold;
+  @apply lg:text-[4rem] xs:text-[2rem] lg:leading-[4.5rem] xs:leading-[2.5rem] font-semibold;
 }
 
 .text-extra {
-  @apply text-[3rem] md:text-[2rem] leading-[4rem] md:leading-[2.5rem] font-medium;
+  @apply lg:text-[3rem] xs:text-[2rem] lg:leading-[4rem] xs:leading-[2.5rem] font-medium;
 }
 
 .text-title {
-  @apply text-[2rem] md:text-[1.5rem] leading-[3rem] md:leading-[1.8rem] font-bold;
+  @apply lg:text-[2rem] xs:text-[1.5rem] lg:leading-[3rem] xs:leading-[1.8rem] font-bold;
 }
 
 .text-subtitle {
-  @apply text-[1.85rem] md:text-[1.4rem] leading-[2.7rem] md:leading-[2rem] font-bold;
+  @apply lg:text-[1.85rem] xs:text-[1.4rem] lg:leading-[2.7rem] xs:leading-[2rem] font-bold;
 }
 
 .text-subdisplay {
-  @apply text-[1.25rem] leading-[1.75rem] md:text-[1rem] md:leading-[1.25rem];
+  @apply lg:text-[1.25rem] lg:leading-[1.75rem] xs:text-[1rem] xs:leading-[1.25rem];
 }
 
 .text-button {
-  @apply text-[1.25rem] leading-[1.75rem] md:text-[1rem] md:leading-[1.25rem] font-semibold;
+  @apply lg:text-[1.25rem] lg:leading-[1.75rem] xs:text-[1rem] xs:leading-[1.25rem] font-semibold;
 }
 
 .text-small {
-  @apply text-[0.8rem] leading-[1rem] md:text-[0.7rem] md:leading-[0.8rem];
+  @apply lg:text-[0.8rem] lg:leading-[1rem] xs:text-[0.7rem] xs:leading-[0.8rem];
 }
 
 .text-body {
@@ -140,4 +140,8 @@ td {
 
 .text-subbody {
   @apply text-[0.9rem] leading-[0.9rem];
+}
+
+.text-tiny {
+  @apply text-[0.7rem] leading-[0.7rem];
 }

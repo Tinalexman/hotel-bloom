@@ -74,10 +74,10 @@ const Content = () => {
   }, [router, seconds]);
 
   return (
-    <div className="w-full grid place-content-center">
-      <div className="flex flex-col w-[400px] ">
-        <div className="flex flex-col w-full">
-          <h1 className="font-bold text-monokai text-[32px] leading-[42px]">
+    <div className="w-full lg:grid lg:place-content-center xs:flex xs:flex-col">
+      <div className="lg:w-[400px] xs:w-full flex flex-col xs:px-5 lg:px-0 xs:pt-10 lg:pt-0">
+        <div className="flex flex-col w-full lg:items-start xs:items-center ">
+          <h1 className="font-bold text-monokai text-title">
             Account Verification
           </h1>
           <p className="text-neutral-dark text-lg">
@@ -86,7 +86,7 @@ const Content = () => {
           </p>
         </div>
 
-        <div className="flex justify-center mt-5 w-full">
+        <div className="flex justify-center mt-5 xs:mt-12 w-full xs:px-5 lg:px-0">
           <OtpInput
             value={otp}
             onChange={async (value: string) => {
@@ -116,19 +116,17 @@ const Content = () => {
                 request({ email: email! });
               }
             }}
-            className={`rounded w-full h-12 text-white font-medium text-[16px] leading-[24px] grid place-content-center ${
-              seconds <= 0 ? "bg-secondary " : "bg-neutral-light"
-            }  `}
+            className={`rounded w-full h-12 text-white font-medium text-[16px] leading-[24px] grid place-content-center ${seconds <= 0 ? "bg-secondary " : "bg-neutral-light"
+              }  `}
           >
             {loadingVerify || loadingNewTokenRequest ? (
               <Loader color="white.6" />
             ) : (
               `Resend
-                ${
-                  seconds > 0
-                    ? ` in ${seconds} second${seconds === 1 ? "" : "s"}`
-                    : ""
-                }`
+                ${seconds > 0
+                ? ` in ${seconds} second${seconds === 1 ? "" : "s"}`
+                : ""
+              }`
             )}
           </button>
         </div>

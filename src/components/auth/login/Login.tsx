@@ -117,11 +117,11 @@ const LoginForm = () => {
       }) => (
         <Form
           onSubmit={handleSubmit}
-          className="w-[400px] flex flex-col"
+          className="lg:w-[400px] xs:w-full flex flex-col xs:px-5 lg:px-0 xs:pt-10 lg:pt-0"
           method="POST"
         >
-          <div className="flex flex-col w-full">
-            <h1 className="font-bold text-monokai text-[32px] leading-[42px]">
+          <div className="flex flex-col w-full lg:items-start xs:items-center ">
+            <h1 className="font-bold text-monokai text-title">
               Welcome Back!
             </h1>
             <p className="text-neutral-dark text-lg">
@@ -191,13 +191,12 @@ const LoginForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={` ${
-                isInitialValid
-                  ? "bg-secondary"
-                  : isValid
+              className={` ${isInitialValid
+                ? "bg-secondary"
+                : isValid
                   ? "bg-secondary"
                   : "bg-neutral-light"
-              } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
+                } rounded w-full h-12 text-white font-semibold text-[16px] leading-[24px] md:leading-[25.6px] items-center flex justify-center`}
             >
               {loading ? <Loader color="white.6" /> : "Login"}
             </button>
